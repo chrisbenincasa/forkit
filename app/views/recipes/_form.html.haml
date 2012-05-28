@@ -1,0 +1,34 @@
+= form_for(@recipe) do |f|
+  = if @recipe.errors.any?
+    %div#error_explaination
+      %h2= pluralize(@recipe.errors.count, 'error') 
+      %ul
+        - @recipe.errors.full_messages.each do |msg|
+          %li= msg
+  %div.field
+    = f.label :name
+    %br/
+    = f.text_field :name
+  %div.field
+    = f.label :desc
+    %br/
+    = f.text_area :desc
+  %div.field
+    = f.label :difficulty
+    %br/
+    = f.select(:difficulty, options_for_select(['Beginner', 'Moderate', 'Difficult', 'Expert'], 'Beginner'))
+  - if @availableIngredients.nil? or @availableIngredients.empty?
+    %div.empty
+      %p No ingredients exist!
+  - else
+    %select{:size => "#{@availableIngredients.length}", :multiple => "true", :name => 'ingredients[]'}
+      - @availableIngredients.each do |t|
+        %option.ingredient_option
+          = t.name
+  %div.new_ingredients
+    Can't find ingredient you want?
+    %br/
+    %input{:type => "text", :name => 'ingredients[]'}
+  %a.add_new_ingredient{:href => "#"}+
+  %div.actions
+    = f.submit

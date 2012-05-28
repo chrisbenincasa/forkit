@@ -1,0 +1,19 @@
+%p#notice
+  = notice
+%p
+  %b Name:
+  = @recipe.name
+%p
+  %b Difficulty:
+  = @recipe.difficulty
+%p
+  %b Description:
+  = @recipe.desc
+- @recipe.ingredients.each do |i|
+  %p
+    %b Ingredient:
+    = i.name
+
+= link_to 'Edit', edit_recipe_path(@recipe)
+|
+= link_to 'Back', recipes_path
