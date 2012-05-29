@@ -24,7 +24,7 @@
       %div.recipe
         Name: 
         = recipe.name
-        = link_to 'Details', recipe
+        = link_to 'Details', "../recipes/#{recipe.name}"
   - else
     You haven't created or forked any recipes yet!
   %br/
