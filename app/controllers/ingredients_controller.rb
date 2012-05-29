@@ -13,8 +13,10 @@ class IngredientsController < ApplicationController
   # GET /ingredients/1
   # GET /ingredients/1.json
   def show
-    @ingredient = Ingredient.find(params[:id])
-
+    name = params[:id].gsub("-", "\s")
+    @ingredient = Ingredient.find_by_name(name)
+    @ingredient = Ingredient.find(params[:id]) if @ingredient.nil?
+    @recipes = @ingredient.recipes
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @ingredient }

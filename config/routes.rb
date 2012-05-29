@@ -1,7 +1,30 @@
 Recipes::Application.routes.draw do
-  root :to => 'recipes#index'
+  get "sessions/new"
+
+  get "users/new"
+
+  root :to => 'users#index'
   resources :ingredients
+  match "/ingredients" => redirect("/recipes")
   resources :recipes
+
+  get "log_out" => "sessions#destroy", :as => "log_out"
+  get "log_in" => "sessions#new", :as => "log_in"
+  get "sign_up" => "users#new", :as => "sign_up"
+
+  resources :users do
+    member do
+      get 'recipes'
+    end
+  end
+  resources :sessions
+
+  match '/user' => 'users#edit'
+
+  #match '/recipes/:name', :controller => 'recipes', :action => 'show'
+  match '/ingredients/:name' => 'ingredients#show'
+  #match '/:email', :controller => 'users', :action => 'edit'
+  match '/me', :controller => 'users', :action => 'edit'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

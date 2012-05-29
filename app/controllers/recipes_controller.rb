@@ -1,4 +1,4 @@
-class RecipesController < ApplicationController
+ class RecipesController < ApplicationController
   # GET /recipes
   # GET /recipes.json
   def index
@@ -13,7 +13,10 @@ class RecipesController < ApplicationController
   # GET /recipes/1
   # GET /recipes/1.json
   def show
-    @recipe = Recipe.find(params[:id])
+    name = params[:id].gsub("-", "\s")
+    @recipe = Recipe.find_by_name(name)
+    @recipe = Recipe.find(params[:id]) if @recipe.nil?
+    puts @recipe.ingredients.inspect
     puts @recipe.amounts.inspect
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +37,9 @@ class RecipesController < ApplicationController
 
   # GET /recipes/1/edit
   def edit
-    @recipe = Recipe.find(params[:id])
+    name = params[:id].gsub("-", "\s")
+    @recipe = Recipe.find_by_name(name)
+    @recipe = Recipe.find(params[:id]) if @recipe.nil?
   end
 
   # POST /recipes
@@ -53,6 +58,8 @@ class RecipesController < ApplicationController
       end
       @recipe.ingredients << ingredient
     end
+    @recipe.users << current_user
+    
     respond_to do |format|
       if @recipe.save
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
@@ -67,7 +74,9 @@ class RecipesController < ApplicationController
   # PUT /recipes/1
   # PUT /recipes/1.json
   def update
-    @recipe = Recipe.find(params[:id])
+    name = params[:id].gsub("-", "\s")
+    @recipe = Recipe.find_by_name(name)
+    @recipe = Recipe.find(params[:id]) if @recipe.nil?
     respond_to do |format|
       if @recipe.update_attributes(params[:recipe])
         format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
@@ -82,7 +91,9 @@ class RecipesController < ApplicationController
   # DELETE /recipes/1
   # DELETE /recipes/1.json
   def destroy
-    @recipe = Recipe.find(params[:id])
+    name = params[:id].gsub("-", "\s")
+    @recipe = Recipe.find_by_name(name)
+    @recipe = Recipe.find(params[:id]) if @recipe.nil?
     @recipe.destroy
 
     respond_to do |format|
@@ -90,4 +101,5 @@ class RecipesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 end

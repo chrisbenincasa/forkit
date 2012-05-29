@@ -1,7 +1,17 @@
 = stylesheet_link_tag 'application'
 = javascript_include_tag 'application'
 %h1 Recipes
-
+- if current_user
+  %p 
+    Hello, 
+    = current_user.email
+    = link_to 'Settings', edit_user_path(current_user)
+    = link_to 'Log Out', log_out_path
+- else
+  %p
+    Hello, stranger!
+    = link_to "Register", sign_up_path
+    = link_to "Log In", log_in_path
 - @recipes.each do |recipe|
   %tr
     %td= recipe.name
