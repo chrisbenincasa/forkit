@@ -16,7 +16,7 @@
   %div.field
     = f.label :difficulty
     %br/
-    = f.select(:difficulty, options_for_select(['Beginner', 'Moderate', 'Difficult', 'Expert'], 'Beginner'))
+    = #f.select(:difficulty, options_for_select(['Beginner', 'Moderate', 'Difficult', 'Expert'], 'Beginner'))
   - if @availableIngredients.nil? or @availableIngredients.empty?
     %div.empty
       %p No ingredients exist!
