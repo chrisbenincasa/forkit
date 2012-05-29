@@ -1,0 +1,10 @@
+%h1
+  = @ingredient.name
+%h3
+  Featured in 
+  = @recipes.length
+  recipes
+- @recipes.each do |recipe|
+  %div
+    %p
+      = link_to recipe.name, recipe
