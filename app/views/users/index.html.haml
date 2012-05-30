@@ -9,7 +9,7 @@
   - if current_user
     %h3
       Hello,
-      = current_user.email
+      = current_user.username
       = link_to 'Settings', edit_user_path(current_user)
       = link_to 'Log Out', log_out_path
   - else
@@ -17,14 +17,14 @@
       Hello, stranger!
       = link_to 'Register', sign_up_path
       = link_to 'Log In', log_in_path
-
+= link_to 'All Recipes!', recipes_path
 - if current_user
   - if current_user.recipes
     - current_user.recipes.each do |recipe|
       %div.recipe
         Name: 
         = recipe.name
-        = link_to 'Details', "../recipes/#{recipe.name}"
+        = link_to 'Details', recipe
   - else
     You haven't created or forked any recipes yet!
   %br/

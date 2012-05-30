@@ -1,0 +1,7 @@
+%h1
+  = @user.email + '\'s Profile'
+%h2 Recipes: 
+%ul.recipes
+  - @user.recipes.each do |recipe|
+    %li
+      = link_to recipe.name, recipe

@@ -4,16 +4,16 @@
   %b Name:
   = @recipe.name
 %p
-  %b Difficulty:
-  = #@recipe.difficulty
+  %b Created by:
+  = link_to @recipe.users.first['email'], user_recipes_url(@recipe.users.first['id'])
 %p
   %b Description:
   = @recipe.desc
-- @recipe.ingredients.each do |i|
-  %p
-    %b Ingredient:
-    = i.name
-
-= link_to 'Edit', edit_recipe_path(@recipe)
-|
-= link_to 'Back', :back
+%p
+  %b Ingredients:
+  = raw @recipe.ingredients.collect {|ingredient| link_to ingredient.name, ingredient}.join(', ')
+- if current_user
+  - if current_user.recipes.include? @recipe
+    = link_to 'Edit', edit_recipe_path(@recipe)
+    |
+= link_to 'Back', recipes_path

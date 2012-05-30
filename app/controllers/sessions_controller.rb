@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.authenticate(params[:email], params[:password])
+    user = User.authenticate(params[:login], params[:password])
     if user
       session[:user_id] = user.id
       redirect_to root_url, :notice => 'Logged in!'
@@ -14,6 +14,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    puts 'what\'s going on here'
     session[:user_id] = nil
     redirect_to root_url, :notice => 'Logged out!'
   end

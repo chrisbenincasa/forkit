@@ -27,7 +27,6 @@ class IngredientsController < ApplicationController
   # GET /ingredients/new.json
   def new
     @ingredient = Ingredient.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @ingredient }
@@ -81,5 +80,10 @@ class IngredientsController < ApplicationController
       format.html { redirect_to ingredients_url }
       format.json { head :no_content }
     end
+  end
+
+  def recipes
+    @ingredient = Ingredient.find(params[:id])
+    @recipes = @ingredient.recipes
   end
 end

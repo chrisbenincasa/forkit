@@ -5,18 +5,21 @@ class User < ActiveRecord::Base
   has_many :recipes, :through => :personalRecipeInfo
   #has_many :settings
 
-  attr_accessible :email, :password, :password_confirmation
+  attr_accessible :username, :email, :password, :password_confirmation
 
   attr_accessor :password
   before_save :encrypt_password
 
+  validates_length_of :password, :minimum => 5
   validates_confirmation_of :password
   validates_presence_of :password, :on => :create
   validates_presence_of :email
+  validates_presence_of :username
+  validates_uniqueness_of :username
   validates_uniqueness_of :email
 
-  def self.authenticate(email, password)
-    user = find_by_email(email)
+  def self.authenticate(login, password)
+    user = find_by_email(login) || find_by_username(login)
     if user and user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
       user
     else

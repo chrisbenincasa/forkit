@@ -1,6 +1,9 @@
 = stylesheet_link_tag 'application'
 = javascript_include_tag 'application'
+= csrf_meta_tag
 %h1 Recipes
+%h2
+  = notice
 - if current_user
   %p 
     Hello, 
@@ -16,9 +19,12 @@
   %tr
     %td= recipe.name
     %td= recipe.desc
-    %td= link_to 'Show', "../recipes/#{recipe.name}"
-    %td= link_to 'Edit', edit_recipe_path(recipe)
-    %td= link_to 'Destroy', recipe, confirm: 'Are you sure?', method: :delete
-    %br/
+    %td= link_to 'Show', recipe
+    - if current_user
+      - if current_user.recipes.include? recipe
+        %td= link_to 'Edit', edit_recipe_path(recipe)
+        %td= link_to 'Destroy', recipe, confirm: 'Are you sure?', method: :delete
+      %br/
+      %a= link_to 'New Recipe', new_recipe_path
+
 %br/
-%a= link_to 'New Recipe', new_recipe_path
