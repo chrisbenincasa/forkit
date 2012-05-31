@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
+    puts session.inspect
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 end

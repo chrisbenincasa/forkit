@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    puts session
     @user = User.find(params[:id])
   end
 
