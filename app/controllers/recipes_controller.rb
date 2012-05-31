@@ -1,4 +1,5 @@
  class RecipesController < ApplicationController
+  layout 'recipes'
   # GET /recipes
   # GET /recipes.json
   def index
@@ -14,6 +15,7 @@
   # GET /recipes/1.json
   def show
     @recipe = Recipe.find_by_url_slug(params[:id])
+    @users = @recipe.users
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @recipe }

@@ -17,6 +17,13 @@ class User < ActiveRecord::Base
   validates_presence_of :username, :on => :create
   validates_uniqueness_of :username, :on => :create
   validates_uniqueness_of :email, :on => :create
+  validates_format_of :email, 
+    :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, 
+    :on => :create
+  validates_format_of :username, 
+    :with => /^[-\w\._@]+$/i, 
+    :message => 'Only letters, numbers, or .-@_ are allowed', 
+    :on => :create
 
   def self.authenticate(login, password)
     user = find_by_email(login) || find_by_username(login)
@@ -32,5 +39,9 @@ class User < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
+  end
+
+  def to_param
+    username
   end
 end

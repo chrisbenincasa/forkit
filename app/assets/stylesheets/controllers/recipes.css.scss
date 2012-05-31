@@ -1,0 +1,45 @@
+// Place all the styles related to the recipes controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body
+{
+  font-family: sans-serif;
+}
+
+a
+{
+  color: red;
+}
+
+div.wrap
+{
+  margin: 0 auto;
+  width: 800px;
+}
+
+div.clearfix
+{
+  clear: both;
+}
+
+.temp
+{
+  padding: 5px;
+  td
+  {
+    padding: 5px;
+  }
+}
+
+.recipes
+{
+  margin-top: 10px;
+}
+
+.recipe_picture
+{
+  width: 200px;
+  height: 200px;
+  float: left;
+}

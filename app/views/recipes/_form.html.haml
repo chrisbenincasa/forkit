@@ -14,7 +14,7 @@
     %br/
     = f.text_area :desc
   %div.field
-    = image_tag @recipe.image_url(:thumb) if @recipe.image?
+    = image_tag @recipe.image_url(:thumb), {:class => 'preview_image' , :size => '400x300'} if @recipe.image?
     = f.file_field :image, :class => 'recipe_image_upload'
   - if @availableIngredients.nil? or @availableIngredients.empty?
     %div.empty

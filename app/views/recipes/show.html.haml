@@ -1,12 +1,12 @@
 %p#notice
   = notice
-= image_tag @recipe.image_url(:thumb) if @recipe.image?
+= image_tag @recipe.image_url if @recipe.image?
 %p
   %b Name:
   = @recipe.name
 %p
   %b Created by:
-  = link_to @recipe.users.first['email'], user_recipes_url(@recipe.users.first['id'])
+  = link_to @users.first['username'], user_recipes_url(@users.first['id'])
 %p
   %b Description:
   = @recipe.desc
