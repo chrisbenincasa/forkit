@@ -1,7 +1,14 @@
 %h1
-  = @user.email + '\'s Profile'
+  = @user.username + '\'s Profile'
+%p
+  - if @user == current_user
+    = link_to 'Edit Profile', edit_user_path(@user)
 %h2 Recipes: 
-%ul.recipes
-  - @user.recipes.each do |recipe|
-    %li
-      = link_to recipe.name, recipe
+- if @user.recipes.any?
+  %ul.user_recipes
+    - @user.recipes.each do |recipe|
+      %li.recipe
+        = link_to recipe.name, recipe
+- else
+  %p
+    This user hasn't created any recipes yet!

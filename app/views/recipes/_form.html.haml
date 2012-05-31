@@ -1,5 +1,5 @@
 = form_for(@recipe) do |f|
-  = if @recipe.errors.any?
+  - if @recipe.errors.any?
     %div#error_explaination
       %h2= pluralize(@recipe.errors.count, 'error') 
       %ul
@@ -14,9 +14,8 @@
     %br/
     = f.text_area :desc
   %div.field
-    = f.label :difficulty
-    %br/
-    = #f.select(:difficulty, options_for_select(['Beginner', 'Moderate', 'Difficult', 'Expert'], 'Beginner'))
+    = image_tag @recipe.image_url(:thumb) if @recipe.image?
+    = f.file_field :image, :class => 'recipe_image_upload'
   - if @availableIngredients.nil? or @availableIngredients.empty?
     %div.empty
       %p No ingredients exist!

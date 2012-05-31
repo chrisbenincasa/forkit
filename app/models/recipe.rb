@@ -5,7 +5,9 @@ class Recipe < ActiveRecord::Base
   has_many :personalRecipeInfo
   has_many :users, :through => :personalRecipeInfo
 
-  validates_uniqueness_of :url_slug
+  mount_uploader :image, RecipePictureUploader
+
+  validates_uniqueness_of :url_slug, :on => :create
   #validates_inclusion_of :difficulty, :in => %w(Beginner Moderate Difficult Expert)
 
   def to_param

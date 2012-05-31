@@ -23,10 +23,8 @@
   # GET /recipes/new
   # GET /recipes/new.json
   def new
-    if current_user
-      @recipe = Recipe.new
-      @availableIngredients = Ingredient.all
-    end
+    @recipe = Recipe.new
+    @availableIngredients = Ingredient.all
     respond_to do |format|
       if current_user
         format.html # new.html.erb
@@ -45,23 +43,21 @@
   # POST /recipes
   # POST /recipes.json
   def create
-    if current_user
-      params[:recipe]['url_slug'] = params[:recipe]['name'].downcase.gsub(/\s/,'-')
-      @recipe = Recipe.new(params[:recipe])
-      @ingredients = params[:ingredients]
-      @ingredients.each do |i|
-        if i.empty?
-          break
-        end
-        i = i.gsub(/\b\w/){$&.upcase}
-        ingredient = Ingredient.find_by_name(i)
-        if ingredient.nil?
-          ingredient = Ingredient.new({"name" => i})
-        end
-        @recipe.ingredients << ingredient
+    params[:recipe]['url_slug'] = params[:recipe]['name'].downcase.gsub(/\s/,'-')
+    @recipe = Recipe.new(params[:recipe])
+    @ingredients = params[:ingredients]
+    @ingredients.each do |i|
+      if i.empty?
+        break
       end
-      @recipe.users << current_user
+      i = i.gsub(/\b\w/){$&.upcase}
+      ingredient = Ingredient.find_by_name(i)
+      if ingredient.nil?
+        ingredient = Ingredient.new({"name" => i})
+      end
+      @recipe.ingredients << ingredient
     end
+    @recipe.users << current_user
     respond_to do |format|
       if @recipe.save
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }

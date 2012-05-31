@@ -1,11 +1,16 @@
 class UsersController < ApplicationController
   def index
-    puts cookies.inspect
     @user = current_user
   end
 
   def new
+    puts 'here'
     @user = User.new
+  end
+
+  def me
+    @user = current_user
+    render 'show'
   end
 
   def show

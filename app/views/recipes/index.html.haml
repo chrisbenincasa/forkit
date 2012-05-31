@@ -8,7 +8,7 @@
   %p 
     Hello, 
     = current_user.email
-    = link_to 'Settings', edit_user_path(current_user)
+    = link_to 'Profile', current_user
     = link_to 'Log Out', log_out_path
 - else
   %p

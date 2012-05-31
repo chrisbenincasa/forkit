@@ -26,7 +26,7 @@ Recipes::Application.routes.draw do
   match '/ingredients/:name' => 'ingredients#show'
   match '/recipes/:name' => 'recipes#show'
   #match '/:email', :controller => 'users', :action => 'edit'
-  match '/me', :controller => 'users', :action => 'edit'
+  match '/me' => 'users#me'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

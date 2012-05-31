@@ -2,8 +2,7 @@
   = @ingredient.name
 %h3
   Featured in 
-  = @recipes.length
-  recipes
+  = pluralize(@recipes.length, 'recipe')
 - @recipes.each do |recipe|
   %div
     %p

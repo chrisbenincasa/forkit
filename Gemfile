@@ -12,6 +12,8 @@ gem 'thin'
 gem 'sass'
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'pg'
+gem 'rmagick'
+gem 'carrierwave'
 
 # Gems used only for assets and not required
 # in production environments by default.

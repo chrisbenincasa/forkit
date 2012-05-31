@@ -1,5 +1,6 @@
 %p#notice
   = notice
+= image_tag @recipe.image_url(:thumb) if @recipe.image?
 %p
   %b Name:
   = @recipe.name
