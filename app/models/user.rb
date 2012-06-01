@@ -1,6 +1,6 @@
 require 'bcrypt'
 
-class User < Authuser
+class User < ActiveRecord::Base
   has_many :personalRecipeInfo
   has_many :recipes, :through => :personalRecipeInfo
   #has_many :settings
