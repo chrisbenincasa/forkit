@@ -24,6 +24,7 @@ class SessionsController < ApplicationController
       user.save
  
       render :text => "Hi #{user.name}! You've signed up."
+    end
   end
 
   def destroy
