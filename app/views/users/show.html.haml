@@ -4,11 +4,22 @@
   - if @user == current_user
     = link_to 'Edit Profile', edit_user_path(@user)
 %h2 Recipes: 
-- if @user.recipes.any?
-  %ul.user_recipes
-    - @user.recipes.each do |recipe|
-      %li.recipe
-        = link_to recipe.name, recipe
+- if @createdRecipes
+  %h2 
+    = "Recipes #{@user.username} added:" 
+  - @createdRecipes.each do |recipe|
+    %div.recipe
+      Name: 
+      = recipe.name
+      = link_to 'Details', recipe
 - else
-  %p
-    This user hasn't created any recipes yet!
+  = "#{@identifier} hasn't created or forked any recipes yet!"
+- if @ratedRecipes
+  %h2
+    = "Recipes #{@identifier} rated:"
+  - @ratedRecipes.each do |recipe|
+    %div.recipe
+      Name:
+      = recipe.name
+      = link_to 'Details', recipe
+%br/

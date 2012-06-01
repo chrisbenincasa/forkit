@@ -6,15 +6,36 @@
   = @recipe.name
 %p
   %b Created by:
-  = link_to @users.first['username'], user_recipes_url(@users.first['id'])
+  = link_to @created_by.username, user_recipes_url(@created_by.username)
 %p
   %b Description:
   = @recipe.desc
+%p.rating
+  %b Rating:
+  - if @recipe.total_ratings == 0
+    No ratings yet! 
+  - else
+    = @recipe.rating.round(2)
+- if current_user
+  %p
+    %b Rate this recipe:
+    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}1
+    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}2
+    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}3
+    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}4
+    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}5
+  %p.personal_rating
+    %b< 
+      Your rating:
+    - if !@personal_rating.nil?
+      = @personal_rating
+    - else
+      You haven't rated this recipe yet!
 %p
   %b Ingredients:
   = raw @recipe.ingredients.collect {|ingredient| link_to ingredient.name, ingredient}.join(', ')
 - if current_user
-  - if current_user.recipes.include? @recipe
+  - if @myRecipe
     = link_to 'Edit', edit_recipe_path(@recipe)
     |
 = link_to 'Back', recipes_path

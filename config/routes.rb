@@ -25,6 +25,7 @@ Recipes::Application.routes.draw do
   #match '/recipes/:name', :controller => 'recipes', :action => 'show'
   match '/ingredients/:name' => 'ingredients#show'
   match '/recipes/:name' => 'recipes#show'
+  match '/recipes/:id/update_rating', :controller => 'recipes', :action => 'update_rating'
   #match '/:email', :controller => 'users', :action => 'edit'
   match '/me' => 'users#me'
 

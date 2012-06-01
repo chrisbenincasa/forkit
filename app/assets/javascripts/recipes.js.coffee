@@ -14,3 +14,18 @@ $(document).ready ->
       reader.readAsDataURL(file)
       reader.onload = (e) ->
         $('.preview_image').attr('src', e.target.result)
+
+  $('.recipe_rating').on 'click', (e) ->
+    e.preventDefault()
+    rating = $(this).text()
+    recipe = $(this).attr 'recipe'
+    $.ajax
+      url: "http://localhost:2000/recipes/#{recipe}/update_rating",
+      data: {rating: rating},
+      type: 'POST',
+      dataType: 'json',
+      success: (result) ->
+        $('.rating').html("<b>Rating: </b> #{result.rating}")
+        $('.personal_rating').html("<b>Your rating:</b> #{rating}.0")
+      error: (error) ->
+        console.log error

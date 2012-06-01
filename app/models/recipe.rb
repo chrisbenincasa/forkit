@@ -3,6 +3,7 @@ class Recipe < ActiveRecord::Base
   has_many :ingredients, :through => :amounts
 
   has_many :personalRecipeInfo
+  #belongs_to :user, :through => :personalRecipeInfo
   has_many :users, :through => :personalRecipeInfo
 
   mount_uploader :image, RecipePictureUploader

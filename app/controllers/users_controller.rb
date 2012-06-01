@@ -1,10 +1,17 @@
 class UsersController < ApplicationController
   def index
-    @user = current_user
+    if current_user
+      @user = current_user
+      @nonNullRatings = @user.personalRecipeInfo.where("rating IS NOT NULL")
+      @ratedRecipes = []
+      @nonNullRatings.each do |recipe|
+        @ratedRecipes << Recipe.find(recipe.recipe_id)
+      end
+      @createdRecipes = @user.recipes.where("created_by=#{@user.id}")
+    end
   end
 
   def new
-    puts 'here'
     @user = User.new
   end
 
@@ -15,6 +22,17 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_username(params[:id])
+    if current_user && @user == current_user
+      @identifier = "I've"
+    else
+      @identifier = @user.username
+    end
+    @nonNullRatings = @user.personalRecipeInfo.where("rating IS NOT NULL")
+    @ratedRecipes = []
+    @nonNullRatings.each do |recipe|
+      @ratedRecipes << Recipe.find(recipe.recipe_id)
+    end
+    @createdRecipes = @user.recipes.where("created_by=#{@user.id}")
   end
 
   def edit
