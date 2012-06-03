@@ -8,6 +8,11 @@ class UsersController < ApplicationController
         @ratedRecipes << Recipe.find(recipe.recipe_id)
       end
       @createdRecipes = @user.recipes.where("created_by=#{@user.id}")
+      if !current_user.name
+        @name = current_user.username
+      else
+        @name = current_user.name.split(/\s/)[0]
+      end
     end
   end
 

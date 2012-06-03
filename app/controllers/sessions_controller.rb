@@ -18,13 +18,17 @@ class SessionsController < ApplicationController
     auth_hash = request.env['omniauth.auth']
     @authorization = Authorization.find_by_provider_and_uid(auth_hash['provider'], auth_hash['uid'])
     if @authorization
-      render :text => "Welcome back #{@authorization.user.name}"
+      session[:user_id] = @authorization.user_id
+      redirect_to root_url
     else
-      user = User.new( :name => auth_hash['user_info']['name'], :email => auth_hash['user_info']['email'])
+      user = User.new(:name => auth_hash['info']['name'], :email => auth_hash['info']['email'], :username => auth_hash['info']['nickname'])
       user.authorizations.build :provider => auth_hash["provider"], :uid => auth_hash["uid"]
-      user.save
- 
-      render :text => "Hi #{user.name}! You've signed up."
+      if user.save(:validate => false)
+        session[:user_id] = user.id
+        redirect_to root_url
+      else
+        render :text => user.errors.full_messages
+      end
     end
   end
 

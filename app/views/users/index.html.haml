@@ -5,13 +5,13 @@
       = msg
   - if current_user
     %h3
-      Hello,
-      = current_user.username
+      Howdy,
+      = @name
       = link_to 'Profile', current_user
       = link_to 'Log Out', log_out_path
   - else
     %h3
-      Hello, stranger!
+      Howdy, stranger!
       = link_to 'Register', sign_up_path
       = link_to 'Log In', log_in_path
 = link_to 'All Recipes!', recipes_path

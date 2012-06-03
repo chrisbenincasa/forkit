@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   has_many :personalRecipeInfo
   has_many :recipes, :through => :personalRecipeInfo
   #has_many :settings
-
-  attr_accessible :username, :email, :password, :password_confirmation
+  has_many :authorizations
+  attr_accessible :name, :username, :email, :password, :password_confirmation
 
   attr_accessor :password
   before_save :encrypt_password

@@ -1,20 +1,4 @@
 %h1 Log In!
-:javascript
-  window.fbAsyncInit = function() {
-  FB.init({
-    appId      : 'YOUR_APP_ID',
-    status     : true, 
-    cookie     : true,
-    xfbml      : true,
-    oauth      : true,
-  });
-  };
-  (function(d){
-   var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-   js = d.createElement('script'); js.id = id; js.async = true;
-   js.src = "//connect.facebook.net/en_US/all.js";
-   d.getElementsByTagName('head')[0].appendChild(js);
-  }(document));
 %div.regular_login
   = form_tag sessions_path do
     %p
@@ -26,6 +10,7 @@
     %p.button
       = submit_tag 'Log in!'
 %div.facebook_login
+  = link_to 'Login with Facebook', '/auth/facebook'
   
 
 
