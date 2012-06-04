@@ -8,11 +8,6 @@ class UsersController < ApplicationController
         @ratedRecipes << Recipe.find(recipe.recipe_id)
       end
       @createdRecipes = @user.recipes.where("created_by=#{@user.id}")
-      if !current_user.name
-        @name = current_user.username
-      else
-        @name = current_user.name.split(/\s/)[0]
-      end
     end
   end
 
@@ -26,12 +21,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by_username(params[:id])
-    if current_user && @user == current_user
-      @identifier = "I've"
-    else
-      @identifier = @user.username
-    end
+    @user = User.find(params[:id])
     @nonNullRatings = @user.personalRecipeInfo.where("rating IS NOT NULL")
     @ratedRecipes = []
     @nonNullRatings.each do |recipe|
@@ -55,7 +45,7 @@ class UsersController < ApplicationController
   end
 
   def recipes
-    @user = User.find_by_username(params[:id])
+    @user = User.find(params[:id])
     @recipes = @user.recipes
   end
 

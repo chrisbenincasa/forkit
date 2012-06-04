@@ -6,7 +6,7 @@
   - if current_user
     %h3
       Howdy,
-      = @name
+      = current_user.name
       = link_to 'Profile', current_user
       = link_to 'Log Out', log_out_path
   - else

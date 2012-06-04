@@ -6,7 +6,7 @@
   = @recipe.name
 %p
   %b Created by:
-  = link_to @created_by.username, user_recipes_url(@created_by.username)
+  = link_to @created_by.email, user_recipes_url(@created_by.id)
 %p
   %b Description:
   = @recipe.desc
