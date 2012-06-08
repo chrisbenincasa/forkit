@@ -1,36 +1,17 @@
 %div
-  %h1 Welcome to Recipes Thing!
   - flash.each do |name, msg|
     %div.flash{:id => "flash_#{name}"}
       = msg
-  - if current_user
-    %h3
-      Howdy,
-      = current_user.name
-      = link_to 'Profile', current_user
-      = link_to 'Log Out', log_out_path
-  - else
-    %h3
-      Howdy, stranger!
-      = link_to 'Register', sign_up_path
-      = link_to 'Log In', log_in_path
-= link_to 'All Recipes!', recipes_path
+%p      
+  = link_to 'All Recipes!', recipes_path
+  = link_to 'New Recipe', new_recipe_path
 - if current_user
   - if @createdRecipes
     %h2 Recipes I've added: 
-    - @createdRecipes.each do |recipe|
-      %div.recipe
-        Name: 
-        = recipe.name
-        = link_to 'Details', recipe
+    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'created'}
   - else
     You haven't created or forked any recipes yet!
   - if @ratedRecipes
     %h2 Recipes I've rated:
-    - @ratedRecipes.each do |recipe|
-      %div.recipe
-        Name:
-        = recipe.name
-        = link_to 'Details', recipe
+    = render :partial => 'recipes/recipes', :locals => {:recipes => @ratedRecipes, :type => 'rated'}
   %br/
-  = link_to 'New Recipe', new_recipe_path

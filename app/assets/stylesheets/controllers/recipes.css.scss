@@ -12,6 +12,11 @@ a
   color: red;
 }
 
+p
+{
+  margin-bottom: 10px;
+}
+
 div.wrap
 {
   margin: 0 auto;
@@ -42,4 +47,27 @@ div.clearfix
   width: 200px;
   height: 200px;
   float: left;
+}
+
+.ui-autocomplete
+{
+  width: 100px;
+  border: thin black solid;
+
+  a
+  {
+    display: inline-block;
+    width: 100%;
+  }
+
+  li:hover
+  {
+    cursor: pointer;
+    background-color: black;
+
+    a
+    {
+      color: white;
+    }
+  }
 }

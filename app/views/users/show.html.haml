@@ -1,12 +1,12 @@
 %h1
-  = @user.email + '\'s Profile'
+  = image_tag @avatarUrl
+  = @name + '\'s Profile'
 %p
   - if @user == current_user
     = link_to 'Edit Profile', edit_user_path(@user)
-%h2 Recipes: 
 - if @createdRecipes
   %h2 
-    = "Recipes #{@user.email} added:" 
+    = "Recipes #{@name} added:" 
   - @createdRecipes.each do |recipe|
     %div.recipe
       Name: 
@@ -14,7 +14,7 @@
       = link_to 'Details', recipe
 - if @ratedRecipes
   %h2
-    = "Recipes #{@user.email} rated:"
+    = "Recipes #{@name} rated:"
   - @ratedRecipes.each do |recipe|
     %div.recipe
       Name:

@@ -2,10 +2,26 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
-$(document).ready ->
-  $('.add_new_ingredient').on 'click', (e) ->
+$(document).ready (e) ->
+  ingredients = []
+  $.ajax
+    url: 'http://recipes.dev/ingredients.json'
+    type: 'GET'
+    dataType: 'json'
+    async: false
+    success: (result) =>
+      for d in result
+        ingredients.push d.name
+
+  $('input.ingredients-input').autocomplete
+    source: ingredients
+
+  $('a.add_new_ingredient').on 'click', (e) ->
     e.preventDefault()
-    $(e.currentTarget).parent().append('<input type="text" name="ingredients[]"/>')
+    ingredientBox = $ JST['add_ingredient']
+    $(this).parent().append(ingredientBox)
+    ingredientBox.autocomplete
+      source: ingredients
 
   $('.recipe_image_upload').on 'change', (e) ->
     if window.File && window.FileReader && window.FileList
@@ -20,7 +36,7 @@ $(document).ready ->
     rating = $(this).text()
     recipe = $(this).attr 'recipe'
     $.ajax
-      url: "http://localhost:2000/recipes/#{recipe}/update_rating",
+      url: "http://recipes.dev/recipes/#{recipe}/update_rating",
       data: {rating: rating},
       type: 'POST',
       dataType: 'json',
@@ -29,3 +45,7 @@ $(document).ready ->
         $('.personal_rating').html("<b>Your rating:</b> #{rating}.0")
       error: (error) ->
         console.log error
+
+  ###$('a.sorter').on 'click', (e) ->
+    $.getScript(this.href)
+    return false###

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120603192604) do
+ActiveRecord::Schema.define(:version => 20120606175813) do
 
   create_table "amounts", :force => true do |t|
     t.integer  "recipe_id",     :null => false
@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(:version => 20120603192604) do
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.string   "uid"
+    t.string   "access_token"
   end
 
   create_table "ingredients", :force => true do |t|
@@ -62,6 +63,9 @@ ActiveRecord::Schema.define(:version => 20120603192604) do
     t.string   "image"
     t.integer  "total_ratings", :default => 0
     t.integer  "created_by",    :default => 1,   :null => false
+    t.string   "difficulty"
+    t.integer  "serving_from"
+    t.integer  "serving_to"
   end
 
   create_table "users", :force => true do |t|

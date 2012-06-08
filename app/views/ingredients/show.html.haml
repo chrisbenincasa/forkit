@@ -3,7 +3,4 @@
 %h3
   Featured in 
   = pluralize(@recipes.length, 'recipe')
-- @recipes.each do |recipe|
-  %div
-    %p
-      = link_to recipe.name, recipe
+= render :partial => 'recipes/recipes', :locals => {:recipes => @recipes, :type => 'ingredient'}

@@ -2,7 +2,7 @@ class IngredientsController < ApplicationController
   # GET /ingredients
   # GET /ingredients.json
   def index
-    @ingredients = Ingredient.all
+    @ingredients = Ingredient.order('name ASC')
 
     respond_to do |format|
       format.html # index.html.erb

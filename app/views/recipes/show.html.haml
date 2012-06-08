@@ -1,41 +1,47 @@
 %p#notice
   = notice
-= image_tag @recipe.image_url if @recipe.image?
-%p
-  %b Name:
+%h1
   = @recipe.name
+
+- if current_user
+  - if @myRecipe
+    = link_to 'Edit', edit_recipe_path(@recipe)
+
+= @recipe.image? ? image_tag(@recipe.image_url) : image_tag('default.png')
 %p
-  %b Created by:
-  = link_to @created_by.email, user_recipes_url(@created_by.id)
-%p
-  %b Description:
-  = @recipe.desc
-%p.rating
+  %h2 Details:
+  %p
+    %b Created by:
+    = link_to @created_by.name, user_recipes_url(@created_by.id)
+  %p.rating
   %b Rating:
   - if @recipe.total_ratings == 0
     No ratings yet! 
   - else
     = @recipe.rating.round(2)
-- if current_user
+  - if current_user
+    %p
+      %b Rate this recipe:
+      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}1
+      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}2
+      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}3
+      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}4
+      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}5
+    %p.personal_rating
+      %b< 
+        Your rating:
+      - if !@personal_rating.nil?
+        = @personal_rating
+      - else
+        You haven't rated this recipe yet!
+%p.desc
+  %h2 Prepartation:
+  - if !@recipe.serving_from.nil?
+    = "Serves #{@recipe.serving_from}"
+  - if !@recipe.serving_to.nil?
+    = " to #{@recipe.serving_to}"
   %p
-    %b Rate this recipe:
-    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}1
-    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}2
-    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}3
-    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}4
-    %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}5
-  %p.personal_rating
-    %b< 
-      Your rating:
-    - if !@personal_rating.nil?
-      = @personal_rating
-    - else
-      You haven't rated this recipe yet!
-%p
-  %b Ingredients:
-  = raw @recipe.ingredients.collect {|ingredient| link_to ingredient.name, ingredient}.join(', ')
-- if current_user
-  - if @myRecipe
-    = link_to 'Edit', edit_recipe_path(@recipe)
-    |
-= link_to 'Back', recipes_path
+    %b Ingredients:
+    = raw @recipe.ingredients.collect {|ingredient| link_to ingredient.name, ingredient}.join(', ')
+  %p
+    = @recipe.desc

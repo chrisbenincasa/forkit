@@ -1,24 +1,9 @@
-%h1 Recipes
-%h2
-  = notice
-- if current_user
-  %p 
-    Hello, 
-    = current_user.email
-    = link_to 'Profile', current_user
-    = link_to 'Log Out', log_out_path
-- else
-  %p
-    Hello, stranger!
-    = link_to "Register", sign_up_path
-    = link_to "Log In", log_in_path
+%h1 All Recipes
+%div.sorter
+  = sortable 'name'
+  = sortable 'date'
+  = sortable 'rating'
 %div.recipes
-  - @recipes.each do |recipe|
-    %div.recipe_picture
-      - if recipe.image?
-        = link_to image_tag(recipe.image_url(:thumb)), recipe
-      - else
-        = link_to recipe.name, recipe
-  %div.clearfix
+  = render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'recipe_index'}
 %br/
 %a= link_to 'New Recipe', new_recipe_path
