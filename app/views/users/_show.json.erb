@@ -1,0 +1,24 @@
+{
+  "name"  : "<%= @user.name %>",
+  "id"    : "<%= @user.id %>",
+  "joined" : "<%= @user.created_at %>",
+  "recipes" :
+    {
+      <% @createdRecipes.each_with_index do |recipe, index| %>
+        "<%= index %>" :
+        {
+          "name"  : "<%= recipe.name%>"
+        }
+      <% end %>
+
+    },
+  "ratings" :
+    {
+      <% @ratedRecipes.each_with_index do |recipe, index| %>
+        "<%= index %>" :
+        {
+          "name"  : "<%= recipe.name %>"
+        }
+      <% end %>
+    }
+}
