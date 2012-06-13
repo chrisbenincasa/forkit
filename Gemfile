@@ -7,6 +7,7 @@ gem 'rails', '3.2.0'
 
 #gem 'sqlite3'
 gem 'haml'
+gem 'ruby-haml-js'
 gem 'mysql2'
 gem 'thin'
 gem 'sass'

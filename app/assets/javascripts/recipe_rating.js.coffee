@@ -14,7 +14,7 @@ $(document).ready (e) ->
 
   $('a.add_new_ingredient').on 'click', (e) ->
     e.preventDefault()
-    ingredientBox = $ JST['add_ingredient']
+    ingredientBox = $ JST['add_ingredient']()
     $(this).parent().append(ingredientBox)
     ingredientBox.autocomplete
       source: ingredients

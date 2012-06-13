@@ -6,7 +6,11 @@
     = sortable 'name'
     = sortable 'date'
     = sortable 'rating'
-  %div.recipes
-    = render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'recipe_index'}
-%br/
-%a= link_to 'New Recipe', new_recipe_path
+  %div.left_recipes
+    = render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4), :type => 'recipe_index'}
+%div.right_page
+  %div.right_recipes
+    = render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4).offset(4), :type => 'recipe_index'}
+  %div.turn_page
+    %a{:href => '#'}
+= link_to 'New Recipe', new_recipe_path

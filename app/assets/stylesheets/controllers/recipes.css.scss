@@ -52,11 +52,46 @@ div.clearfix
   margin-top: 10px;
 }
 
-.recipe_picture
+div.recipe_picture
 {
   width: 200px;
-  height: 200px;
+  border: thin solid darkgray;
+  //height: 235px;
+  padding: 12px 12px 0px 12px;
+  background-color: #fafafa;
   float: left;
+  margin: 0 12px 18px 0;
+  font-size: 11pt;
+  a
+  {
+    display: block;
+    margin-bottom: 5px;
+  }
+  img
+  {
+    border: thin solid lightgray;
+  }
+  div.recipe_bottom
+  {
+    height: 25px;
+  }
+
+  div.recipe_link
+  {
+    float: left;
+    width: 150px;
+  }
+
+  &.recipe_0, &.recipe_3
+  {
+    -webkit-transform: rotate(2.5deg);
+  }
+
+  &.recipe_1, &.recipe_2
+  {
+    -webkit-transform: rotate(-2.5deg)
+  }
+
 }
 
 .ui-autocomplete
@@ -93,6 +128,19 @@ div.inner
 
 div.left_page
 {
+  div.recipe_list
+  {
+    &.index_list
+    {
+      padding: 25px 58px 0 12px;
+    }
+
+    .recipe_1, .recipe_3
+    {
+      margin-top: 10px;
+    }
+  }
+
   img.detail_pic
   {
     -webkit-transform: rotate(5deg);
@@ -113,9 +161,25 @@ div.left_page
 
 div.right_page
 {
+  div.recipe_list
+  {
+    &.index_list
+    {
+      padding: 25px 5px 0 15px;
+    }
+
+    .recipe_2
+    {
+      margin-top: 10px;
+    }
+  }
   width: 510px;
-  padding: 110px 50px 25px 40px;
+  padding: 75px 50px 25px 40px;
   float: left;
+  &.show_page
+  {
+    padding: 110px 50px 25px 40px;
+  }
   h1
   {
     display: inline-block;
@@ -124,6 +188,20 @@ div.right_page
   div.right_page_inner
   {
     margin-left: 10px;
+  }
+
+  div.turn_page
+  {
+    position: relative;
+    float: right;
+    border: thin solid black;
+    right: 0;
+    a
+    {
+      display: block;
+      height: 125px;
+      width: 125px;
+    }
   }
 }
 

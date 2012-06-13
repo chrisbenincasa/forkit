@@ -1,0 +1,2 @@
+%div.ingredient
+  %input.ingredients-input{placeholder:"Enter ingredient name", type: "text", name:"ingredients[]"}

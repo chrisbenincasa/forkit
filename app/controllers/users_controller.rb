@@ -9,9 +9,10 @@ class UsersController < ApplicationController
   def index
     if current_user
       @user = current_user
-      @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(8)
-      @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(8)
-      @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)
+      @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(4)
+      @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(4)
+      @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
+      logger.info @createdRecipes
     end
   end
 
@@ -22,9 +23,9 @@ class UsersController < ApplicationController
   def me
     @user = current_user
     @avatarUrl = get_avatar_url(@user)
-    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(8)
-    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(8)
-    @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)
+    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(4)
+    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(4)
+    @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
     if @user.name
       @name = @user.name
     else
@@ -34,20 +35,29 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_url
+      return
+    end
     @avatarUrl = get_avatar_url(@user)
     if @user.name
       @name = @user.name
     else
       @name = @user.email
     end
-    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(8)
-    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(8)
-    @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)
+    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(4)
+    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(4)
+    @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
     respond_to do |format|
       format.html
       format.json {render :partial => 'users/show.json'}
     end
+  end
+
+  def not_found
+    #user not found function
   end
 
   def edit
@@ -90,14 +100,16 @@ class UsersController < ApplicationController
     info = user.personalRecipeInfo.find_by_recipe_id(recipe.id)
     if info
       if info['favorite'] == false
+        recipe['favorites'] += 1
         info['favorite'] = true
       else
+        recipe['favorites'] -= 1
         info['favorite'] = false
       end
     else
       user.recipes << recipe
     end
-    if info.save
+    if info.save && recipe.save
       render :json => recipe
     else
       render :json => recipe

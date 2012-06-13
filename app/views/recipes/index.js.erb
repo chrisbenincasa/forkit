@@ -1,1 +1,5 @@
-$('.recipes').append("<div class='page'><%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'page'}) %></div>")
+$('.left_recipes').empty().append("<%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4), :type => 'page'})%>");
+$('.right_recipes').empty();
+<% if @recipes.count > 4 %>
+  $('.right_recipes').append("<%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4).offset(4), :type => 'page'})%>");
+<% end %>

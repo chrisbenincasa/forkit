@@ -4,7 +4,7 @@
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.order(sort_type + " " + sort_direction).page(params[:page]).per(12)
+    @recipes = Recipe.order(sort_type + " " + sort_direction).page(params[:page]).per(8)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @recipes }
@@ -29,7 +29,7 @@
       end
     end
     @users = @recipe.users
-    @forks = @recipe.personalRecipeInfo.where('favorite = 1').count
+    @forks = @recipe.favorites
     if current_user
       @personal_rating = current_user.personalRecipeInfo.where("recipe_id=#{@recipe.id}").first
       if @personal_rating.nil?

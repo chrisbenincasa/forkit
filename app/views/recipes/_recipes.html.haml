@@ -1,8 +1,13 @@
 %div{:class => "recipe_list #{type}_list"}
-  - recipes.each do |recipe|
-    %div.recipe_picture
+  - recipes.each_with_index do |recipe, index|
+    %div.recipe_picture{:id => "#{recipe.name}", :class => "recipe_#{index}"}
       - if recipe.image?
         = link_to image_tag(recipe.image_url(:thumb)), recipe
       - else
-        = link_to image_tag('default.png', :size => '150x150'), recipe
-%div.clearfix
+        = link_to image_tag('default.png', :size => '200x200'), recipe
+      %div.recipe_bottom
+        %div.recipe_link
+          = link_to recipe.name, recipe
+        %div.right
+          = pluralize(recipe.favorites, 'fork')
+  %div.clearfix
