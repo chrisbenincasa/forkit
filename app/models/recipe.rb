@@ -1,3 +1,5 @@
+require 'file_size_validator'
+
 class Recipe < ActiveRecord::Base
   has_many :amounts
   has_many :ingredients, :through => :amounts
@@ -6,7 +8,7 @@ class Recipe < ActiveRecord::Base
   has_many :users, :through => :personalRecipeInfo
 
   mount_uploader :image, RecipePictureUploader
-
+  
   validates_uniqueness_of :url_slug, :on => :create
   validates_inclusion_of :difficulty, :in => %w(Beginner Moderate Difficult Expert)
 

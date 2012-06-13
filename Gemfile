@@ -17,7 +17,7 @@ gem 'carrierwave'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'kaminari'
-
+gem 'json'
 gem 'jquery-rails'
 
 # Gems used only for assets and not required

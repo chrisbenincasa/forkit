@@ -4,14 +4,16 @@
       = msg
 %p      
   = link_to 'All Recipes!', recipes_path
-  = link_to 'New Recipe', new_recipe_path
+  = link_to 'New Recipe', new_recipe_path if current_user
 - if current_user
-  - if @createdRecipes
-    %h2 Recipes I've added: 
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'created'}
-  - else
-    You haven't created or forked any recipes yet!
-  - if @ratedRecipes
-    %h2 Recipes I've rated:
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @ratedRecipes, :type => 'rated'}
-  %br/
+  %div.inner.left_page
+    - if @createdRecipes
+      %h2 Recipes I've added: 
+      = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'created'}
+    - else
+      You haven't created or forked any recipes yet!
+  %div.inner.right_page
+    - if @forkedRecipes
+      %h2 Recipes I've forked:
+      = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes, :type => 'rated'}
+    %br/

@@ -1,47 +1,66 @@
+= content_for :add_javascripts do
+  = javascript_include_tag 'recipe_rating'
 %p#notice
   = notice
-%h1
-  = @recipe.name
-
-- if current_user
-  - if @myRecipe
-    = link_to 'Edit', edit_recipe_path(@recipe)
-
-= @recipe.image? ? image_tag(@recipe.image_url) : image_tag('default.png')
-%p
+%div.inner.left_page
+  %div.recipe_image
+    = @recipe.image? ? image_tag(@recipe.image_url, :size => '300x225', :class => 'detail_pic') : image_tag('default.png', :size => '300x225', :class => 'detail_pic')
+    %div.tape.left-tape.bottom-tape
+    %div.tape.left-tape.top-tape
+    %div.recipe_details
   %h2 Details:
   %p
-    %b Created by:
+    Created by:
     = link_to @created_by.name, user_recipes_url(@created_by.id)
-  %p.rating
-  %b Rating:
-  - if @recipe.total_ratings == 0
-    No ratings yet! 
-  - else
-    = @recipe.rating.round(2)
-  - if current_user
-    %p
-      %b Rate this recipe:
-      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}1
-      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}2
-      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}3
-      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}4
-      %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}5
-    %p.personal_rating
-      %b< 
-        Your rating:
-      - if !@personal_rating.nil?
-        = @personal_rating
+  %p.forkit
+    %span.fork-count
+      = "This recipe has been forked " + pluralize(@forks, 'time') + '.'
+    - if current_user
+      - if @favorite
+        = link_to 'Forked!', user_recipe_fav_url(current_user, @recipe), :method => :post, :remote => true, :dataType => 'text', :class => 'forkit_link'
       - else
-        You haven't rated this recipe yet!
-%p.desc
-  %h2 Prepartation:
-  - if !@recipe.serving_from.nil?
-    = "Serves #{@recipe.serving_from}"
-  - if !@recipe.serving_to.nil?
-    = " to #{@recipe.serving_to}"
-  %p
-    %b Ingredients:
-    = raw @recipe.ingredients.collect {|ingredient| link_to ingredient.name, ingredient}.join(', ')
-  %p
-    = @recipe.desc
+        = link_to 'Fork it!', user_recipe_fav_url(current_user, @recipe), :method => :post, :remote => true, :dataType => 'text', :class => 'forkit_link'
+  %p.rating
+    Rating:
+    - if @recipe.total_ratings == 0
+      No ratings yet! 
+    - else
+      = @recipe.rating.round(2)
+    - if current_user
+      %p
+        Rate this recipe:
+        %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}1
+        %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}2
+        %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}3
+        %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}4
+        %a.recipe_rating{href:'#', recipe:"#{@recipe.url_slug}"}5
+      %p.personal_rating
+        %b< 
+          Your rating:
+        - if !@personal_rating.nil?
+          = @personal_rating
+        - else
+          You haven't rated this recipe yet!
+  %div.clearfix
+%div.inner.right_page
+  %h1
+    = @recipe.name
+  - if current_user
+    - if @myRecipe
+      = link_to 'Edit', edit_recipe_path(@recipe)
+  %div.recipe_info.right_page_inner
+    %h2 Prepartation:
+    %div.serving_size
+      - if !@recipe.serving_from.nil?
+        = "Serves #{@recipe.serving_from}"
+      - if !@recipe.serving_to.nil?
+        = " to #{@recipe.serving_to}"
+    %div.ingredients
+      %ul.ingredient_list
+        - @ingredients.each do |ingredient|
+          %li.ingredient
+            = link_to ingredient.name, ingredient
+    %div.recipe_desc
+      %p
+        = @recipe.desc
+  %div.clearfix

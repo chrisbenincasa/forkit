@@ -1,0 +1,6 @@
+= content_for :add_javascripts do
+  = javascript_include_tag 'recipes_scroll'
+%h1
+  = "Recipes like #{@search}"
+%div.recipes
+  = render :partial => 'recipes/recipes', :locals => {:recipes => @recipes, :type => 'search_index'}

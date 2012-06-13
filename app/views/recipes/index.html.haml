@@ -1,9 +1,12 @@
-%h1 All Recipes
-%div.sorter
-  = sortable 'name'
-  = sortable 'date'
-  = sortable 'rating'
-%div.recipes
-  = render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'recipe_index'}
+= content_for :add_javascripts do
+  = javascript_include_tag 'recipes_scroll'
+%div.left_page
+  %h1 All Recipes
+  %div.sorter
+    = sortable 'name'
+    = sortable 'date'
+    = sortable 'rating'
+  %div.recipes
+    = render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'recipe_index'}
 %br/
 %a= link_to 'New Recipe', new_recipe_path

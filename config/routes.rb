@@ -12,7 +12,9 @@ Recipes::Application.routes.draw do
     member do
       get 'recipes'
     end
-    resources :recipes
+    resources :recipes do
+      match '/fav' => 'users#favorite'
+    end
   end
   resources :sessions
   resources :ingredients do
@@ -21,7 +23,13 @@ Recipes::Application.routes.draw do
     end
   end
   
-  resources :recipes
+  resources :recipes do
+    match '/fav' => 'recipes#favorite'
+  end
+
+  scope '/search' do
+    match '/recipes' => 'search#recipes'
+  end
 
   scope '/recipes' do
     match '/:name' => 'recipes#show'
@@ -30,7 +38,10 @@ Recipes::Application.routes.draw do
     match '/:id/render_ingredients_input', :controller => 'recipes', :action => 'render_ingredients_input'
   end
 
-  match '/user' => 'users#me'
+  scope '/user' do
+    match '/' => 'users#me'
+    match '/invite' => 'users#invite'
+  end
   #match '/recipes/:name', :controller => 'recipes', :action => 'show'
   match '/ingredients/:name' => 'ingredients#show'
   

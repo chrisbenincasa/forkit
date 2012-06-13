@@ -1,9 +1,15 @@
 %div#status_bar
+  %div.left
+    = form_tag("../search/recipes", :method => 'get') do
+      = label_tag :q,'Search recipes: '
+      = text_field_tag :q
+      = submit_tag 'Search'
   %div.right
     - if current_user
       %span
         = "Howdy, #{current_user.name}"
         = link_to "Profile", current_user
+        = link_to "invite", invite_path
         = link_to "Log Out", log_out_path
     - else
       %span

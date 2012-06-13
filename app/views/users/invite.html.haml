@@ -1,0 +1,6 @@
+%h1 Friends:
+- @friends.each do |friend|
+  %div.friend-box
+    = image_tag "http://graph.facebook.com/#{friend['id']}/picture?type=normal", :width => 100, :alt => friend['name']
+    %span.right
+      = friend['name']

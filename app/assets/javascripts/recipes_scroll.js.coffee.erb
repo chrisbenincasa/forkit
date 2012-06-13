@@ -1,0 +1,23 @@
+$(document).ready (e) ->
+  page = 1
+  loading = false
+  totalPages = Math.ceil(<%= Recipe.count / 8.0 %>)
+
+  nearBottomOfPage = ->
+    $(window).scrollTop() > $(document).height() - $(window).height() - 200
+
+  $(window).scroll ->
+    if page == totalPages
+      return
+    if loading
+      return
+    if nearBottomOfPage()
+      loading = true
+      page++
+      $.ajax
+        url: '/recipes?page='+page
+        type: 'get'
+        dataType: 'script'
+        success: ->
+          console.log 'success'
+          loading = false

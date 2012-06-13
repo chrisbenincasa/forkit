@@ -4,10 +4,11 @@
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.order(sort_type + " " + sort_direction)
+    @recipes = Recipe.order(sort_type + " " + sort_direction).page(params[:page]).per(12)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @recipes }
+      format.js
     end
   end
 
@@ -15,13 +16,27 @@
   # GET /recipes/1.json
   def show
     @recipe = Recipe.find_by_url_slug(params[:id])
+    @ingredients = @recipe.ingredients
+    if @recipe.nil?
+      @recipe = Recipe.find_by_url_slug(params[:name])
+    end
     @created_by = User.find(@recipe.created_by)
+    if current_user
+      if current_user.personalRecipeInfo.find_by_recipe_id(@recipe.id).favorite == true
+        @favorite = true
+      else
+        @favorite = false
+      end
+    end
     @users = @recipe.users
-    @personal_rating = current_user.personalRecipeInfo.where("recipe_id=#{@recipe.id}").first
-    if @personal_rating.nil?
-      @personal_rating = nil
-    else
-      @personal_rating = @personal_rating.rating
+    @forks = @recipe.personalRecipeInfo.where('favorite = 1').count
+    if current_user
+      @personal_rating = current_user.personalRecipeInfo.where("recipe_id=#{@recipe.id}").first
+      if @personal_rating.nil?
+        @personal_rating = nil
+      else
+        @personal_rating = @personal_rating.rating
+      end
     end
     #is this my recipe?
     @myRecipe = true if @recipe.users.first == current_user
@@ -73,7 +88,6 @@
       if ingredient.nil?
         ingredient = Ingredient.new({"name" => i})
       end
-      @recipe.ingredients << ingredient
     end
     @recipe.users << current_user
     respond_to do |format|
@@ -91,7 +105,7 @@
   # PUT /recipes/1.json
   def update
     @recipe = Recipe.find_by_url_slug(params[:id])
-        @ingredients = params[:ingredients]
+    @ingredients = params[:ingredients]
     @ingredients.each do |i|
       if i.empty?
         break
@@ -101,8 +115,11 @@
       if ingredient.nil?
         ingredient = Ingredient.new({"name" => i})
       end
-      @recipe.ingredients << ingredient
+      if !@recipe.ingredients.include?(ingredient)
+        @recipe.ingredients << ingredient
+      end
     end
+    params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
     respond_to do |format|
       if @recipe.update_attributes(params[:recipe])
         format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
@@ -153,6 +170,12 @@
         format.xml {render xml: @recipe.errors}
       end
     end
+  end
+
+  def favorite
+    recipe = Recipe.find_by_url_slug(params[:recipe_id])
+    user = current_user
+    render :json => recipe
   end
 
   def render_ingredients_input

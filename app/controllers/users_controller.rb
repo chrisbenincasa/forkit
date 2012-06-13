@@ -1,6 +1,7 @@
 require 'net/http'
 require 'uri'
 require 'digest/md5'
+require 'json'
 
 class UsersController < ApplicationController
   before_filter :is_logged_in?, :only => [:new]
@@ -8,9 +9,9 @@ class UsersController < ApplicationController
   def index
     if current_user
       @user = current_user
+      @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(8)
       @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(8)
-      @createdRecipes = @user.recipes.where("created_by=#{@user.id}").limit(8)
-      logger.info @ratedRecipes.inspect
+      @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)
     end
   end
 
@@ -21,7 +22,8 @@ class UsersController < ApplicationController
   def me
     @user = current_user
     @avatarUrl = get_avatar_url(@user)
-    @ratedRecipes = get_rated_recipes(@user)
+    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(8)
+    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(8)
     @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)
     if @user.name
       @name = @user.name
@@ -39,7 +41,8 @@ class UsersController < ApplicationController
     else
       @name = @user.email
     end
-    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL")
+    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(8)
+    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(8)
     @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)
     respond_to do |format|
       format.html
@@ -66,6 +69,41 @@ class UsersController < ApplicationController
     @recipes = @user.recipes
   end
 
+  def invite
+    if current_user
+      auth = Authorization.find_by_user_id_and_provider(current_user.id, 'facebook')
+      if auth
+        uri = URI.parse("https://graph.facebook.com/#{auth.uid}/friends?fields=installed,name&access_token=#{auth.access_token}")
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        #http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        data = Net::HTTP::Get.new(uri.request_uri)
+        @friends = JSON.parse(http.request(data).body)['data']
+        @friends = @friends.sort_by{|hsh| hsh['name']}
+      end
+    end
+  end
+
+  def favorite
+    user = current_user
+    recipe = Recipe.find_by_url_slug(params[:recipe_id])
+    info = user.personalRecipeInfo.find_by_recipe_id(recipe.id)
+    if info
+      if info['favorite'] == false
+        info['favorite'] = true
+      else
+        info['favorite'] = false
+      end
+    else
+      user.recipes << recipe
+    end
+    if info.save
+      render :json => recipe
+    else
+      render :json => recipe
+    end
+  end
+
   private
 
   def get_avatar_url(user)
@@ -76,15 +114,6 @@ class UsersController < ApplicationController
       digestHash = Digest::MD5.hexdigest(user.email.downcase)
       return "http://www.gravatar.com/avatar/#{digestHash}?s=50"
     end
-  end
-
-  def get_rated_recipes(user)
-    nonNullRatings = user.personalRecipeInfo.where("rating IS NOT NULL")
-    ratedRecipes = []
-    nonNullRatings.each do |recipe|
-      ratedRecipes << Recipe.find(recipe.recipe_id)
-    end
-    return ratedRecipes
   end
 
   def is_logged_in?

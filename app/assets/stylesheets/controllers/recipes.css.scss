@@ -1,6 +1,12 @@
 // Place all the styles related to the recipes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@font-face
+{
+  font-family: 'Handwriting';
+  src: font-url('JustTheWayYouAre.ttf');
+}
+
 
 body
 {
@@ -12,15 +18,19 @@ a
   color: red;
 }
 
-p
+p#notice
 {
-  margin-bottom: 10px;
+  padding-top: none !important;
 }
 
 div.wrap
 {
-  margin: 0 auto;
-  width: 800px;
+  margin: 20px auto 0;
+  width: 1200px;
+  height: 800px;
+  background: image-url('notebook3.png') no-repeat;
+  position: relative;
+  z-index: 1;
 }
 
 div.clearfix
@@ -53,7 +63,7 @@ div.clearfix
 {
   width: 100px;
   border: thin black solid;
-
+  background-color: white;
   a
   {
     display: inline-block;
@@ -70,4 +80,151 @@ div.clearfix
       color: white;
     }
   }
+}
+
+div.inner
+{
+  p
+  {
+    font-family: 'Handwriting';
+    padding-top: 11px;
+  }
+}
+
+div.left_page
+{
+  img.detail_pic
+  {
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+    -ms-transform: rotate(5deg);
+    -o-transform: rotate(5deg);
+    margin: 0 0 15px 175px;
+  }
+  width: 550px;
+  padding: 75px 0 25px 50px;
+  max-height: 750px;
+  float: left;
+  div.recipe_image
+  {
+    height: 310px;
+  }
+}
+
+div.right_page
+{
+  width: 510px;
+  padding: 110px 50px 25px 40px;
+  float: left;
+  h1
+  {
+    display: inline-block;
+  }
+
+  div.right_page_inner
+  {
+    margin-left: 10px;
+  }
+}
+
+div.tape
+{
+  background: image-url('tape.png') no-repeat;
+  width: 117px;
+  height: 37px;
+  position: relative;
+  display: inline-block;
+  &.left-tape
+  {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(25deg);
+    -ms-transform: rotate(25deg);
+    -o-transform: rotate(25deg);
+  }
+  &.bottom-tape
+  {
+    top: -55px;
+    left: 110px;
+  }
+  &.top-tape
+  {
+    top: -245px;
+    left: 295px;
+  }
+}
+
+form.edit_recipe
+{
+  input[type='text'], textarea
+  {
+    border: 0;
+    outline: none;
+    padding: 0px;
+    font-size: 12pt;
+    background: none;
+    margin: 0;
+    //font-family: 'Handwriting';
+  }
+
+  div.new_ingredients label
+  {
+    margin-bottom: 5px;
+  }
+
+  input[type='text']
+  {
+    width: 200px;
+  }
+
+  select
+  {
+    margin: 0;
+  }
+
+  div.field
+  {
+    height: 56px;
+
+    div.input_wrap
+    {
+      padding: 10px 0 0 5px;
+    }
+  }
+
+  div.ingredient
+  {
+    height: 17px;
+    padding-top: 11px;
+  }
+
+  div.prepartation
+  {
+    padding-top: 11px;
+    textarea
+    {
+      padding-top: 11px;
+      line-height: 27px;
+      height: 300px;
+    }
+  }
+
+  div.image_field
+  {
+    height: 310px;
+  }
+}
+
+div.pencil
+{
+  background: image-url('pencil2.png') no-repeat;
+  width: 685px;
+  height: 51px;
+  position: absolute;
+  z-index: 3;
+  left: -100px;    
+  top: 400px;
+  -webkit-transform: rotate(-75deg);
+  -moz-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
 }

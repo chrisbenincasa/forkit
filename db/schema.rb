@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606175813) do
+ActiveRecord::Schema.define(:version => 20120609233825) do
 
   create_table "amounts", :force => true do |t|
     t.integer  "recipe_id",     :null => false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20120606175813) do
     t.float    "rating"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
-    t.boolean  "did_create", :default => false
+    t.boolean  "favorite",   :default => false
   end
 
   create_table "recipes", :force => true do |t|

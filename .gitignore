@@ -16,3 +16,5 @@
 
 #ignore image uploads
 /public/uploads
+
+*.DS_Store

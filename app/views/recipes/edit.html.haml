@@ -1,8 +1,5 @@
-%h1
-  = 'Editing ' + @recipe.name
-
+= content_for :add_javascripts do
+  = javascript_include_tag 'recipe_rating'
+= content_for :before_wrap_content do
+  %div.pencil
 = render 'form'
-
-= link_to 'Show', @recipe
-|
-= link_to 'Back', recipes_path

@@ -1,4 +1,5 @@
 class IngredientsController < ApplicationController
+  layout 'recipes'
   # GET /ingredients
   # GET /ingredients.json
   def index

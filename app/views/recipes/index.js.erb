@@ -1,0 +1,1 @@
+$('.recipes').append("<div class='page'><%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'page'}) %></div>")
