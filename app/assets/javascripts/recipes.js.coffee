@@ -4,6 +4,9 @@
 
 # General Recipe Scripts go here:
 
+#= require recipes_scroll
+#= require recipe_rating
+
 $(document).ready (e) ->
   $('.forkit_link').on 'ajax:success', (xhr, data, type) ->
     $(this).toggleClass('forked')
