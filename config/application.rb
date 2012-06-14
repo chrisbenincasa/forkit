@@ -54,7 +54,7 @@ module Recipes
     config.generators.stylesheet_engine = :sass
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
-    config.assets.precompile = [ /\w+\.(?!js|css).+/, /application.(css|js)$/, /ace.js$/, /active_admin.(css|js).*$/, /application-.*.css.*/ ]
+    #config.assets.precompile = [ /\w+\.(?!js|css).+/, /application.(css|js)$/, /ace.js$/, /active_admin.(css|js).*$/, /application-.*.css.*/ ]
     config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
