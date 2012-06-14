@@ -7,7 +7,10 @@
           %li= msg
   %div.inner.left_page
     %div.image_field
-      = @recipe.image? ? image_tag(@recipe.image_url, {:class => ['preview_image', 'detail_pic'] , :size => '300x225'}) : image_tag('default.png', :size => '300x225', :class => ['default_pic', 'detail_pic'])
+      - if @recipe.image?
+        = image_tag(@recipe.image_url, {:class => ['preview_image', 'detail_pic'] , :size => '300x225'})
+      - else
+        %div.empty_image
       %div.tape.left-tape.bottom-tape
       %div.tape.left-tape.top-tape
       = f.file_field :image, :class => 'recipe_image_upload'
@@ -26,8 +29,7 @@
         to
         = f.select(:serving_to, ["",2,3,4,5,6,7,8,9,"10+"])
   %div.inner.right_page
-    %h1
-      = "Editing #{@recipe.name}"
+    %h1 New Recipe
     %div.right_page_inner
       %div.new_ingredients
         %a.add_new_ingredient{:href => '#'}Add another ingredient
@@ -36,7 +38,7 @@
           %div.suggestions
       %div.prepartation
         = f.label :desc, "Preparation Instructions:"
-        = f.text_area :desc, :rows => 10
+        = f.text_area :desc, :rows => 10, :placeholder => 'How do you make it?'
 
       %div.actions
         = f.submit

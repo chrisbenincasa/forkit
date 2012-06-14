@@ -11,6 +11,7 @@ Recipes::Application.routes.draw do
   resources :users do
     member do
       get 'recipes'
+      get 'faved_recipes'
     end
     resources :recipes do
       match '/fav' => 'users#favorite'

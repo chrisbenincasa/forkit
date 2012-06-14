@@ -1,0 +1,11 @@
+!!! html5
+%head
+  = stylesheet_link_tag 'application'
+  = javascript_include_tag 'application'
+  = yield :add_javascripts
+  = csrf_meta_tag
+%body
+  = render 'layouts/status_bar'
+  = yield :before_wrap_content
+  %div.wall_wrap
+    = yield

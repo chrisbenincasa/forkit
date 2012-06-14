@@ -25,7 +25,14 @@ $(document).ready (e) ->
       reader = new FileReader
       reader.readAsDataURL(file)
       reader.onload = (e) ->
-        $('.preview_image').attr('src', e.target.result)
+        $image = $('.detail_pic')
+        if $image.length > 0
+          $image.attr('src', e.target.result)
+        else
+          $('.image_field').prepend('<img class="detail_pic" width="300" height="225" />')
+          $('.empty_image').remove()
+          $('.detail_pic').attr('src', e.target.result)
+    true
 
   $('.recipe_rating').on 'click', (e) ->
     e.preventDefault()

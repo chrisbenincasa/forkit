@@ -1,5 +1,5 @@
 = content_for :add_javascripts do
   = javascript_include_tag 'recipe_rating'
-%h1 New Recipe
+= content_for :before_wrap_content do
+  %div.pencil
 = render 'form'
-= link_to 'Back', recipes_path

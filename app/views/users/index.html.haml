@@ -1,19 +1,27 @@
-%div
-  - flash.each do |name, msg|
-    %div.flash{:id => "flash_#{name}"}
-      = msg
-%p      
-  = link_to 'All Recipes!', recipes_path
-  = link_to 'New Recipe', new_recipe_path if current_user
-- if current_user
-  %div.inner.left_page
+- if flash
+  %div
+    - flash.each do |name, msg|
+      %div.flash{:id => "flash_#{name}"}
+        = msg
+%div.inner.left_page
+  - if current_user
+    = link_to 'New Recipe', new_recipe_path
     - if @createdRecipes
       %h2 Recipes I've added: 
       = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'index'}
     - else
       You haven't created or forked any recipes yet!
-  %div.inner.right_page
+  - else
+    %h1 Howdy, Stranger!
+    %p You need to login or sign up start your recipe book!
+  %p      
+    = link_to 'Or browse other user\'s recipes!', recipes_path
+%div.inner.right_page
+  - if current_user
     - if @forkedRecipes
       %h2 Recipes I've forked:
-      = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes, :type => 'index'}
-    %br/
+      = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes.limit(4), :type => 'index'}
+      - if @forkedRecipes.count > 4
+        = link_to "See all #{pluralize(@forkedRecipes.count, 'forked recipe')}.", faved_recipes_user_url(current_user)
+  - else
+    = render :partial => 'recipes/recipes', :locals => {:recipes => @newestRecipes, :type => 'index'}

@@ -1,5 +1,6 @@
 %div#status_bar
   %div.left
+    = link_to 'Home', root_url
     = form_tag("../search/recipes", :method => 'get') do
       = label_tag :q,'Search recipes: '
       = text_field_tag :q

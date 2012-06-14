@@ -17,7 +17,8 @@ class IngredientsController < ApplicationController
     name = params[:id].gsub("-", "\s")
     @ingredient = Ingredient.find_by_name(name)
     @ingredient = Ingredient.find(params[:id]) if @ingredient.nil?
-    @recipes = @ingredient.recipes
+    @recipes = @ingredient.recipes[0..3]
+    logger.info @recipes
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @ingredient }

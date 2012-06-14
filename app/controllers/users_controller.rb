@@ -9,10 +9,11 @@ class UsersController < ApplicationController
   def index
     if current_user
       @user = current_user
-      @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(4)
-      @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(4)
+      @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE")
+      @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL")
       @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
-      logger.info @createdRecipes
+    else
+      @newestRecipes = Recipe.limit(4)
     end
   end
 
@@ -75,8 +76,40 @@ class UsersController < ApplicationController
   end
 
   def recipes
-    @user = User.find(params[:id])
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_url
+      return
+    end
     @recipes = @user.recipes
+    @avatarUrl = get_avatar_url(@user)
+    if @user.name
+      @name = @user.name
+    else
+      @name = @user.email
+    end
+    @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL").limit(4)
+    @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(4)
+    @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
+    respond_to do |format|
+      format.html
+      format.json {render :partial => 'users/show.json'}
+    end
+  end
+
+  def faved_recipes
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_url
+      return
+    end
+    @favedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE")
+    respond_to do |format|
+      format.html {render :layout => 'wall'}
+      format.json {render :json => @favedRecipes}
+    end
   end
 
   def invite

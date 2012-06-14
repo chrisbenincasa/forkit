@@ -1,6 +1,6 @@
 %div{:class => "recipe_list #{type}_list"}
   - recipes.each_with_index do |recipe, index|
-    %div.recipe_picture{:id => "#{recipe.name}", :class => "recipe_#{index}"}
+    %div.recipe_picture{:id => "#{recipe.name}", :class => "recipe_#{index % 4}"}
       - if recipe.image?
         = link_to image_tag(recipe.image_url(:thumb)), recipe
       - else
