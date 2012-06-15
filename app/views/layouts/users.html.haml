@@ -5,5 +5,9 @@
   = csrf_meta_tag
 %body
   = render 'layouts/status_bar'
-  %div.wrap
-    = yield
+  - if @page == true or @page.nil?
+    %div.wrap.page
+      = yield
+  - else
+    %div.wrap.no_page
+      = yield

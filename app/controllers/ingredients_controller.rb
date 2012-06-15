@@ -20,7 +20,7 @@ class IngredientsController < ApplicationController
     @recipes = @ingredient.recipes[0..3]
     logger.info @recipes
     respond_to do |format|
-      format.html # show.html.erb
+      format.html {render :layout => 'wall'}
       format.json { render json: @ingredient }
     end
   end

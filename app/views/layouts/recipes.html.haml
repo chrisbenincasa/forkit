@@ -7,5 +7,9 @@
 %body
   = render 'layouts/status_bar'
   = yield :before_wrap_content
-  %div.wrap
-    = yield
+  - if @page == false or @page.nil?
+    %div.wrap.no_page
+      = yield
+  - else
+    %div.wrap.page
+      = yield

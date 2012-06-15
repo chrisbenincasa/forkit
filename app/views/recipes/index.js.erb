@@ -1,5 +1,5 @@
-$('.left_recipes').empty().append("<%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4), :type => 'page'})%>");
-$('.right_recipes').empty();
-<% if @recipes.count > 4 %>
-  $('.right_recipes').append("<%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4).offset(4), :type => 'page'})%>");
+<% if @recipes.count > 0 %>
+$('.wall_wrap').append("<%= escape_javascript(render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'recipe_index'})%>")
+<% else %>
+return null
 <% end %>

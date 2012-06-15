@@ -2,15 +2,8 @@
   %h1
     = image_tag @avatarUrl
     = @name + '\'s Recipe Book'
-  %p
-    - if @user == current_user
-      = link_to 'Edit Profile', edit_user_path(@user)
   - if @createdRecipes
-    %h2 
-      = "Recipes #{@name.split(' ')[0]} created:" 
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'created'}
+    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes.limit(4), :type => 'created'}
 %div.right_page
-  - if @forkedRecipes
-    %h2
-      = "Recipes #{@name.split(' ')[0]} forked:"
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes, :type => 'rated'}
+  - if @createdRecipes
+    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes.offset(4).limit(4), :type => 'rated'}

@@ -8,12 +8,14 @@
 #= require recipe_rating
 
 $(document).ready (e) ->
+  $('div.bookmark').hover ->
+    $(this).toggleClass('hovered')
+  , ->
+    if $(this).hasClass('hovered')
+      $(this).toggleClass('hovered')
+
   $('.forkit_link').on 'ajax:success', (xhr, data, type) ->
-    $(this).toggleClass('forked')
-    if $(this).is(':contains(Fork it!)')
-      $(this).text('Forked!')
-    else
-      $(this).text('Fork it!')
+    $(this).parent().toggleClass('forked').toggleClass('hovered')
 
   $('.forkit_link').on 'ajax:error', (xhr, status, error) ->
     console.log xhr, status, error

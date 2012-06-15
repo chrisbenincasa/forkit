@@ -1,16 +1,15 @@
-%div.left_page
+%div.left_page.user_page
   %h1
     = image_tag @avatarUrl
-    = @name + '\'s Profile'
+    = "#{@name}'s Profile"
+  - if @user == current_user
+    = link_to 'Edit Profile', edit_user_path(@user)
+  %div.user_info
+    %p
+%div.right_page.user_page
+  %h2 Recently Created
   %p
-    - if @user == current_user
-      = link_to 'Edit Profile', edit_user_path(@user)
-  - if @createdRecipes
-    %h2 
-      = "Recipes #{@name} created:" 
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'created'}
-%div.right_page
-  - if @forkedRecipes
-    %h2
-      = "Recipes #{@name} forked:"
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes, :type => 'rated'}
+    = @recentCreated.name
+  %h2 Recently Forked
+  %p
+    = @recentFav.name

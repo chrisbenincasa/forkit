@@ -1,16 +1,10 @@
-/= content_for :add_javascripts do
-/  = javascript_include_tag 'recipes_scroll'
-%div.left_page
+= content_for :add_javascripts do
+  = javascript_include_tag 'infinite_recipes'
+%div.recipe_index_header.show_header
+  = link_to 'New Recipe', new_recipe_path
   %h1 All Recipes
   %div.sorter
     = sortable 'name'
     = sortable 'date'
-    = sortable 'rating'
-  %div.left_recipes
-    = render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4), :type => 'recipe_index'}
-%div.right_page
-  %div.right_recipes
-    = render :partial => 'recipes', :locals => {:recipes => @recipes.limit(4).offset(4), :type => 'recipe_index'}
-  %div.turn_page
-    %a{:href => '#'}
-= link_to 'New Recipe', new_recipe_path
+    = sortable 'favorites'
+= render :partial => 'recipes', :locals => {:recipes => @recipes, :type => 'recipe_index'}

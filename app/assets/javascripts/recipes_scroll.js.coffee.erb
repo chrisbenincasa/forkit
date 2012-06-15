@@ -1,15 +1,21 @@
 $(document).ready (e) ->
   page = 1
   loading = false
-  totalPages = Math.ceil(<%= Recipe.count / 8.0 %>)
+  #totalPages = Math.ceil(<%= Recipe.count / 8.0 %>)
 
-  $(window).on 'popstate', (e) ->
-    console.log history
+  $('.turn_recipe a').on 'click', (e) ->
+    e.preventDefault()
+    if $('.first_page').is ':visible'
+      $('.first_page').hide 0, ->
+        $('.wrap').removeClass('page').addClass('page_left')
+        $('.second_page').show()
+    else
+      $('.second_page').hide 0, ->
+        $('.wrap').removeClass('page_left').addClass('page')
+        $('.first_page').show()
 
   $('.turn_page a').click (e) ->
     e.preventDefault()
-    if page == totalPages
-      return
     if loading
       return
     loading = true

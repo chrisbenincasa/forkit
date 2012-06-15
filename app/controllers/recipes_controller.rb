@@ -4,9 +4,9 @@
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.order(sort_type + " " + sort_direction).page(params[:page]).per(8)
+    @recipes = Recipe.order(sort_type + " " + sort_direction).page(params[:page]).per(9)
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { render :layout => 'wall'}
       format.json { render json: @recipes }
       format.js
     end
@@ -15,6 +15,7 @@
   # GET /recipes/1
   # GET /recipes/1.json
   def show
+    @page = true
     @recipe = Recipe.find_by_url_slug(params[:id])
     @ingredients = @recipe.ingredients
     if @recipe.nil?
@@ -41,8 +42,9 @@
     #is this my recipe?
     @myRecipe = true if @recipe.users.first == current_user
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.json { render json: @recipe }
+      format.js
     end
   end
 
@@ -119,10 +121,11 @@
         @recipe.ingredients << ingredient
       end
     end
-    params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
+    #params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
+    params[:recipe]['desc'] = '<p>'+params[:recipe]['desc'].gsub(/(\r\n)+/, '</p><p>') + '</p>'
     respond_to do |format|
       if @recipe.update_attributes(params[:recipe])
-        format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
+        format.html { redirect_to @recipe }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -200,6 +203,10 @@
 
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+  end
+
+  def convertToHtml(toConvert)
+    '<p>'+toConvert.gsub(/\\r\\n/ ,'</p>') + '</p>'
   end
 
 end

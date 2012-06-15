@@ -1,8 +1,7 @@
-%div.inner.left_page 
+%div.ingredient_show_header.show_header
   %h1
     = @ingredient.name
   %h3
     Featured in 
     = pluralize(@recipes.length, 'recipe')
-  = render :partial => 'recipes/recipes', :locals => {:recipes => @recipes, :type => 'ingredient'}
-%div.inner.right_page
+= render :partial => 'recipes/recipes', :locals => {:recipes => @recipes, :type => 'ingredient'}

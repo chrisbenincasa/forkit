@@ -10,5 +10,5 @@
  *= require reset
  *= require_self
  *= require general
- *= require_tree ./controllers
+ *= require_tree .
 */

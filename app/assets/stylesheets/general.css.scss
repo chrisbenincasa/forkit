@@ -39,7 +39,17 @@ h3
 {
   width: auto;
   height: 25px;
-  background-color: lightgray;
+  background-color: #111;
   margin-bottom: 10px;
   padding: 10px;
+  color: white;
+  a
+  {
+    color: white;
+  }
+}
+
+div.show_header
+{
+  color: white;
 }
