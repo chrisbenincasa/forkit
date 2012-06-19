@@ -8,7 +8,13 @@ $(document).ready (e) ->
     if $('.first_page').is ':visible'
       $('.first_page').hide 0, ->
         $('.wrap').removeClass('page').addClass('page_left')
-        $('.second_page').show()
+        $('.second_page').show 0
+      extraParagraphs = new Array()
+      $('.recipe_desc').find('p').each (i,ele)->
+        if $(this).position().top > 300
+          extraParagraphs.push(this)
+          $(this).remove()
+      $('.right_page .second_page').append($(ele)) for ele in extraParagraphs
     else
       $('.second_page').hide 0, ->
         $('.wrap').removeClass('page_left').addClass('page')

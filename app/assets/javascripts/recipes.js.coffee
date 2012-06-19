@@ -19,3 +19,9 @@ $(document).ready (e) ->
 
   $('.forkit_link').on 'ajax:error', (xhr, status, error) ->
     console.log xhr, status, error
+
+  $(document).on 'mouseenter', '.has_overlay', (e) ->
+    $(this).find('.overlay').stop(true, true).fadeIn('fast')
+
+  $(document).on 'mouseleave', '.has_overlay', (e) ->
+    $(this).find('.overlay').stop(true).fadeOut('fast')

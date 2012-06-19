@@ -1,4 +1,6 @@
 = content_for :include_javascripts do
   = javascript_include_tag 'infinite_recipes'
 %div
+  %h1
+    = "#{@name}'s Forked Recipes"
   = render :partial => 'recipes/recipes', :locals => {:recipes => @favedRecipes, :type => 'faved'}

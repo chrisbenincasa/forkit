@@ -28,19 +28,25 @@
       else
         @favorite = false
       end
-    end
-    @users = @recipe.users
-    @forks = @recipe.favorites
-    if current_user
       @personal_rating = current_user.personalRecipeInfo.where("recipe_id=#{@recipe.id}").first
       if @personal_rating.nil?
         @personal_rating = nil
       else
         @personal_rating = @personal_rating.rating
       end
+      if session[:recent_recipes].index(@recipe.id) == nil
+        if session[:recent_recipes].count > 3
+          session[:recent_recipes].shift
+        end
+        session[:recent_recipes].push(@recipe.id)
+        logger.debug session[:recent_recipes]
+      end
     end
+    @users = @recipe.users
+    @forks = @recipe.favorites
     #is this my recipe?
     @myRecipe = true if @recipe.users.first == current_user
+
     respond_to do |format|
       format.html
       format.json { render json: @recipe }
@@ -121,8 +127,8 @@
         @recipe.ingredients << ingredient
       end
     end
-    #params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
-    params[:recipe]['desc'] = '<p>'+params[:recipe]['desc'].gsub(/(\r\n)+/, '</p><p>') + '</p>'
+    params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
+    #params[:recipe]['desc'] = '<p>'+params[:recipe]['desc'].gsub(/(\r\n)+/, '</p><p>') + '</p>'
     respond_to do |format|
       if @recipe.update_attributes(params[:recipe])
         format.html { redirect_to @recipe }
@@ -203,10 +209,6 @@
 
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
-  end
-
-  def convertToHtml(toConvert)
-    '<p>'+toConvert.gsub(/\\r\\n/ ,'</p>') + '</p>'
   end
 
 end

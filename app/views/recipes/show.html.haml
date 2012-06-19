@@ -41,8 +41,7 @@
   %div.second_page
     %h1 Preparation:
     %div.recipe_desc
-      %p
-        = simple_format(@recipe.desc)
+      != convertToHtml(@recipe.desc)
     %div.turn_recipe_back.turn_recipe
       %a{:href=>'#'}back
   %div.clearfix

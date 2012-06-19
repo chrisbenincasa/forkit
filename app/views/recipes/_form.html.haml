@@ -28,7 +28,7 @@
         = f.select(:serving_from, [1,2,3,4,5,6,7,8,9,"10+"])
         to
         = f.select(:serving_to, ["",2,3,4,5,6,7,8,9,"10+"])
-  %div.inner.right_page
+  %div.inner.right_page.edit_page
     %h1 New Recipe
     %div.right_page_inner
       %div.new_ingredients
@@ -42,3 +42,4 @@
 
       %div.actions
         = f.submit
+        /= f.button('Cancel', {:type => 'button'})

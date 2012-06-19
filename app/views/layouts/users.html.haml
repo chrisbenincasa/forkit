@@ -2,11 +2,18 @@
 %head
   = stylesheet_link_tag 'application'
   = javascript_include_tag 'application'
+  = yield :add_javascripts
   = csrf_meta_tag
 %body
   = render 'layouts/status_bar'
   - if @page == true or @page.nil?
     %div.wrap.page
+      = yield
+  - elsif @page == 'left'
+    %div.wrap.page_left
+      = yield
+  - elsif @page == 'both'
+    %div.wrap.page_both
       = yield
   - else
     %div.wrap.no_page

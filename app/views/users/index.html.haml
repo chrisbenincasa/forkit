@@ -6,9 +6,9 @@
 %div.inner.left_page
   - if current_user
     = link_to 'New Recipe', new_recipe_path
-    - if @createdRecipes
-      %h2 Recipes I've added: 
-      = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes, :type => 'index'}
+    - if @recentlyViewed
+      %h2 Recently Viewed Recipes: 
+      = render :partial => 'recipes/recipes', :locals => {:recipes => @recentlyViewed, :type => 'index'}
     - else
       You haven't created or forked any recipes yet!
   - else
@@ -19,7 +19,7 @@
 %div.inner.right_page
   - if current_user
     - if @forkedRecipes
-      %h2 Recipes I've forked:
+      %h2 Recently Forked Recipes:
       = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes.limit(4), :type => 'index'}
       - if @forkedRecipes.count > 4
         = link_to "See all #{pluralize(@forkedRecipes.count, 'forked recipe')}.", faved_recipes_user_url(current_user)

@@ -12,8 +12,9 @@ class UsersController < ApplicationController
     if current_user
       @user = current_user
       @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE")
-      @ratedRecipes = @user.recipes.where("personal_recipe_infos.rating IS NOT NULL")
       @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
+      r_view_recipes = Recipe.find(session[:recent_recipes])
+      @recentlyViewed = session[:recent_recipes].map{|id| r_view_recipes.detect{|each| each.id == id}}.reverse[0..3]
     else
       @newestRecipes = Recipe.limit(4)
     end
@@ -47,13 +48,20 @@ class UsersController < ApplicationController
     @avatarUrl = get_avatar_url(@user)
     if @user.name
       @name = @user.name
+      @first = @name.split(' ')[0]
     else
       @name = @user.email
+      @first = @name
     end
-    @recentFav = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(1)[0]
-    @recentCreated = @user.recipes.where(:created_by => @user.id).limit(1)[0]
-    logger.debug @recentFav.inspect
-    logger.debug @recentCreated.inspect
+    @allRecipes = @user.recipes.each{|r| [].push(r)}
+    @allIngredients = @allRecipes.map{|r| r.ingredients}
+    favorites = get_faves(@user)
+    created = @user.recipes.where(:created_by => @user.id)
+    @recentFav = favorites.first
+    @recentCreated = created.first
+    @totalFav = favorites.count
+    @totalCreated = created.count
+    #logger.info favorites.where("recipes.created_at > ?", 7.days.ago ).inspect
     respond_to do |format|
       format.html
       format.json {render :partial => 'users/show.json'}
@@ -85,6 +93,13 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
+    if @user.name
+      @name = @user.name
+      @first = @name.split(' ')[0]
+    else
+      @name = @user.email
+      @first = @name
+    end
     @recipes = @user.recipes
     @avatarUrl = get_avatar_url(@user)
     if @user.name
@@ -93,10 +108,19 @@ class UsersController < ApplicationController
       @name = @user.email
     end
     @createdRecipes = @user.recipes.where(:created_by => @user.id)
-    if @createdRecipes.count <= 8
-      @page = false
+    count = @createdRecipes.count
+    @createdRecipes = @createdRecipes.page(params[:page]).per(8)
+    totalPages = (count / 8.0).ceil
+    if params[:page].to_i == totalPages
+      @page = 'left'
+    elsif params[:page].to_i > 1 and params[:page].to_i < totalPages
+      @page = 'both'
+    elsif params[:page].to_i == 1
+      @page = true
     end
-    logger.debug @createdRecipes.count
+    #if count <= 8
+    #  @page = false
+    #end
     respond_to do |format|
       format.html
       format.json {render :partial => 'users/show.json'}
@@ -110,7 +134,14 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
-    @favedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").page(params[:page]).per(9)
+    if @user.name
+      @name = @user.name
+      @first = @name.split(' ')[0]
+    else
+      @name = @user.email
+      @first = @name
+    end
+    @favedRecipes = get_faves(@user).page(params[:page]).per(9)
     respond_to do |format|
       format.html {render :layout => 'wall'}
       format.json {render :json => @favedRecipes}
@@ -156,6 +187,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def get_faves(user)
+    user.recipes.where("personal_recipe_infos.favorite IS TRUE")
+  end
 
   def get_avatar_url(user)
     authorization = Authorization.find_by_user_id_and_provider(user.id, 'facebook')

@@ -3,7 +3,10 @@
     = image_tag @avatarUrl
     = @name + '\'s Recipe Book'
   - if @createdRecipes
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes.limit(4), :type => 'created'}
+    - if @createdRecipes.count > 4
+      = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[0..3], :type => 'created'}
+    - else
+      = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[0..@createdRecipes.count], :type => 'created'}
 %div.right_page
-  - if @createdRecipes
-    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes.offset(4).limit(4), :type => 'rated'}
+  - if @createdRecipes.count > 4
+    = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[4..@createdRecipes.count], :type => 'rated'}

@@ -1,0 +1,23 @@
+%div{:class => "recipe_list #{type}_list overlay_list"}
+  - recipes.each_with_index do |recipe, index|
+    %div.recipe_picture{:id => "#{recipe.name}", :class => "recipe_#{index % 4} has_overlay"}
+      %div.overlay
+        = link_to recipe.name, recipe
+        %ul
+          - recipe.ingredients[0..3].each do |ingredient|
+            %li.ingredient
+              = ingredient.name
+        = pluralize(recipe.favorites, 'fork')
+        %br
+        = "Difficulty: #{recipe.difficulty}"
+      %div.recipe_picture_content
+        - if recipe.image?
+          = link_to image_tag(recipe.image_url(:thumb)), recipe
+        - else
+          = link_to image_tag('default.png', :size => '200x200'), recipe
+        %div.recipe_bottom
+          %div.recipe_link
+            = link_to recipe.name, recipe
+          %div.right
+            = pluralize(recipe.favorites, 'fork')
+  %div.clearfix

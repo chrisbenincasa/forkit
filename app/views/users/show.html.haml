@@ -1,3 +1,6 @@
+- content_for :add_javascripts do
+  = javascript_include_tag 'd3.v2'
+  = javascript_include_tag 'graphs'
 %div.left_page.user_page
   %h1
     = image_tag @avatarUrl
@@ -6,10 +9,31 @@
     = link_to 'Edit Profile', edit_user_path(@user)
   %div.user_info
     %p
+  %div.user_stats
+    %div.counts
+      %p
+        = "#{@first} has forked"
+        - if @totalFav > 0
+          = link_to (pluralize(@totalFav, 'recipe')), faved_recipes_user_url(@user)
+        - else
+          = pluralize(@totalFav, 'recipe')
+      %p
+        = "#{@first} has added"
+        - if @totalCreated > 0
+          = link_to pluralize(@totalCreated, 'recipe'), recipes_user_url(@user)
+        - else
+          = pluralize(@totalCreated, 'recipe')
+    - if @allIngredients
+      %div.top_ingredients
+        %p
+          = "#{@first}'s most used ingredients"
 %div.right_page.user_page
-  %h2 Recently Created
-  %p
-    = @recentCreated.name
-  %h2 Recently Forked
-  %p
-    = @recentFav.name
+  %div.recent
+    %h2 Recently Created
+    = render :partial => 'recipes/recipe', :locals => {:recipe => @recentCreated, :type => 'created'}
+  %div.recent
+    %h2 Recently Forked
+    = render :partial => 'recipes/recipe', :locals => {:recipe => @recentFav, :type => 'rated'}
+%script
+  - if @allIngredients
+    != "generatePieGraph(#{@allIngredients.to_json})"

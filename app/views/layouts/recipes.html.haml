@@ -10,6 +10,9 @@
   - if @page == false or @page.nil?
     %div.wrap.no_page
       = yield
+  - elsif @page == 'left'
+    %div.wrap.page_left
+      = yield
   - else
     %div.wrap.page
       = yield

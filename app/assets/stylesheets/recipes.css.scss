@@ -33,10 +33,18 @@ div.wrap
   &.page
   {
     background: image-url('notebook3.png') no-repeat;
+    div.right_page
+    {
+      padding: 75px 50px 25px 40px;
+    }
   }
-  &.no_page
+  &.no_page, &.page_both
   {
     background: image-url('notebook_no_page.png') no-repeat;
+    div.right_page
+    {
+      padding: 100px 50px 25px 40px;
+    }
   }
   &.page_left
   {
@@ -107,7 +115,7 @@ div.recipe_list
 
       &.recipe_0, &.recipe_3
       {
-        -webkit-transform: rotate(2.5deg);
+        -webkit-transform: rotate(2.5deg) translate3d(0,0,0);
         -moz-transform: rotate(2.5deg);
         -ms-transform: rotate(2.5deg);
         -o-transform: rotate(2.5deg);
@@ -159,6 +167,43 @@ div.recipe_list
         background: image-url('postit_orange.png') no-repeat;
       }
     }
+
+    div.overlay
+    {
+      width: 300px;
+      height: 300px;
+      background: image-url('overlay-bg.png');
+      position: absolute;
+      z-index: 2;
+      display: none;
+      color: white;
+      border-bottom-right-radius: 400px 30px;
+      -webkit-border-bottom-right-radius: 400px 30px;
+      a
+      {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height:100%;
+        z-index: 2;
+        text-indent: -9999px;
+      }
+    }
+
+    div.has_overlay
+    {
+      padding: 0 !important;
+      width: 300px;
+      height: 300px;
+    }
+
+    div.recipe_picture_content
+    {
+      padding: 15px 50px 0 50px;
+      height: 100%;
+      z-index: 1;
+    }
+
   }
 
   &.faved_list
@@ -182,31 +227,6 @@ div.recipe_list
     {
       background: image-url('postit_orange.png') no-repeat;
       -webkit-transform: rotate(2deg);
-    }
-  }
-
-}
-
-
-.ui-autocomplete
-{
-  width: 100px;
-  border: thin black solid;
-  background-color: white;
-  a
-  {
-    display: inline-block;
-    width: 100%;
-  }
-
-  li:hover
-  {
-    cursor: pointer;
-    background-color: black;
-
-    a
-    {
-      color: white;
     }
   }
 }
@@ -245,6 +265,17 @@ div.left_page
     }
   }
 
+  div.second_page
+  {
+    padding: 0 55px 0 5px;
+  }
+
+  div.recipe_desc
+  {
+    height: 400px;
+    line-height: 20.333pt;
+  }
+
   img.detail_pic
   {
     -webkit-transform: rotate(5deg);
@@ -267,6 +298,9 @@ div.left_page
 
 div.right_page
 {
+  width: 510px;
+  float: left;
+
   div.recipe_list
   {
     //Default padding
@@ -277,18 +311,22 @@ div.right_page
       padding: 25px 5px 0 15px;
     }
 
+    &.created_list, &.rated_list
+    {
+      padding: 0;
+    }
+
     .recipe_2
     {
       margin-top: 10px;
     }
   }
-  width: 510px;
-  padding: 75px 50px 25px 40px;
-  float: left;
-  &.show_page
+
+  &.show_page, &.edit_page
   {
-    padding: 110px 50px 25px 40px;
+    padding: 110px 50px 25px 40px !important;
   }
+
   h1
   {
     display: inline-block;
@@ -380,6 +418,11 @@ form.edit_recipe, form.new_recipe
     //font-family: 'Handwriting';
   }
 
+  div.new_ingredients
+  {
+    padding-top: 11px;
+  }
+
   div.new_ingredients label
   {
     margin-bottom: 5px;
@@ -414,9 +457,10 @@ form.edit_recipe, form.new_recipe
   div.prepartation
   {
     padding-top: 11px;
+
     textarea
     {
-      padding-top: 11px;
+      padding-top: 9px;
       line-height: 27px;
       height: 300px;
     }
@@ -469,6 +513,7 @@ div.bookmark
   right: 82px;
   top: 23px;
   position:absolute;
+  z-index: 3;
 
   &.hovered, &.forked
   {
@@ -481,5 +526,24 @@ div.bookmark
     width: 100%;
     height: 100%;
     text-indent: -9999px;
+  }
+}
+
+div.user_page
+{
+  div.recent
+  {
+    h2
+    {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    float: left;
+    padding: 0 5px 0 10px;
+  }
+  div.recipe_list
+  {
+    //float: left;
+    width: 230px;
   }
 }

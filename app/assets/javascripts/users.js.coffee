@@ -24,3 +24,8 @@ $(document).ready (e) ->
   $('.cancelButton').on 'click', ->
     console.log 'cancel'
     saveChanges(this, revert)
+
+  $('path').on 'click', (e) ->
+    clicked = d3.select(this).data()[0]
+    slug = clicked.data.name.toLowerCase()
+    window.location = "../../ingredients/#{slug}"

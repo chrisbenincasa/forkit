@@ -53,3 +53,26 @@ div.show_header
 {
   color: white;
 }
+
+.ui-autocomplete
+{
+  width: 100px;
+  border: thin black solid;
+  background-color: white;
+  a
+  {
+    display: inline-block;
+    width: 100%;
+  }
+
+  li:hover
+  {
+    cursor: pointer;
+    background-color: black;
+
+    a
+    {
+      color: white;
+    }
+  }
+}
