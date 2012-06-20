@@ -2,8 +2,40 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready (e) ->
+  page = 1
+  $(document).on 'click', '.lightbox', (e) ->
+    if e.target == this
+      $(this).fadeOut('fast')
 
-  $('.editable').on 'hover', ->
+  $(document).on 'focus', '.lightbox input', (e) ->
+    $(this).siblings('label').hide()
+
+  $(document).on 'blur', '.lightbox input', (e) ->
+    if !$(this).val().length > 0
+      $(this).siblings('label').show()
+
+  $('path').on 'click', (e) ->
+    clicked = d3.select(this).data()[0]
+    slug = clicked.data.name.toLowerCase()
+    window.location = "../../ingredients/#{slug}"
+
+  $('.recipe_book_page_turn a').on 'click', (e) ->
+    e.preventDefault()
+    if $(this).parent().hasClass('forward')
+      page++
+    else
+      page--
+    $.ajax
+      url: '?page='+page
+      type: 'get'
+      dataType: 'script'
+      success: (data) ->
+        if data == null
+          console.log 'hello'
+      error: (xhr, status) ->
+        console.log xhr, status
+
+  ###$('.editable').on 'hover', ->
     $(this).toggleClass('edit_hover')
 
   $('.editable').on 'click', ->
@@ -23,9 +55,4 @@ $(document).ready (e) ->
 
   $('.cancelButton').on 'click', ->
     console.log 'cancel'
-    saveChanges(this, revert)
-
-  $('path').on 'click', (e) ->
-    clicked = d3.select(this).data()[0]
-    slug = clicked.data.name.toLowerCase()
-    window.location = "../../ingredients/#{slug}"
+    saveChanges(this, revert)###

@@ -3,4 +3,4 @@
 %h1
   = "Recipes like #{@search}"
 %div.recipes
-  = render :partial => 'recipes/recipes', :locals => {:recipes => @recipes, :type => 'search_index'}
+  = render :partial => 'recipes/recipes_overlay', :locals => {:recipes => @recipes, :type => 'recipe_index'}

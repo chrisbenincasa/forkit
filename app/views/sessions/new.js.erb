@@ -1,0 +1,9 @@
+if($('body').find('.lightbox').length > 0)
+{
+  $('.lightbox').fadeIn()
+}
+else
+{
+  $('body').append("<%= escape_javascript(render :partial => 'login') %>")
+  $('.lightbox').fadeIn()
+}

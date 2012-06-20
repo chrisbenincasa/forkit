@@ -1,0 +1,23 @@
+<% if @page > 0 %>
+  <% if @page == 1 %>
+    $('.recipe_book_page_turn.backward').hide()
+    $('.recipe_book_page_turn.forward').show()
+    $('div.wrap').addClass('page').removeClass('page_left page_both')
+  <% elsif @page < @totalPages %>
+    $('.recipe_book_page_turn.forward').show()
+    $('.recipe_book_page_turn.backward').show()
+    $('div.wrap').addClass('page_both').removeClass('page page_left')
+  <% elsif @page == @totalPages %>
+    $('.recipe_book_page_turn.forward').hide()
+    $('.recipe_book_page_turn.backward').show()
+    $('div.wrap').addClass('page_left').removeClass('page page_both')
+  <% end %>
+
+  <% if @createdRecipes.count > 4 %>
+    $('.left_page').empty().append("<%= escape_javascript(render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[0..3], :type => 'created'}) %>")
+    $('.right_page').empty().append("<%= escape_javascript(render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[4..@createdRecipes.count], :type => 'created'}) %>")
+  <% elsif @createdRecipes.count <= 4 %>
+    $('.left_page').empty().append("<%= escape_javascript(render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[0..@createdRecipes.count], :type => 'created'}) %>")
+    $('.right_page').empty()
+  <% end %>
+<% end %>

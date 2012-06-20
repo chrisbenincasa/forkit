@@ -17,8 +17,8 @@ class IngredientsController < ApplicationController
     name = params[:id].gsub("-", "\s")
     @ingredient = Ingredient.find_by_name(name)
     @ingredient = Ingredient.find(params[:id]) if @ingredient.nil?
-    @recipes = @ingredient.recipes[0..3]
-    logger.info @recipes
+    @recipes = @ingredient.recipes.order('created_at DESC')
+    logger.debug @recipes.inspect
     respond_to do |format|
       format.html {render :layout => 'wall'}
       format.json { render json: @ingredient }

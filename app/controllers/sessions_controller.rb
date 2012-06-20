@@ -2,6 +2,9 @@ class SessionsController < ApplicationController
   before_filter :is_logged_in?, :only => [:new, :create, :omni]
 
   def new
+    respond_to do |format|
+      format.js
+    end
   end
 
   def create
@@ -30,7 +33,7 @@ class SessionsController < ApplicationController
         render :text => user.errors.full_messages
       end
     else
-      user = User.new(:name => auth_hash['info']['name'], :email => auth_hash['info']['email'])
+      user = User.new(:name => auth_hash['info']['name'], :email => auth_hash['info']['email'], :display_name => auth_hash['info']['name'])
       user.authorizations.build :provider => auth_hash["provider"], :uid => auth_hash["uid"], :access_token => auth_hash['credentials']['token']
       if user.save(:validate => false)
         session[:user_id] = user.id

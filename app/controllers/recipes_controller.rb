@@ -63,6 +63,7 @@
   # GET /recipes/new.json
   def new
     @recipe = Recipe.new
+    @recipe.ingredients.build
     @availableIngredients = Ingredient.order('name ASC')
     respond_to do |format|
       if current_user
@@ -77,6 +78,8 @@
   # GET /recipes/1/edit
   def edit
     @recipe = Recipe.find_by_url_slug(params[:id])
+    @recipe.ingredients.build
+    #@ingredients = @recipe.ingredients
     @availableIngredients = Ingredient.order('name ASC')
   end
 
@@ -86,6 +89,9 @@
     params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
     params[:recipe]['created_by'] = current_user.id
     @recipe = Recipe.new(params[:recipe])
+
+    #old ingredient save, keep for reference
+=begin
     @ingredients = params[:ingredients]
     @ingredients.each do |i|
       if i.empty?
@@ -97,13 +103,14 @@
         ingredient = Ingredient.new({"name" => i})
       end
     end
+=end
     @recipe.users << current_user
     respond_to do |format|
       if @recipe.save
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
         format.json { render json: @recipe, status: :created, location: @recipe }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @recipe.errors, status: :unprocessable_entity }
       end
     end

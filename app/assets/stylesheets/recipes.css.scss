@@ -16,6 +16,12 @@ body
 a
 {
   color: red;
+  text-decoration: none;
+  &:hover
+  {
+    color: steelblue;
+    text-decoration: underline;
+  }
 }
 
 p#notice
@@ -38,7 +44,26 @@ div.wrap
       padding: 75px 50px 25px 40px;
     }
   }
-  &.no_page, &.page_both
+  &.page_both
+  {
+    background: image-url('notebook_both_pages.png') no-repeat;
+    div.left_page
+    {
+      padding-top: 15px;
+    }
+
+    div.right_page
+    {
+      padding: 100px 50px 25px 40px;
+
+      /*div.recipe_list
+      {
+        padding-left: 15px;
+      }*/
+    }
+    
+  }
+  &.no_page
   {
     background: image-url('notebook_no_page.png') no-repeat;
     div.right_page
@@ -115,7 +140,7 @@ div.recipe_list
 
       &.recipe_0, &.recipe_3
       {
-        -webkit-transform: rotate(2.5deg) translate3d(0,0,0);
+        -webkit-transform: rotate(2.5deg);
         -moz-transform: rotate(2.5deg);
         -ms-transform: rotate(2.5deg);
         -o-transform: rotate(2.5deg);
@@ -256,12 +281,17 @@ div.left_page
 
     &.index_list
     {
-      padding: 25px 58px 0 12px;
+      padding: 20px 58px 0 12px;
     }
 
     .recipe_1, .recipe_3
     {
-      margin-top: 10px;
+      margin-top: 6px;
+    }
+
+    .recipe_2
+    {
+      margin-top: 4px;
     }
   }
 
@@ -335,6 +365,8 @@ div.right_page
   div.right_page_inner
   {
     margin-left: 10px;
+    max-height: 600px;
+    overflow: scroll;
   }
   div.ingredients
   {
@@ -342,12 +374,20 @@ div.right_page
   }
 }
 
-div.turn_page, div.turn_recipe_page
+div.turn_page, div.turn_recipe_page, div.recipe_book_page_turn
 {
   position: absolute;
-  float: right;
   right: 52px;
   bottom: 38px;
+  height: 150px;
+  width: 150px;
+
+  &.backward
+  {
+    display: none;
+    left: 54px;
+  }
+
   a
   {
     text-indent: -9999px;
@@ -418,14 +458,14 @@ form.edit_recipe, form.new_recipe
     //font-family: 'Handwriting';
   }
 
-  div.new_ingredients
+  div.new_ingredients, div.edit_ingredients
   {
     padding-top: 11px;
-  }
 
-  div.new_ingredients label
-  {
-    margin-bottom: 5px;
+    label
+    {
+      margin-bottom: 5px;
+    }
   }
 
   input[type='text']
@@ -546,4 +586,17 @@ div.user_page
     //float: left;
     width: 230px;
   }
+}
+
+div.tooltip
+{
+  background: image-url('overlay-bg.png');
+  width: 42px;
+  height: 13px;
+  border-radius: 5px;
+  color: white;
+  font-size: 10pt;
+  padding: 5px;
+  position: relative;
+  top: -3px;
 }

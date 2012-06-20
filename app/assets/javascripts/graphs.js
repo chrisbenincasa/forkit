@@ -6,15 +6,12 @@ function generatePieGraph(ingredients)
       name = ''
   for(var i in ingredients)
   {
-    for(var j in ingredients[i])
+    name = ingredients[i].name
+    if (ingredientsMap[name] === undefined)
     {
-      name = ingredients[i][j].name
-      if(ingredientsMap[name] === undefined)
-      {
-        ingredientsMap[name] = 1;
-      } else {
-        ingredientsMap[name]++;
-      }
+      ingredientsMap[name] = 1;
+    } else {
+      ingredientsMap[name]++;
     }
   }
 

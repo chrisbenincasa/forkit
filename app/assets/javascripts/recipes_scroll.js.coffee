@@ -11,7 +11,7 @@ $(document).ready (e) ->
         $('.second_page').show 0
       extraParagraphs = new Array()
       $('.recipe_desc').find('p').each (i,ele)->
-        if $(this).position().top > 300
+        if $(this).position().top > $('.recipe_desc').height()
           extraParagraphs.push(this)
           $(this).remove()
       $('.right_page .second_page').append($(ele)) for ele in extraParagraphs

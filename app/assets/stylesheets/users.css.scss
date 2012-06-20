@@ -9,6 +9,18 @@
   }
 }
 
+div.recipe_book_header
+{
+  position: absolute;
+  top: 35px;
+  left: 55px;
+
+  h1
+  {
+    display: inline-block;
+  }
+}
+
 div.left_page.user_page
 {
   h1

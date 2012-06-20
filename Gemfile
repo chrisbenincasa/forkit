@@ -21,6 +21,7 @@ gem 'kaminari'
 gem 'json'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'acts_as_indexed'
 
 # Gems used only for assets and not required
 # in production environments by default.

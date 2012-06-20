@@ -29,11 +29,14 @@
     %h1
       = "Editing #{@recipe.name}"
     %div.right_page_inner
-      %div.new_ingredients
+      %div.edit_ingredients
         %a.add_new_ingredient{:href => '#'}Add another ingredient
-        %div.ingredient
-          %input{:type => "text", :name => 'ingredients[]', :class => 'ingredients-input', :placeholder => 'Enter ingredient name'}
-          %div.suggestions
+        = f.fields_for :ingredients do |i|
+          %div.ingredient
+            = i.text_field :name, {:class => 'ingredients-input', :placeholder => 'Enter ingredient name'}
+        /%div.ingredient
+        /  %input{:type => "text", :name => 'ingredients[]', :class => 'ingredients-input', :placeholder => 'Enter ingredient name'}
+        /  %div.suggestions
       %div.prepartation
         = f.label :desc, "Preparation Instructions:"
         = f.text_area :desc, :rows => 10

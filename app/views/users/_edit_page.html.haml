@@ -1,2 +1,9 @@
-%p.editable
-  = @user.name
+%div.left_page.user_page
+  %h1 Edit your profile:
+  = form_for @user do |f|
+    = f.text_field :display_name
+    %br/
+    = f.password_field :password
+    = f.password_field :new_password
+    = f.password_field :new_password_confirmation
+%div.right_page.user_page

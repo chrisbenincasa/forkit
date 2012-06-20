@@ -10,9 +10,11 @@
       %span
         = "Howdy, #{current_user.name}"
         = link_to "Profile", current_user
-        = link_to "invite", invite_path
+        = link_to "Invite", invite_path
         = link_to "Log Out", log_out_path
     - else
       %span
         Howdy, stranger!
-        = link_to "Login", log_in_path 
+        /= link_to "Login", log_in_path 
+        = link_to 'Login', log_in_path, :remote => true
+        /%a.login_link{:href => '#'} Login

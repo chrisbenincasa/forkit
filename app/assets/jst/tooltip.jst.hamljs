@@ -1,0 +1,6 @@
+%div.tooltip
+  -if(forked){
+  Unfork!
+  - } else {
+  Fork it!
+  - }

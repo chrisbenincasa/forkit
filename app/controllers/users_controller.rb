@@ -29,11 +29,10 @@ class UsersController < ApplicationController
     @avatarUrl = get_avatar_url(@user)
     @recentFav = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(1)[0]
     @recentCreated = @user.recipes.where(:created_by => @user.id).limit(1)[0]
-    if @user.name
-      @name = @user.name
-    else
-      @name = @user.email
-    end
+    names = nameToUse(@user)
+    @name = names[0]
+    @first = names[1]
+
     render 'show'
   end
 
@@ -46,22 +45,17 @@ class UsersController < ApplicationController
       return
     end
     @avatarUrl = get_avatar_url(@user)
-    if @user.name
-      @name = @user.name
-      @first = @name.split(' ')[0]
-    else
-      @name = @user.email
-      @first = @name
-    end
-    @allRecipes = @user.recipes.each{|r| [].push(r)}
-    @allIngredients = @allRecipes.map{|r| r.ingredients}
+    names = nameToUse(@user)
+    @name = names[0]
+    @first = names[1]
+    @allIngredients = []
+    @user.recipes.each{|r| r.ingredients.each{|i| @allIngredients.push(i)} }
     favorites = get_faves(@user)
     created = @user.recipes.where(:created_by => @user.id)
     @recentFav = favorites.first
     @recentCreated = created.first
     @totalFav = favorites.count
     @totalCreated = created.count
-    #logger.info favorites.where("recipes.created_at > ?", 7.days.ago ).inspect
     respond_to do |format|
       format.html
       format.json {render :partial => 'users/show.json'}
@@ -73,10 +67,12 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @page = false
     @user = current_user
   end
 
   def create
+    params[:user]['display_name'] = params[:user]['name']
     @user = User.new(params[:user])
     if @user.save
       session[:user_id] = @user.id
@@ -93,36 +89,20 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
-    if @user.name
-      @name = @user.name
-      @first = @name.split(' ')[0]
-    else
-      @name = @user.email
-      @first = @name
-    end
+    names = nameToUse(@user)
+    @name = names[0]
+    @first = names[1]
     @recipes = @user.recipes
     @avatarUrl = get_avatar_url(@user)
-    if @user.name
-      @name = @user.name
-    else
-      @name = @user.email
-    end
     @createdRecipes = @user.recipes.where(:created_by => @user.id)
-    count = @createdRecipes.count
-    @createdRecipes = @createdRecipes.page(params[:page]).per(8)
-    totalPages = (count / 8.0).ceil
-    if params[:page].to_i == totalPages
-      @page = 'left'
-    elsif params[:page].to_i > 1 and params[:page].to_i < totalPages
-      @page = 'both'
-    elsif params[:page].to_i == 1
-      @page = true
-    end
-    #if count <= 8
-    #  @page = false
-    #end
+    @totalPages = (@createdRecipes.count / 8.0).ceil
+    @createdRecipes = @createdRecipes.order('created_at DESC').page(params[:page]).per(8)
     respond_to do |format|
       format.html
+      format.js { 
+        @page = params[:page].to_i
+        @totalPages = @totalPages
+      }
       format.json {render :partial => 'users/show.json'}
     end
   end
@@ -134,13 +114,10 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
-    if @user.name
-      @name = @user.name
-      @first = @name.split(' ')[0]
-    else
-      @name = @user.email
-      @first = @name
-    end
+    names = nameToUse(@user)
+    @name = names[0]
+    @first = names[1]
+
     @favedRecipes = get_faves(@user).page(params[:page]).per(9)
     respond_to do |format|
       format.html {render :layout => 'wall'}
@@ -205,6 +182,16 @@ class UsersController < ApplicationController
   def is_logged_in?
     if current_user
       redirect_to root_url, :notice => "You're already logged in!"
+    end
+  end
+
+  def nameToUse(user)
+    if user.display_name
+      return [user.display_name, user.display_name]
+    elsif user.name
+      return [user.name, user.name.split(' ')[0]]
+    else
+      return [user.email, user.email]
     end
   end
 end

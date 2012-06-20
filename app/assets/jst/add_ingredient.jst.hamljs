@@ -1,2 +1,2 @@
 %div.ingredient
-  %input.ingredients-input{placeholder:"Enter ingredient name", type: "text", name:"ingredients[]"}
+  %input.ingredients-input{placeholder:"Enter ingredient name", type: "text", name:"recipe[ingredients_attributes][#{index}][name]", id: "recipe_ingredients_#{index}_attributes_name"}

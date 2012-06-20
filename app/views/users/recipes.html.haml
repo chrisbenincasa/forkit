@@ -1,7 +1,9 @@
-%div.left_page
-  %h1
+= content_for :content_before_wrap do
+  %div.recipe_book_header
     = image_tag @avatarUrl
-    = @name + '\'s Recipe Book'
+    %h1
+      = @name + '\'s Recipe Book'
+%div.left_page
   - if @createdRecipes
     - if @createdRecipes.count > 4
       = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[0..3], :type => 'created'}
@@ -10,3 +12,7 @@
 %div.right_page
   - if @createdRecipes.count > 4
     = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[4..@createdRecipes.count], :type => 'rated'}
+%div.recipe_book_page_turn.forward
+  %a{:href=>'#'}turn
+%div.recipe_book_page_turn.backward
+  %a{:href=>'#'}turn

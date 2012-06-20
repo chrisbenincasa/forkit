@@ -10,9 +10,15 @@
 $(document).ready (e) ->
   $('div.bookmark').hover ->
     $(this).toggleClass('hovered')
+    if $(this).hasClass('forked')
+      tooltip = $ JST['tooltip']({forked: true})
+    else
+      tooltip = $ JST['tooltip']({forked: false})
+    $(this).append(tooltip)
   , ->
     if $(this).hasClass('hovered')
       $(this).toggleClass('hovered')
+      $(this).find('div.tooltip').remove()
 
   $('.forkit_link').on 'ajax:success', (xhr, data, type) ->
     $(this).parent().toggleClass('forked').toggleClass('hovered')

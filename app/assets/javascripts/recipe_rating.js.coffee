@@ -1,5 +1,11 @@
 $(document).ready (e) ->
   ingredients = []
+
+  #indexes for dynamically adding inputs for new/edit pages
+  ingredientIndex = 1
+  editIngredientIndex = $('.edit_ingredients').find('div.ingredient').length
+
+  #get ingredients list
   $.ajax
     url: 'http://recipes.dev/ingredients.json'
     type: 'GET'
@@ -14,9 +20,14 @@ $(document).ready (e) ->
 
   $('a.add_new_ingredient').on 'click', (e) ->
     e.preventDefault()
-    ingredientBox = $ JST['add_ingredient']()
+    if $(this).parent().hasClass('new_ingredients')
+      ingredientBox = $ JST['add_ingredient']({index: ingredientIndex})
+      ingredientIndex++
+    else if $(this).parent().hasClass('edit_ingredients')
+      ingredientBox = $ JST['add_ingredient']({index: editIngredientIndex})
+      editIngredientIndex++
     $(this).parent().append(ingredientBox)
-    ingredientBox.autocomplete
+    ingredientBox.find('input').autocomplete
       source: ingredients
 
   $('.recipe_image_upload').on 'change', (e) ->

@@ -32,10 +32,10 @@
     %h1 New Recipe
     %div.right_page_inner
       %div.new_ingredients
-        %a.add_new_ingredient{:href => '#'}Add another ingredient
-        %div.ingredient
-          %input{:type => "text", :name => 'ingredients[]', :class => 'ingredients-input', :placeholder => 'Enter ingredient name'}
-          %div.suggestions
+        = f.fields_for :ingredients do |builder|
+          %a.add_new_ingredient{:href => '#'}Add another ingredient
+          %div.ingredient
+            = builder.text_field :name, {:placeholder => 'Enter ingredient name', :class => 'ingredients-input'}
       %div.prepartation
         = f.label :desc, "Preparation Instructions:"
         = f.text_area :desc, :rows => 10, :placeholder => 'How do you make it?'
