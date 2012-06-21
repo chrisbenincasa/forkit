@@ -21,7 +21,7 @@
     if @recipe.nil?
       @recipe = Recipe.find_by_url_slug(params[:name])
     end
-    @created_by = name_to_use(User.find(@recipe.created_by))
+    @created_by = name_to_use(User.find(@recipe.created_by))[0]
 
     if current_user
       if current_user.personalRecipeInfo.find_by_recipe_id(@recipe.id).favorite == true

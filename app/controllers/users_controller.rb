@@ -193,7 +193,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def nameToUse(user)
+  def name_to_use(user)
     if user.display_name
       return [user.display_name, user.display_name]
     elsif user.name
