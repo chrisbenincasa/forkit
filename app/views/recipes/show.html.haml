@@ -12,7 +12,7 @@
     %h2 Details:
     %p
       Created by:
-      = link_to @created_by.name, user_recipes_url(@created_by.id)
+      = link_to @created_by_name, user_recipes_url(@created_by.id)
     - if !@recipe.serving_from.nil?
       %p.serving_size
         = "Serves #{@recipe.serving_from}"
