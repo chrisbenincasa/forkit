@@ -4,7 +4,6 @@ class IngredientsController < ApplicationController
   # GET /ingredients.json
   def index
     @ingredients = Ingredient.order('name ASC')
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @ingredients }
@@ -14,8 +13,8 @@ class IngredientsController < ApplicationController
   # GET /ingredients/1
   # GET /ingredients/1.json
   def show
-    name = params[:id].gsub("-", "\s")
-    @ingredient = Ingredient.find_by_name(name)
+    slug = params[:id]
+    @ingredient = Ingredient.find_by_url_slug(slug)
     @ingredient = Ingredient.find(params[:id]) if @ingredient.nil?
     @recipes = @ingredient.recipes.order('created_at DESC')
     logger.debug @recipes.inspect

@@ -1,3 +1,0 @@
-$('.left_page').empty().html("<%= escape_javascript(render :partial => 'recipe_desc', :locals => {:recipe => @recipe}) %>");
-$('.right_page').empty();
-$('.wrap').removeClass('page').addClass('page_left').append("<div class='turn_recipe_back'><%= escape_javascript(link_to 'back', @recipe) %></div>");

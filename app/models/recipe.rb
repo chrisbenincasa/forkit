@@ -28,8 +28,8 @@ class Recipe < ActiveRecord::Base
         if value['name'].empty?
           break
         end
-        i = value['name'].gsub(/\b\w/){$&.upcase}
-        ingredient = Ingredient.new({"name" => i})
+        slug = value['name'].downcase
+        ingredient = Ingredient.new({"name" => slug.gsub(/\b\w/){$&.upcase}, "url_slug" => slug.gsub(/\s/,'-')})
         ingredient.save
         self.ingredients << ingredient
       end

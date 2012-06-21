@@ -3,7 +3,10 @@ class Ingredient < ActiveRecord::Base
   has_many :recipes, :through => :amounts
   acts_as_indexed :fields => [:name]
 
+  validates_presence_of :name, :on => :create
+  validates_presence_of :url_slug, :on => :create  
+
   def to_param
-    name.parameterize
+    url_slug
   end
 end

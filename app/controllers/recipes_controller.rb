@@ -21,7 +21,8 @@
     if @recipe.nil?
       @recipe = Recipe.find_by_url_slug(params[:name])
     end
-    @created_by = User.find(@recipe.created_by)
+    @created_by = name_to_use(User.find(@recipe.created_by))
+
     if current_user
       if current_user.personalRecipeInfo.find_by_recipe_id(@recipe.id).favorite == true
         @favorite = true
@@ -42,6 +43,7 @@
         logger.debug session[:recent_recipes]
       end
     end
+    
     @users = @recipe.users
     @forks = @recipe.favorites
     #is this my recipe?
@@ -217,5 +219,15 @@
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
   end
+
+  def nameToUse(user)
+  if user.display_name
+    return [user.display_name, user.display_name]
+  elsif user.name
+    return [user.name, user.name.split(' ')[0]]
+  else
+    return [user.email, user.email]
+  end
+end
 
 end
