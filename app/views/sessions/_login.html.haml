@@ -13,7 +13,9 @@
         %div.password
           = label_tag :password, 'password', {:class=>'password_label'}
           = password_field_tag :password
+        = link_to 'Forgot your password?', '#' 
+        %br/
+        = link_to 'Register here', new_user_path
         %br/
         = submit_tag 'Login!'
-      = link_to 'Register here', new_user_path
     %div.clearfix

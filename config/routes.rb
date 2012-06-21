@@ -7,7 +7,7 @@ Recipes::Application.routes.draw do
   get "sign_up" => "users#new", :as => "sign_up"
   match '/auth/:provider/callback', :to => 'sessions#omni'
   match '/auth/failure', :to => 'sessions#failure'
-
+  post '/users/activate' => 'users#activate'
   resources :users do
     member do
       get 'recipes'

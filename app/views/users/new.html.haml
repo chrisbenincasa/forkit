@@ -1,26 +1,9 @@
-%div#fb-root
-:javascript
-  window.fbAsyncInit = function() {
-          FB.init({
-            appId      : '183019445158455',
-            status     : true, 
-            cookie     : true,
-            xfbml      : true,
-            oauth      : true,
-          });
-        };
-        (function(d){
-           var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-           js = d.createElement('script'); js.id = id; js.async = true;
-           js.src = "//connect.facebook.net/en_US/all.js";
-           d.getElementsByTagName('head')[0].appendChild(js);
-         }(document));
-%div.fb-login-button{'data-show-faces' => true, 'data-width' => '200', 'data-max-rows' => '1' }
-  Login with Facebook
-
-%h1 Sign up!
-
-= render 'form'
-
-= link_to 'Show', @user
-= link_to 'Back', :back
+%div.left_page.align_top
+  %h1 Connect with Facebook...
+  %div.facebook_login
+    %p
+      Connect with your Facebook account to share recipes with your friends!
+    = link_to (image_tag 'facebook-login.png'), '/auth/facebook'
+%div.right_page
+  %h1 or register normally!
+  = render 'form'

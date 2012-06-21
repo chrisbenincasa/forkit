@@ -20,6 +20,9 @@ $(document).ready (e) ->
       $(this).toggleClass('hovered')
       $(this).find('div.tooltip').remove()
 
+  $('div.bookmark').on 'click', (e) ->
+    $('div.tooltip').hide()
+
   $('.forkit_link').on 'ajax:success', (xhr, data, type) ->
     $(this).parent().toggleClass('forked').toggleClass('hovered')
 

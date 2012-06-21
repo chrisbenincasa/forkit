@@ -39,17 +39,19 @@ div.wrap
   &.page
   {
     background: image-url('notebook3.png') no-repeat;
+
     div.right_page
     {
-      padding: 75px 50px 25px 40px;
+      padding: 100px 35px 25px 55px;
     }
   }
   &.page_both
   {
     background: image-url('notebook_both_pages.png') no-repeat;
+
     div.left_page
     {
-      padding-top: 15px;
+      padding-top: 65px;
     }
 
     div.right_page
@@ -63,6 +65,7 @@ div.wrap
     }
     
   }
+
   &.no_page
   {
     background: image-url('notebook_no_page.png') no-repeat;
@@ -275,6 +278,17 @@ div.inner
 
 div.left_page
 {
+  /*Defaults*/
+  width: 550px;
+  padding: 75px 0 25px 50px;
+  max-height: 750px;
+  float: left;
+
+  &.align_top
+  {
+    padding-top: 100px;
+  }
+  
   div.recipe_list
   {
     padding: 25px 58px 0 12px;
@@ -314,11 +328,6 @@ div.left_page
     -o-transform: rotate(5deg);
     margin: 0 0 15px 175px;
   }
-  
-  width: 550px;
-  padding: 75px 0 25px 50px;
-  max-height: 750px;
-  float: left;
 
   div.recipe_image
   {

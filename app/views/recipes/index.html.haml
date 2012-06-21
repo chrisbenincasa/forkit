@@ -6,5 +6,5 @@
   %div.sorter
     = sortable 'name'
     = sortable 'date'
-    = sortable 'favorites'
+    = sortable 'favorites', 'Forks'
 = render :partial => 'recipes_overlay', :locals => {:recipes => @recipes, :type => 'recipe_index'}

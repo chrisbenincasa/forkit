@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   end
 
   def new
+    @page = false
     @user = User.new
   end
 
@@ -71,11 +72,18 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def activate
+    logger.debug params
+    UserMailer.activate_email(params).deliver
+    redirect_to root_url, :notice => 'Email sent'
+  end
+
   def create
     params[:user]['display_name'] = params[:user]['name']
     @user = User.new(params[:user])
     if @user.save
       session[:user_id] = @user.id
+      UserMailer.test_email(@user).deliver
       redirect_to root_url, :notice => 'Signed up!'
     else
       render 'new'

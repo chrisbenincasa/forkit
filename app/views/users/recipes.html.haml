@@ -12,6 +12,9 @@
 %div.right_page
   - if @createdRecipes.count > 4
     = render :partial => 'recipes/recipes', :locals => {:recipes => @createdRecipes[4..@createdRecipes.count], :type => 'rated'}
+  %p
+    :plain
+      More recipes &rarr;
 %div.recipe_book_page_turn.forward
   %a{:href=>'#'}turn
 %div.recipe_book_page_turn.backward
