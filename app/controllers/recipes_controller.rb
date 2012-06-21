@@ -43,7 +43,7 @@
         logger.debug session[:recent_recipes]
       end
     end
-    
+
     @users = @recipe.users
     @forks = @recipe.favorites
     #is this my recipe?
@@ -220,7 +220,7 @@
     %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
   end
 
-  def nameToUse(user)
+  def name_to_use(user)
   if user.display_name
     return [user.display_name, user.display_name]
   elsif user.name
