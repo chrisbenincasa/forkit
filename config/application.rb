@@ -55,7 +55,7 @@ module Recipes
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
     #config.assets.precompile = [ /\w+\.(?!js|css).+/, /application.(css|js)$/, /ace.js$/, /active_admin.(css|js).*$/, /application-.*.css.*/ ]
-    #config.assets.initialize_on_precompile = false
+    config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
