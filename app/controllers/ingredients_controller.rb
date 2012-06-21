@@ -13,8 +13,7 @@ class IngredientsController < ApplicationController
   # GET /ingredients/1
   # GET /ingredients/1.json
   def show
-    slug = params[:id]
-    @ingredient = Ingredient.find_by_url_slug(slug)
+    @ingredient = Ingredient.find_by_url_slug(params[:id])
     @ingredient = Ingredient.find(params[:id]) if @ingredient.nil?
     @recipes = @ingredient.recipes.order('created_at DESC')
     logger.debug @recipes.inspect
