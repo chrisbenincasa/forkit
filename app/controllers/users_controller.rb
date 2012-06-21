@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     @avatarUrl = get_avatar_url(@user)
     @recentFav = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(1)[0]
     @recentCreated = @user.recipes.where(:created_by => @user.id).limit(1)[0]
-    names = nameToUse(@user)
+    names = name_to_use(@user)
     @name = names[0]
     @first = names[1]
 
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
       return
     end
     @avatarUrl = get_avatar_url(@user)
-    names = nameToUse(@user)
+    names = name_to_use(@user)
     @name = names[0]
     @first = names[1]
     @allIngredients = []
@@ -97,7 +97,7 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
-    names = nameToUse(@user)
+    names = name_to_use(@user)
     @name = names[0]
     @first = names[1]
     @recipes = @user.recipes
@@ -122,7 +122,7 @@ class UsersController < ApplicationController
       redirect_to root_url
       return
     end
-    names = nameToUse(@user)
+    names = name_to_use(@user)
     @name = names[0]
     @first = names[1]
 

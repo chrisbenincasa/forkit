@@ -15,7 +15,7 @@ $(document).ready (e) ->
           extraParagraphs.push(this)
           $(this).remove()
       $('.right_page .second_page').append($(ele)) for ele in extraParagraphs
-    else
+    else if $('.second_page').is ':visible'
       $('.second_page').hide 0, ->
         $('.wrap').removeClass('page_left').addClass('page')
         $('.first_page').show()
