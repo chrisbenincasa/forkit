@@ -31,11 +31,12 @@ p#notice
 
 div.wrap
 {
-  margin: 20px auto 0;
+  margin: 20px auto 10px;
   width: 1200px;
   min-height: 800px;
   position: relative;
   z-index: 1;
+
   &.page
   {
     background: image-url('notebook3.png') no-repeat;
@@ -56,7 +57,7 @@ div.wrap
 
     div.right_page
     {
-      padding: 100px 50px 25px 40px;
+      padding: 100px 35px 25px 55px;
 
       /*div.recipe_list
       {
@@ -69,11 +70,27 @@ div.wrap
   &.no_page
   {
     background: image-url('notebook_no_page.png') no-repeat;
+    
     div.right_page
     {
-      padding: 100px 50px 25px 40px;
+      padding: 106px 50px 25px 40px;
+    }
+
+    div.left_page
+    {
+      &.index_page
+      {
+        padding-top: 90px; 
+      }
+      
+      &.user_page
+      {
+        padding-top: 82px;
+      }
+
     }
   }
+
   &.page_left
   {
     background: image-url('notebook_left.png') no-repeat;

@@ -1,5 +1,9 @@
 class SearchController < ApplicationController
   layout 'wall'
+
+  def index
+  end
+
   def recipes
     @search = params[:q]
     @recipes = Recipe.find_with_index(@search)

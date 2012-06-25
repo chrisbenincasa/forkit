@@ -3,7 +3,7 @@
     - flash.each do |name, msg|
       %div.flash{:id => "flash_#{name}"}
         = msg
-%div.inner.left_page
+%div.inner.left_page.index_page
   - if current_user
     = link_to 'New Recipe', new_recipe_path
     - if @recentlyViewed
@@ -16,7 +16,7 @@
     %p You need to login or sign up start your recipe book!
   %p      
     = link_to 'Or browse other user\'s recipes!', recipes_path
-%div.inner.right_page
+%div.inner.right_page.index_page
   - if current_user
     - if @forkedRecipes
       %h2 Recently Forked Recipes:

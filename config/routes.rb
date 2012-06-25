@@ -29,6 +29,7 @@ Recipes::Application.routes.draw do
   end
 
   scope '/search' do
+    match '/' => 'search#index'
     match '/recipes' => 'search#recipes'
   end
 

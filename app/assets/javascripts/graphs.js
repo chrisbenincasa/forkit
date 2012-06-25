@@ -30,6 +30,8 @@ function generatePieGraph(ingredients)
   populatePieChart(count)
 }
 
+var arc;
+
 function populatePieChart(count)
 {
   var options = {w:250,h:250,color: d3.scale.category20c()}
@@ -40,7 +42,7 @@ function populatePieChart(count)
       .append("svg:g")
       .attr("transform", "translate(" + options.w/2 + "," + options.w/2 + ")")
   
-  var arc = d3.svg.arc()
+  arc = d3.svg.arc()
       .outerRadius(options.w/2);
 
   var pie = d3.layout.pie()
@@ -53,9 +55,12 @@ function populatePieChart(count)
 
   arcs.append("svg:path")
       .attr("fill", function(d, i) { return options.color(i); } )
-      .attr("d", arc);
+      .transition()
+      .duration(2000)
+      .attrTween('d', tweenPie)
 
   arcs.append("svg:text")
+      .transition().delay(2000)
       .attr("transform", function(d) {
         d.innerRadius = 0;
         d.outerRadius = options.w/2;
@@ -64,4 +69,12 @@ function populatePieChart(count)
       .attr("text-anchor", "middle")
       .text(function(d, i) { return count[i].name });
 
+}
+
+function tweenPie(b) {
+  b.innerRadius = 0;
+  var i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+  return function(t) {
+    return arc(i(t));
+  };
 }

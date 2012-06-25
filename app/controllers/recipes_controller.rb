@@ -25,16 +25,21 @@
     @created_by_name = name_to_use(@created_by)[0]
 
     if current_user
-      if current_user.personalRecipeInfo.find_by_recipe_id(@recipe.id).favorite == true
-        @favorite = true
+      @usersRecipeInfo = current_user.personalRecipeInfo.find_by_recipe_id(@recipe.id)
+      if @usersRecipeInfo
+        if @usersRecipeInfo.favorite == true
+          @favorite = true
+        else
+          @favorite = false
+        end
+        if @usersRecipeInfo.rating
+          @personal_rating = @usersRecipeInfo.rating
+        else
+          @personal_rating = nil
+        end
       else
         @favorite = false
-      end
-      @personal_rating = current_user.personalRecipeInfo.where("recipe_id=#{@recipe.id}").first
-      if @personal_rating.nil?
         @personal_rating = nil
-      else
-        @personal_rating = @personal_rating.rating
       end
       if session[:recent_recipes].index(@recipe.id) == nil
         if session[:recent_recipes].count > 3

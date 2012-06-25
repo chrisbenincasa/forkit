@@ -35,6 +35,11 @@ h3
   float: right;
 }
 
+.center
+{
+  text-align: center;
+}
+
 #status_bar
 {
   width: auto;
@@ -73,6 +78,26 @@ div.show_header
     a
     {
       color: white;
+    }
+  }
+}
+
+div.footer
+{
+  width: 800px;
+  margin: 0 auto;
+  color: white;
+  a
+  {
+    color: white;
+  }
+
+  ul
+  {
+    li
+    {
+      display: inline;
+      margin-right: 10px;
     }
   }
 }

@@ -195,7 +195,7 @@ class UsersController < ApplicationController
 
   def name_to_use(user)
     if user.display_name
-      return [user.display_name, user.display_name]
+      return [user.display_name, user.display_name.split(' ')[0]]
     elsif user.name
       return [user.name, user.name.split(' ')[0]]
     else

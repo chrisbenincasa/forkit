@@ -11,13 +11,15 @@
 
 div.recipe_book_header
 {
-  position: absolute;
+  position: relative;
   top: 35px;
-  left: 55px;
-
+  height: 0;
+  margin: 0 auto;
+  text-align: center;
   h1
   {
     display: inline-block;
+    vertical-align: text-bottom;
   }
 }
 

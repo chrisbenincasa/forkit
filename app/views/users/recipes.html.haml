@@ -1,8 +1,7 @@
-= content_for :content_before_wrap do
-  %div.recipe_book_header
-    = image_tag @avatarUrl
-    %h1
-      = @name + '\'s Recipe Book'
+%div.recipe_book_header
+  = image_tag @avatarUrl
+  %h1
+    = @name + '\'s Recipe Book'
 %div.left_page
   - if @createdRecipes
     - if @createdRecipes.count > 4
