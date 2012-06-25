@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
       if user.save(:validate => false)
         session[:user_id] = user.id
         session[:recent_recipes] = Array.new
-        redirect_to root_url
+        redirect_to root_url, :notice => 'Logged in!'
       else
         render :text => user.errors.full_messages
       end

@@ -1,2 +1,7 @@
-%div
-  BLAH BLAH BLAH
+%div.search_box
+  %h1
+    Search Recipes!
+  %div.search_wrap
+    = form_tag '../search/recipes', :method => 'get' do
+      = text_field_tag :q
+      = submit_tag 'Search'

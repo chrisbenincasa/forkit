@@ -131,6 +131,7 @@ div.recipe_list
     div.recipe_picture
     {
       width: 200px;
+      height: 250px;
       border: thin solid darkgray;
       //height: 235px;
       padding: 12px 12px 0px 12px;
@@ -301,6 +302,11 @@ div.left_page
   max-height: 750px;
   float: left;
 
+  &.recipe_show
+  {
+    padding-top: 90px;
+  }
+
   &.align_top
   {
     padding-top: 100px;
@@ -348,7 +354,7 @@ div.left_page
 
   div.recipe_image
   {
-    height: 282px;
+    height: 267px;
   }
 }
 
@@ -392,11 +398,10 @@ div.right_page
   {
     margin-left: 10px;
     max-height: 600px;
-    overflow: scroll;
   }
   div.ingredients
   {
-
+    overflow: hidden;
   }
 }
 
@@ -473,6 +478,11 @@ div.tape
 
 form.edit_recipe, form.new_recipe
 {
+  .new_ingredients input, .edit_ingredients input
+  {
+    float: left;
+  }
+
   input[type='text'], textarea
   {
     border: 0;
@@ -481,6 +491,17 @@ form.edit_recipe, form.new_recipe
     font-size: 12pt;
     background: none;
     margin: 0;
+
+    &.ingredients-input
+    {
+      width: 250px;
+    }
+
+    &.ingredients-amount, &.ingredients-units
+    {
+      width: 75px;
+      //margin-right: 20px;
+    }
     //font-family: 'Handwriting';
   }
 

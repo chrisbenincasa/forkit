@@ -12,18 +12,21 @@ class Recipe < ActiveRecord::Base
   validates_presence_of :name, :on => :create
   validates_uniqueness_of :url_slug, :on => :create
   validates_inclusion_of :difficulty, :in => %w(Beginner Moderate Difficult Expert)
-
-  accepts_nested_attributes_for :ingredients
-  validates_presence_of :ingredients, :on => :create, :message => 'Needs ingredients!'
-
+  validates_presence_of :cook_time, :on => :create
   def to_param
     url_slug
   end
 
+=begin LEGACY
   def ingredients_attributes=(params)
     params.each_with_index do |(key, value), index|
       if existing_ingredient = Ingredient.find_by_name(value['name'])
         self.ingredients << existing_ingredient unless self.ingredients.include? existing_ingredient
+        @details = self.amounts.where('ingredient_id = ' + existing_ingredient.id.to_s).first
+        logger.info self.amounts.inspect
+        @details['amount'] = value['amount'].to_i
+        @details['units'] = value['units'] unless value['units'] == nil
+        @details.save
       else
         if value['name'].empty?
           break
@@ -35,4 +38,5 @@ class Recipe < ActiveRecord::Base
       end
     end
   end
+=end
 end

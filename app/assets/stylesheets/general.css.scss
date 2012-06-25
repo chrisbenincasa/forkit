@@ -181,3 +181,52 @@ div.lightbox_content
     }
   }
 }
+
+div.flashes
+{
+  position: absolute;
+  width: 100%; 
+  div.flash
+  {
+    background: lightyellow;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3px 0;
+    position: relative;
+    width: 150px;
+  }
+}
+
+div.search_box
+{
+  background: #FBFAD5;
+  margin: 50px auto 0;
+  width: 800px;
+  background: #fbfad5;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 3px solid #7d0e00;
+
+  div.search_wrap
+  {
+    margin: 0 auto;
+    form
+    {
+      input[type='text']
+      {
+        -webkit-box-shadow: inset 1px 1px 1px 0px #ccc;
+        box-shadow: inset 1px 1px 1px 0px #ccc;
+        outline: none;
+        width: 500px;
+        border: thin solid lightgray;
+        padding: 10px 3px;
+        font-size: 18pt;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120621181942) do
+ActiveRecord::Schema.define(:version => 20120625200540) do
 
   create_table "amounts", :force => true do |t|
     t.integer  "recipe_id",     :null => false
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20120621181942) do
     t.integer  "serving_from"
     t.integer  "serving_to"
     t.integer  "favorites",     :default => 0
+    t.string   "cook_time"
   end
 
   create_table "tokens", :force => true do |t|

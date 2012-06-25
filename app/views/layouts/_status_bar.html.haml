@@ -1,3 +1,8 @@
+- if flash
+  %div.flashes
+    - flash.each do |name, msg|
+      %div.flash{:id => "flash_#{name}"}
+        = msg
 %div#status_bar
   %div.left
     = link_to 'Home', root_url

@@ -1,2 +1,4 @@
 %div.ingredient
-  %input.ingredients-input{placeholder:"Enter ingredient name", type: "text", name:"recipe[ingredients_attributes][#{index}][name]", id: "recipe_ingredients_#{index}_attributes_name"}
+  %input.ingredients-input{placeholder:"Enter ingredient name", type: "text", name:"ingredients[][name]"}
+  %input.ingredients-amount{placeholder:'Amount', type:'text', name:"ingredients[][amount]"}
+  %input.ingredients-units{placeholder:'Units', type: 'text', name: "ingredients[][units]"}

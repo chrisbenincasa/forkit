@@ -35,6 +35,10 @@ $(document).ready (e) ->
       error: (xhr, status) ->
         console.log xhr, status
 
+  setTimeout -> 
+    $('.flash').slideUp(100)
+  , 3000
+
   ###$('.editable').on 'hover', ->
     $(this).toggleClass('edit_hover')
 

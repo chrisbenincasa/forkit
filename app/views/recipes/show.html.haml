@@ -1,8 +1,6 @@
 /= content_for :add_javascripts do
 /  = javascript_include_tag 'recipe_rating'
-%p#notice
-  = notice
-%div.inner.left_page
+%div.inner.left_page.recipe_show
   %div.first_page
     %div.recipe_image
       = @recipe.image? ? image_tag(@recipe.image_url, :size => '300x225', :class => 'detail_pic') : image_tag('default.png', :size => '300x225', :class => 'detail_pic')
@@ -38,6 +36,12 @@
             = @personal_rating
           - else
             You haven't rated this recipe yet!
+      - if @cook_time
+        %p.cook_time
+          Cook time: 
+          = "#{pluralize(@cook_time['d'], 'Day')}" unless @cook_time['d'].nil?
+          = "#{pluralize(@cook_time['h'], 'Hour')}" unless @cook_time['h'].nil?
+          = "#{pluralize(@cook_time['m'], 'Minute')}" unless @cook_time['m'].nil?
   %div.second_page
     %h1 Preparation:
     %div.recipe_desc
@@ -65,11 +69,12 @@
         %ul.ingredient_list
           - @ingredients.each do |ingredient|
             %p.ingredient
-              = link_to ingredient.name, ingredient
+              = link_to ingredient['ingredient'].name, ingredient['ingredient']
+              = ingredient['amount']
+              = ingredient['units'] unless ingredient['units'].nil?
     %p
       Turn the page for cooking instructions!
   %div.second_page
   %div.clearfix
 %div.turn_recipe_page.turn_recipe
-  /= link_to 'turn page', '?preparation=true', {:remote => true}
   %a{:href=>'#'}turn

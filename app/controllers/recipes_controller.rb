@@ -16,10 +16,22 @@
   # GET /recipes/1.json
   def show
     @page = true
-    @recipe = Recipe.find_by_url_slug(params[:id])
-    @ingredients = @recipe.ingredients
+    @recipe = Recipe.find_by_url_slug(params[:id])    
     if @recipe.nil?
       @recipe = Recipe.find_by_url_slug(params[:name])
+    end
+
+    @ingredients = []
+    @recipe.amounts.each do |amount|
+      temp = {}
+      temp['ingredient'] = Ingredient.find(amount.ingredient.id)
+      temp['amount'] = amount.amount
+      temp['units'] = amount.units
+      @ingredients << temp
+    end
+    if @recipe.cook_time
+      times = @recipe.cook_time.split(/\D/)
+      @cook_time = {'d' => times[0], 'h' => times[1], 'm' => times[2]}
     end
     @created_by = User.find(@recipe.created_by)
     @created_by_name = name_to_use(@created_by)[0]
@@ -86,40 +98,60 @@
   # GET /recipes/1/edit
   def edit
     @recipe = Recipe.find_by_url_slug(params[:id])
-    @recipe.ingredients.build
-    #@ingredients = @recipe.ingredients
+    amounts = @recipe.amounts
+    @ingredients = []
+    amounts.each do |amount|
+      temp = {}
+      temp['name'] = Ingredient.find(amount.ingredient.id).name
+      temp['amount'] = amount.amount
+      temp['units'] = amount.units
+      @ingredients << temp
+    end
+    logger.debug @ingredients
     @availableIngredients = Ingredient.order('name ASC')
   end
 
   # POST /recipes
   # POST /recipes.json
   def create
+    logger.debug params
     params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
     params[:recipe]['created_by'] = current_user.id
+    params[:recipe]['cook_time'] = "#{params[:cook_time][0]}d#{params[:cook_time][1]}h#{params[:cook_time][2]}m"
     @recipe = Recipe.new(params[:recipe])
-
-    #old ingredient save, keep for reference
-=begin
     @ingredients = params[:ingredients]
+    @ingredients.delete_if {|i| i['name'].blank? or i['amount'].blank?}
+    if @ingredients.empty?
+      logger.info @ingredients.inspect
+      @recipe.errors[:base] << 'You must add some ingredients!'
+    end
     @ingredients.each do |i|
-      if i.empty?
+      if i['name'].empty?
         break
       end
-      i = i.gsub(/\b\w/){$&.upcase}
-      ingredient = Ingredient.find_by_name(i)
+      i['name'] = i['name'].gsub(/\b\w/){$&.upcase}
+      ingredient = Ingredient.find_by_name(i['name'])
       if ingredient.nil?
-        ingredient = Ingredient.new({"name" => i})
+        ingredient = Ingredient.new({"name" => i['name']})
+      end
+      if !@recipe.ingredients.include?(ingredient)
+        @recipe.ingredients << ingredient
       end
     end
-=end
     @recipe.users << current_user
     respond_to do |format|
-      if @recipe.save
-        format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
-        format.json { render json: @recipe, status: :created, location: @recipe }
+      if @recipe.errors.any?
+        format.html {render action: 'new'}
+        format.json {render json: @recipe.errors}
       else
-        format.html { render action: 'new' }
-        format.json { render json: @recipe.errors, status: :unprocessable_entity }
+        if @recipe.save
+          add_amounts(@recipe, @ingredients)
+          format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
+          format.json { render json: @recipe, status: :created, location: @recipe }
+        else
+          format.html { render action: 'new' }
+          format.json { render json: @recipe.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -130,11 +162,11 @@
     @recipe = Recipe.find_by_url_slug(params[:id])
     @ingredients = params[:ingredients]
     @ingredients.each do |i|
-      if i.empty?
+      if i['name'].empty?
         break
       end
-      i = i.gsub(/\b\w/){$&.upcase}
-      ingredient = Ingredient.find_by_name(i)
+      i['name'] = i['name'].gsub(/\b\w/){$&.upcase}
+      ingredient = Ingredient.find_by_name(i['name'])
       if ingredient.nil?
         ingredient = Ingredient.new({"name" => i})
       end
@@ -143,9 +175,10 @@
       end
     end
     params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
-    #params[:recipe]['desc'] = '<p>'+params[:recipe]['desc'].gsub(/(\r\n)+/, '</p><p>') + '</p>'
+    params[:recipe]['cook_time'] = "#{params[:cook_time][0]}d#{params[:cook_time][1]}h#{params[:cook_time][2]}m"
     respond_to do |format|
       if @recipe.update_attributes(params[:recipe])
+        add_amounts(@recipe, @ingredients)
         format.html { redirect_to @recipe }
         format.json { head :no_content }
       else
@@ -227,13 +260,22 @@
   end
 
   def name_to_use(user)
-  if user.display_name
-    return [user.display_name, user.display_name]
-  elsif user.name
-    return [user.name, user.name.split(' ')[0]]
-  else
-    return [user.email, user.email]
+    if user.display_name
+      return [user.display_name, user.display_name]
+    elsif user.name
+      return [user.name, user.name.split(' ')[0]]
+    else
+      return [user.email, user.email]
+    end
   end
-end
+
+  def add_amounts(recipe, amounts)
+    recipe.ingredients.each_with_index do |ingredient, index|
+      amount = recipe.amounts.find_by_ingredient_id(ingredient.id)
+      amount.amount = amounts[index]['amount'].to_i
+      amount.units = amounts[index]['units'] unless amounts[index]['units'].nil?
+      amount.save
+    end
+  end
 
 end
