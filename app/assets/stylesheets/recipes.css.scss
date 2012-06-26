@@ -630,12 +630,12 @@ div.pencil
   height: 51px;
   position: absolute;
   z-index: 3;
-  left: -100px;    
-  top: 400px;
+  left: -300px;    
+  top: 300px;
   -webkit-transform: rotate(-75deg);
-  -moz-transform: rotate(15deg);
-  -ms-transform: rotate(15deg);
-  -o-transform: rotate(15deg);
+  -moz-transform: rotate(-75deg);
+  -ms-transform: rotate(-75deg);
+  -o-transform: rotate(-75deg);
 }
 
 div.second_page

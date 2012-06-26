@@ -1,5 +1,6 @@
 = form_for(@recipe) do |f|
   %div.inner.left_page
+    %div.pencil
     %div.image_field
       = @recipe.image? ? image_tag(@recipe.image_url, {:class => ['preview_image', 'detail_pic'] , :size => '300x225'}) : image_tag('default.png', :size => '300x225', :class => ['default_pic', 'detail_pic'])
       %div.tape.left-tape.bottom-tape
