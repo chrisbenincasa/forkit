@@ -1,6 +1,14 @@
 %div.inner.left_page.index_page
   - if current_user
-    = link_to 'New Recipe', new_recipe_path
+    %h2.welcome
+      = "Welcome back, #{@firstName}!"
+    %p
+      = link_to 'New Recipe', new_recipe_path    
+    %p      
+      = link_to 'Or browse other user\'s recipes!', recipes_path
+
+%div.inner.right_page.index_page
+  - if current_user
     - if @recentlyViewed
       %h2 Recently Viewed Recipes
       = render :partial => 'recipes/recipes', :locals => {:recipes => @recentlyViewed, :type => 'index'}
@@ -9,17 +17,5 @@
   - else
     %h1 Howdy, Stranger!
     %p You need to login or sign up start your recipe book!
-  %p      
-    = link_to 'Or browse other user\'s recipes!', recipes_path
-%div.inner.right_page.index_page
-  - if current_user
-    - if @forkedRecipes
-      %h2
-        - if @forkedRecipes.count > 4
-          Showing 4 of 
-          = link_to "#{pluralize @forkedRecipes.count, 'forked recipes'}", faved_recipes_user_url(current_user)
-        - else
-          Your Forked Recipes
-      = render :partial => 'recipes/recipes', :locals => {:recipes => @forkedRecipes.limit(4), :type => 'index'}
-  - else
     = render :partial => 'recipes/recipes', :locals => {:recipes => @newestRecipes, :type => 'index'}
+

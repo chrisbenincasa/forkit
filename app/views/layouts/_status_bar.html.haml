@@ -7,8 +7,7 @@
   %div.left
     = link_to 'Home', root_url
     = form_tag("../search/recipes", :method => 'get') do
-      = label_tag :q,'Search recipes: '
-      = text_field_tag :q
+      = text_field_tag :q, nil, {:placeholder => 'Search recipes!'}
       = submit_tag 'Search'
   %div.right
     - if current_user

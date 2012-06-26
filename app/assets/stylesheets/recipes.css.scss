@@ -80,12 +80,7 @@ div.wrap
     {
       &.index_page
       {
-        padding-top: 90px; 
-      }
-      
-      &.user_page
-      {
-        padding-top: 82px;
+        padding-top: 106px; 
       }
 
     }
@@ -307,6 +302,11 @@ div.left_page
     padding-top: 90px;
   }
 
+  &.user_page
+  {
+    padding-top: 82px;
+  }
+
   &.align_top
   {
     padding-top: 100px;
@@ -335,12 +335,27 @@ div.left_page
   div.second_page
   {
     padding: 0 55px 0 5px;
-  }
+    
+    h1
+    {
+      padding-top: 20px;
+    }
 
-  div.recipe_desc
-  {
-    height: 400px;
-    line-height: 20.333pt;
+    div.recipe_desc
+    {
+      height: 450px;
+      line-height: 28px;
+
+      p:first-child
+      {
+        padding-top: 7px;
+      }
+
+      p:not(:first-child)
+      {
+        padding-top: 28px;
+      }
+    }
   }
 
   img.detail_pic
@@ -381,6 +396,28 @@ div.right_page
     .recipe_2
     {
       margin-top: 10px;
+    }
+  }
+
+  div.second_page
+  {
+    padding: 0 6px 0 12px;
+
+    div.recipe_desc
+    {
+      padding-top: 51px;
+      line-height: 28px;
+      overflow-y: scroll;
+
+      p:first-child
+      {
+        padding-top: 9px;
+      }
+
+      p:not(:first-child)
+      {
+        padding-top: 28px;
+      }
     }
   }
 
@@ -517,12 +554,26 @@ form.edit_recipe, form.new_recipe
 
   input[type='text']
   {
-    width: 200px;
+    width: 420px;
   }
 
   select
   {
+    position: relative;
+    top: -5px;
+  }
+
+  select, option, input[type='submit']
+  {
     margin: 0;
+    background: #f9f9e3;
+    font-size: 11pt;
+  }
+
+  input[type='submit']
+  {
+    border-radius: 3px;
+    font-size: 12pt;
   }
 
   div.field
@@ -531,7 +582,7 @@ form.edit_recipe, form.new_recipe
 
     div.input_wrap
     {
-      padding: 10px 0 0 5px;
+      padding: 9px 0 0 5px;
     }
   }
 

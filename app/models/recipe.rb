@@ -9,10 +9,13 @@ class Recipe < ActiveRecord::Base
 
   mount_uploader :image, RecipePictureUploader
 
-  validates_presence_of :name, :on => :create
-  validates_uniqueness_of :url_slug, :on => :create
+  validates_presence_of :name
+  validates_length_of :name, :minimum => 3
+  validates_uniqueness_of :url_slug
   validates_inclusion_of :difficulty, :in => %w(Beginner Moderate Difficult Expert)
-  validates_presence_of :cook_time, :on => :create
+  validates_presence_of :cook_time
+  validates_presence_of :desc
+  validates_length_of :desc, :minimum => 100
   def to_param
     url_slug
   end

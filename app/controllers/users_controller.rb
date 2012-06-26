@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     @page = false;
     if current_user
       @user = current_user
+      @firstName = name_to_use(@user)[1]
       @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE")
       @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
       r_view_recipes = Recipe.find(session[:recent_recipes])
@@ -28,8 +29,8 @@ class UsersController < ApplicationController
   def me
     @user = current_user
     @avatarUrl = get_avatar_url(@user)
-    @recentFav = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(1)[0]
-    @recentCreated = @user.recipes.where(:created_by => @user.id).limit(1)[0]
+    @recentFav = @user.recipes.where("personal_recipe_infos.favorite IS TRUE").limit(1).first
+    @recentCreated = @user.recipes.where(:created_by => @user.id).limit(1).first
     names = name_to_use(@user)
     @name = names[0]
     @first = names[1]
@@ -40,7 +41,7 @@ class UsersController < ApplicationController
   def show
     @page = false;
     begin
-      @user = User.find(params[:id])
+      @user = User.includes(:recipes => [:ingredients]).find(params[:id])
     rescue ActiveRecord::RecordNotFound
       redirect_to root_url
       return
@@ -52,7 +53,7 @@ class UsersController < ApplicationController
     @allIngredients = []
     @user.recipes.each{|r| r.ingredients.each{|i| @allIngredients.push(i)} }
     favorites = get_faves(@user)
-    created = @user.recipes.where(:created_by => @user.id)
+    created = @user.recipes.select{|r| r.created_by == @user.id}
     @recentFav = favorites.first
     @recentCreated = created.first
     @totalFav = favorites.count
@@ -135,8 +136,8 @@ class UsersController < ApplicationController
 
   def invite
     if current_user
-      auth = Authorization.find_by_user_id_and_provider(current_user.id, 'facebook')
-      if auth
+      auth = current_user.authorizations.select{|auth| auth.provider == 'facebook'}.first
+      if auth or auth.empty?
         uri = URI.parse("https://graph.facebook.com/#{auth.uid}/friends?fields=installed,name&access_token=#{auth.access_token}")
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true

@@ -14,7 +14,7 @@ $(document).ready (e) ->
         if $(this).position().top > $('.recipe_desc').height()
           extraParagraphs.push(this)
           $(this).remove()
-      $('.right_page .second_page').append($(ele)) for ele in extraParagraphs
+      $('.right_page .second_page').find('.recipe_desc').append($(ele)) for ele in extraParagraphs
     else if $('.second_page').is ':visible'
       $('.second_page').hide 0, ->
         $('.wrap').removeClass('page_left').addClass('page')

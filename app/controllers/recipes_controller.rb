@@ -4,7 +4,7 @@
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.order(sort_type + " " + sort_direction).page(params[:page]).per(9)
+    @recipes = Recipe.includes(:ingredients).order(sort_type + " " + sort_direction).page(params[:page]).per(9)
     respond_to do |format|
       format.html { render :layout => 'wall'}
       format.json { render json: @recipes }
@@ -16,28 +16,25 @@
   # GET /recipes/1.json
   def show
     @page = true
-    @recipe = Recipe.find_by_url_slug(params[:id])    
+    @recipe = Recipe.includes(:ingredients, :personalRecipeInfo, :users).find_by_url_slug(params[:id])    
     if @recipe.nil?
-      @recipe = Recipe.find_by_url_slug(params[:name])
+      @recipe = Recipe.includes(:ingredients, :personalRecipeInfo, :users).find_by_url_slug(params[:name])
     end
-
     @ingredients = []
     @recipe.amounts.each do |amount|
       temp = {}
-      temp['ingredient'] = Ingredient.find(amount.ingredient.id)
+      temp['ingredient'] = @recipe.ingredients.select{|i| i.id == amount.ingredient_id}.first
       temp['amount'] = amount.amount
       temp['units'] = amount.units
       @ingredients << temp
     end
-    if @recipe.cook_time
-      times = @recipe.cook_time.split(/\D/)
-      @cook_time = {'d' => times[0], 'h' => times[1], 'm' => times[2]}
-    end
-    @created_by = User.find(@recipe.created_by)
+
+    @cook_time = hash_from_cook_time_string(@recipe.cook_time)
+    @created_by = @recipe.users.first
     @created_by_name = name_to_use(@created_by)[0]
 
     if current_user
-      @usersRecipeInfo = current_user.personalRecipeInfo.find_by_recipe_id(@recipe.id)
+      @usersRecipeInfo = @recipe.personalRecipeInfo.select{|info| info.user_id == current_user.id}.first
       if @usersRecipeInfo
         if @usersRecipeInfo.favorite == true
           @favorite = true
@@ -58,7 +55,6 @@
           session[:recent_recipes].shift
         end
         session[:recent_recipes].push(@recipe.id)
-        logger.debug session[:recent_recipes]
       end
     end
 
@@ -97,12 +93,12 @@
 
   # GET /recipes/1/edit
   def edit
-    @recipe = Recipe.find_by_url_slug(params[:id])
+    @recipe = Recipe.includes(:ingredients).find_by_url_slug(params[:id])
     amounts = @recipe.amounts
     @ingredients = []
     amounts.each do |amount|
       temp = {}
-      temp['name'] = Ingredient.find(amount.ingredient.id).name
+      temp['name'] = @recipe.ingredients.select{|i| i.id == amount.ingredient_id}.first.name
       temp['amount'] = amount.amount
       temp['units'] = amount.units
       @ingredients << temp
@@ -159,7 +155,7 @@
   # PUT /recipes/1
   # PUT /recipes/1.json
   def update
-    @recipe = Recipe.find_by_url_slug(params[:id])
+    @recipe = Recipe.includes(:ingredients).find_by_url_slug(params[:id])
     @ingredients = params[:ingredients]
     @ingredients.each do |i|
       if i['name'].empty?
@@ -200,8 +196,8 @@
 
   # POST /recipes/:id/update_rating
   def update_rating
-    @recipe = Recipe.find_by_url_slug(params[:id])
-    @personal_rating = current_user.personalRecipeInfo.where("recipe_id=#{@recipe.id}").first
+    @recipe = Recipe.includes(:users).find_by_url_slug(params[:id])
+    @personal_rating = PersonalRecipeInfo.find_by_user_id_and_recipe_id(current_user.id, @recipe.id)
     if @personal_rating.nil?
       @recipe.users << current_user
       if @recipe.save
@@ -278,4 +274,12 @@
     end
   end
 
+  def hash_from_cook_time_string(cook_string = '')
+    if cook_string.nil? or cook_string.blank?
+      return {'d' => '', 'h' => '', 'm' => ''}
+    else
+    times = cook_string.split(/\D/)
+    return {'d' => times[0], 'h' => times[1], 'm' => times[2]}
+    end
+  end
 end
