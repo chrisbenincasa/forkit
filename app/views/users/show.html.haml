@@ -28,12 +28,14 @@
         %p
           = "#{@first}'s most used ingredients"
 %div.right_page.user_page
-  %div.recent
-    %h2 Recently Created
-    = render :partial => 'recipes/recipe', :locals => {:recipe => @recentCreated, :type => 'created'}
-  %div.recent
-    %h2 Recently Forked
-    = render :partial => 'recipes/recipe', :locals => {:recipe => @recentFav, :type => 'rated'}
+  - if @recentCreated
+    %div.recent
+      %h2 Recently Created
+      = render :partial => 'recipes/recipe', :locals => {:recipe => @recentCreated, :type => 'created'}
+  - if @recentFav
+    %div.recent
+      %h2 Recently Forked
+      = render :partial => 'recipes/recipe', :locals => {:recipe => @recentFav, :type => 'rated'}
 %script
   - if @allIngredients
     != "generatePieGraph(#{@allIngredients.to_json})"
