@@ -10,11 +10,13 @@ Recipes::Application.routes.draw do
   match '/auth/:provider/callback', :to => 'sessions#omni'
   match '/auth/failure', :to => 'sessions#failure'
   post '/users/activate' => 'users#activate'
-  resources :password_resets
+  resources :password_resets, :only => [:new, :edit, :update, :create]
   resources :users do
     member do
       get 'recipes'
       get 'faved_recipes'
+      post 'update_password'
+      match '/:activation_id/activate' => 'users#activate', :as => 'activate'
     end
     resources :recipes do
       match '/fav' => 'users#favorite'

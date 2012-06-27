@@ -184,8 +184,10 @@ div.lightbox_content
 
 div.flashes
 {
-  position: absolute;
+  height: 0;
+  //position: absolute;
   width: 100%; 
+
   div.flash
   {
     background: lightyellow;
@@ -194,6 +196,7 @@ div.flashes
     padding: 3px 0;
     position: relative;
     width: 150px;
+    top: 0;
   }
 }
 

@@ -8,8 +8,6 @@ $(document).ready (e) ->
   $(window).on 'scroll', (e) ->
     if loading
       return
-    #if lastPage
-    #  return
     if nearBottomOfPage()
       loading = true
       page++

@@ -12,10 +12,10 @@ class UsersController < ApplicationController
     if current_user
       @user = current_user
       @firstName = name_to_use(@user)[1]
-      @forkedRecipes = @user.recipes.where("personal_recipe_infos.favorite IS TRUE")
-      @createdRecipes = @user.recipes.find_all_by_created_by(@user.id)[0..3]
-      r_view_recipes = Recipe.find(session[:recent_recipes])
-      @recentlyViewed = session[:recent_recipes].map{|id| r_view_recipes.detect{|each| each.id == id}}.reverse[0..3]
+      if session[:recent_recipes]
+        r_view_recipes = Recipe.find(session[:recent_recipes])
+        @recentlyViewed = session[:recent_recipes].map{|id| r_view_recipes.detect{|each| each.id == id}}.reverse[0..3]
+      end
     else
       @newestRecipes = Recipe.limit(4)
     end
@@ -71,15 +71,42 @@ class UsersController < ApplicationController
   def edit
     @page = false
     @user = current_user
+    @passwordChange = Authorization.find_by_user_id_and_provider(@user.id, 'facebook') == nil ? true : false 
   end
 
   def update
+    @user = current_user
+  end
+
+  def update_password
+    @user = current_user
+    logger.debug User.authenticate(@user.email, params['old_password'])
+    if @user == User.authenticate(@user.email, params['old_password'])
+      respond_to do |format|
+        if @user.update_attributes(params[:user])
+          format.html {redirect_to root_url, :notice => 'Successfully updated!'}
+          format.json {head :no_content}
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: @user.errors, status: :unprocessable_entity}
+        end
+      end
+    end
   end
 
   def activate
-    logger.debug params
-    UserMailer.activate_email(params).deliver
-    redirect_to root_url, :notice => 'Email sent'
+    token = Token.find_by_active_token(params[:activation_id])
+    if token
+      token.user.is_active = true
+      if token.user.save
+        redirect_to root_url, :notice => 'Successfully activated your account!'
+      else
+        redirect_to root_url, :notice => 'Something went wrong with activation'
+      end
+    else
+      redirect_to root_url, :notice => 'Activation ID could not be found'
+    end
+
   end
 
   def create
@@ -87,8 +114,16 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       session[:user_id] = @user.id
-      UserMailer.test_email(@user).deliver
-      redirect_to root_url, :notice => 'Signed up!'
+      if @user.token
+        @user.token.active_token = @user.generate_token
+        if !@user.token.save
+          redirect_to root_url, :notice => 'Activation token could not be saved. Go to profile page to activate your account.'
+        end
+      else
+        @user.create_token(:active_token => @user.generate_token)
+      end
+      @user.token.send_activation_email
+      redirect_to root_url, :notice => 'Activation e-mail sent!'
     else
       render 'new'
     end

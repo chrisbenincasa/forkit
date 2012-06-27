@@ -125,7 +125,7 @@
         break
       end
       formatted_name = i['name'].gsub(/\b\w/){$&.upcase}
-      ingredient = Ingredient.find_by_name(i['name'])
+      ingredient = Ingredient.find_by_name(formatted_name)
       if ingredient.nil?
         ingredient = Ingredient.new({"name" => formatted_name, 'url_slug' => get_slug(i['name'])})
       end
@@ -161,7 +161,7 @@
         break
       end
       formatted_name = i['name'].gsub(/\b\w/){$&.upcase}
-      ingredient = Ingredient.find_by_name(i['name'])
+      ingredient = Ingredient.find_by_name(formatted_name)
       if ingredient.nil?
         ingredient = Ingredient.new({"name" => formatted_name, 'url_slug' => get_slug(i['name'])})
       end

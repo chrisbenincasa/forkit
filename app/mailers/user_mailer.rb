@@ -7,11 +7,11 @@ class UserMailer < ActionMailer::Base
     mail(:to => @email, :subject => 'test e-mail')
   end
   
-  def activate_email(params)
-    @email = params[:email]
-    @name = params[:name]
-    @test = 'SOME TEST STRING'
-    mail(:to => 'chrisbenincasa@gmail.com', :subject => 'Some testing shit')
+  def activate_email(user)
+    @user = user
+    @name = user.name
+    @email = user.email
+    mail(:to => user.email, :subject => 'Some testing shit')
   end
 
   def password_reset_email(user)

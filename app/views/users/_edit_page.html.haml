@@ -3,7 +3,18 @@
   = form_for @user do |f|
     = f.text_field :display_name
     %br/
-    = f.password_field :password
-    = f.password_field :new_password
-    = f.password_field :new_password_confirmation
+    = f.submit
 %div.right_page.user_page
+  - if @passwordChange
+    %h1 Change your password:
+    = form_for @user, :url => update_password_user_url, :method => :post do |f|
+      = f.label 'Old Password'
+      = password_field_tag 'old_password'
+      %br
+      = f.label :password
+      = f.password_field :password
+      %br
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation
+      %br
+      = f.submit

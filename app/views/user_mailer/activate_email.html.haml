@@ -3,4 +3,10 @@
   %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}
 %body
   %h1
-    = "Hello there, #{@name}"
+    = "Thanks for signing up, #{@name}!"
+  %p
+    This is your unique activation link. After clicking this link, your e-mail address will be verified and you can start creating recipes!
+  %p
+    If you have a Facebook account, consider connecting it with Forkin.it so you can share your created and forked recipes with your friends!
+  %p
+    = activate_user_url(@user, @user.token.activate_token)

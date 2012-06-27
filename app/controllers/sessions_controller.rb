@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
         render :text => user.errors.full_messages
       end
     else
-      user = User.new(:name => auth_hash['info']['name'], :email => auth_hash['info']['email'], :display_name => auth_hash['info']['name'])
+      user = User.new(:name => auth_hash['info']['name'], :email => auth_hash['info']['email'], :display_name => auth_hash['info']['name'], :is_activated => true)
       user.authorizations.build :provider => auth_hash["provider"], :uid => auth_hash["uid"], :access_token => auth_hash['credentials']['token']
       if user.save(:validate => false)
         session[:user_id] = user.id
