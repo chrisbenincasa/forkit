@@ -97,8 +97,7 @@ class UsersController < ApplicationController
   def activate
     token = Token.find_by_active_token(params[:activation_id])
     if token
-      token.user.is_active = true
-      if token.user.save
+      if token.user.update_attributes(:is_activated => true)
         redirect_to root_url, :notice => 'Successfully activated your account!'
       else
         redirect_to root_url, :notice => 'Something went wrong with activation'
