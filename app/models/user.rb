@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :personalRecipeInfo
   has_many :recipes, :through => :personalRecipeInfo
   #has_many :settings
-  has_one :token
+  has_one :token, :foreign_key => 'user_id', :class_name => 'Token'
   has_many :authorizations
   attr_accessible :name, :display_name, :email, :password, :password_confirmation
 
