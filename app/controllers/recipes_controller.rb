@@ -124,10 +124,10 @@
       if i['name'].empty?
         break
       end
-      i['name'] = i['name'].gsub(/\b\w/){$&.upcase}
+      formatted_name = i['name'].gsub(/\b\w/){$&.upcase}
       ingredient = Ingredient.find_by_name(i['name'])
       if ingredient.nil?
-        ingredient = Ingredient.new({"name" => i['name']})
+        ingredient = Ingredient.new({"name" => formatted_name, 'url_slug' => get_slug(i['name'])})
       end
       if !@recipe.ingredients.include?(ingredient)
         @recipe.ingredients << ingredient
