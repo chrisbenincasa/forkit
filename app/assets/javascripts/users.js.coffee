@@ -37,7 +37,7 @@ $(document).ready (e) ->
 
   setTimeout -> 
     $('.flash').slideUp(100)
-  , 3000
+  , 5000
 
   ###$('.editable').on 'hover', ->
     $(this).toggleClass('edit_hover')

@@ -16,6 +16,7 @@ class Recipe < ActiveRecord::Base
   validates_presence_of :cook_time
   validates_presence_of :desc
   validates_length_of :desc, :minimum => 100
+  
   def to_param
     url_slug
   end

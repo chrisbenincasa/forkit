@@ -110,7 +110,6 @@
   # POST /recipes
   # POST /recipes.json
   def create
-    logger.debug params
     params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
     params[:recipe]['created_by'] = current_user.id
     params[:recipe]['cook_time'] = "#{params[:cook_time][0]}d#{params[:cook_time][1]}h#{params[:cook_time][2]}m"
