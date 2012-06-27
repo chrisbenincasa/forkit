@@ -19,4 +19,21 @@ class PasswordResetsController < ApplicationController
       redirect_to root_url, :notice => 'User not found.'
     end
   end
+
+  def edit
+    token = Token.find_by_reset_token(params[:id])
+    @user = token.user
+  end
+
+  def update
+    token = Token.includes(:user).find_by_reset_token(params[:id])
+    @user = token.user
+    if token.updated_at > 2.hours.ago
+      redirect_to root_url, :notice => 'Password reset has expired.'
+    elsif @user.update_attributes(params[:user])
+      redirect_to root_url, :notice => 'Password has been reset.'
+    else
+      render :edit
+    end
+  end
 end
