@@ -73,6 +73,9 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def update
+  end
+
   def activate
     logger.debug params
     UserMailer.activate_email(params).deliver
