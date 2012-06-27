@@ -1,4 +1,6 @@
 Recipes::Application.routes.draw do
+  get "password_resets/new"
+
   root :to => 'users#index'
   get "sessions/new"
   get "users/new"
@@ -8,6 +10,7 @@ Recipes::Application.routes.draw do
   match '/auth/:provider/callback', :to => 'sessions#omni'
   match '/auth/failure', :to => 'sessions#failure'
   post '/users/activate' => 'users#activate'
+  resources :password_resets
   resources :users do
     member do
       get 'recipes'

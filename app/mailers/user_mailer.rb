@@ -13,4 +13,9 @@ class UserMailer < ActionMailer::Base
     @test = 'SOME TEST STRING'
     mail(:to => 'chrisbenincasa@gmail.com', :subject => 'Some testing shit')
   end
+
+  def password_reset_email(user)
+    @user = user
+    mail :to => user.email, :subject => 'Password reset for Forkin.it'
+  end
 end

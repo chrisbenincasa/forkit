@@ -36,4 +36,8 @@ class User < ActiveRecord::Base
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
   end
+
+  def generate_token
+    SecureRandom.urlsafe_base64
+  end
 end
