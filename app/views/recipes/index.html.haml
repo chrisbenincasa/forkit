@@ -1,7 +1,7 @@
 = content_for :add_javascripts do
   = javascript_include_tag 'infinite_recipes'
 %div.recipe_index_header.show_header
-  = link_to 'New Recipe', new_recipe_path
+  = link_to 'New Recipe', new_recipe_path if current_user and current_user.is_activated?
   %h1 All Recipes
   %div.sorter
     = sortable 'name'

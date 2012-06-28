@@ -40,4 +40,8 @@ class User < ActiveRecord::Base
   def generate_token
     SecureRandom.urlsafe_base64
   end
+
+  def is_activated?
+    return self.is_activated
+  end
 end

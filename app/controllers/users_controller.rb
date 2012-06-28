@@ -12,6 +12,7 @@ class UsersController < ApplicationController
     if current_user
       @user = current_user
       @firstName = name_to_use(@user)[1]
+      logger.debug session[:recent_recipes]
       if session[:recent_recipes]
         r_view_recipes = Recipe.find(session[:recent_recipes])
         @recentlyViewed = session[:recent_recipes].map{|id| r_view_recipes.detect{|each| each.id == id}}.reverse[0..3]
@@ -71,6 +72,7 @@ class UsersController < ApplicationController
   def edit
     @page = false
     @user = current_user
+    logger.debug current_user
     @passwordChange = Authorization.find_by_user_id_and_provider(@user.id, 'facebook') == nil ? true : false 
   end
 
@@ -80,7 +82,6 @@ class UsersController < ApplicationController
 
   def update_password
     @user = current_user
-    logger.debug User.authenticate(@user.email, params['old_password'])
     if @user == User.authenticate(@user.email, params['old_password'])
       respond_to do |format|
         if @user.update_attributes(params[:user])
@@ -94,7 +95,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def activate
+  def new_user_activate
     token = Token.find_by_active_token(params[:activation_id])
     if token
       if token.user.update_attributes(:is_activated => true)
@@ -105,7 +106,24 @@ class UsersController < ApplicationController
     else
       redirect_to root_url, :notice => 'Activation ID could not be found'
     end
+  end
 
+  def profile_activate
+    @user = current_user
+    if @user
+      if @user.token
+        @user.token.active_token = @user.generate_token
+        if !@user.token.save
+          redirect_to root_url, :notice => 'Activation token could not be saved.'
+        end
+      else
+        @user.create_token(:active_token => @user.generate_token)
+      end
+      @user.token.send_activation_email
+      redirect_to root_url, :notice => "Activation e-mail sent to #{@user.email}"
+    else
+      redirect_to current_user
+    end
   end
 
   def create

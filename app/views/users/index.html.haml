@@ -2,10 +2,14 @@
   - if current_user
     %h2.welcome
       = "Welcome back, #{@firstName}!"
-    %p
-      = link_to 'New Recipe', new_recipe_path    
+    - if current_user.is_activated?
+      %p
+        = link_to 'New Recipe', new_recipe_path 
+    = form_tag("../search/recipes", :method => 'get') do
+      = text_field_tag :q, nil, {:placeholder => 'Search recipes!'}
+      = submit_tag 'Search'   
     %p      
-      = link_to 'Or browse other user\'s recipes!', recipes_path
+      = link_to 'Browse All Recipes', recipes_path
 
 %div.inner.right_page.index_page
   - if current_user

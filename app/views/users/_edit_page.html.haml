@@ -18,3 +18,9 @@
       = f.password_field :password_confirmation
       %br
       = f.submit
+  - if !current_user.is_activated?
+    = form_for @user, :url => generate_activate_user_url, :method => :post do |f|
+      = f.label :email
+      = f.text_field :email
+      %br
+      = f.submit 'Send Activation E-mail'

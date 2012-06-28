@@ -16,7 +16,8 @@ Recipes::Application.routes.draw do
       get 'recipes'
       get 'faved_recipes'
       post 'update_password'
-      match '/:activation_id/activate' => 'users#activate', :as => 'activate'
+      match '/:activation_id/activate' => 'users#new_user_activate', :as => 'activate'
+      post '/generate_activation' => 'users#profile_activate', :as => 'generate_activate'
     end
     resources :recipes do
       match '/fav' => 'users#favorite'
