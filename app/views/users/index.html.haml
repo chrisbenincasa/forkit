@@ -6,7 +6,8 @@
       = link_to 'New Recipe', new_recipe_path, :class => 'pretty_button add'
     - else
       %p
-        = "To create a new recipe #{link_to 'activate your profile.', edit_user_path(current_user)}"    
+        To create a new recipe  
+        = link_to 'activate your profile.', edit_user_path(current_user)    
     %p      
       = link_to 'Browse Recipes', recipes_path, :class => 'pretty_button'
     = form_tag("../search/recipes", :method => 'get', :class => 'home_page_search') do
