@@ -51,7 +51,7 @@
         @favorite = false
         @personal_rating = nil
       end
-      if session[:recent_recipes].index(@recipe.id) == nil
+      if session[:recent_recipes] and session[:recent_recipes].index(@recipe.id) == nil
         if session[:recent_recipes].count > 3
           session[:recent_recipes].shift
         end
