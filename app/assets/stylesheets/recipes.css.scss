@@ -4,15 +4,8 @@
 @font-face
 {
   font-family: 'Handwriting';
-  src: font-url('JustTheWayYouAre.ttf');
+  //src: font-url('JustTheWayYouAre.ttf');
 }
-
-
-body
-{
-  font-family: sans-serif;
-}
-
 a
 {
   color: red;
@@ -74,6 +67,11 @@ div.wrap
     div.right_page
     {
       padding: 106px 50px 25px 40px;
+
+      &.user_page
+      {
+        padding-top: 113px;
+      }
     }
 
     div.left_page
@@ -117,6 +115,22 @@ div.clearfix
 .recipes
 {
   margin-top: 10px;
+}
+
+div.recipe_header
+{
+  padding-right: 63px;
+
+  h2
+  {
+    display: inline-block;
+  }
+
+  a
+  {
+    float: right;
+    vertical-align: text-bottom;
+  }
 }
 
 div.recipe_list
@@ -280,11 +294,11 @@ div.inner
   }
   h2
   {
-    padding-top: 8px;
+    padding-top: 6px;
   }
   p
   {
-    font-family: 'Handwriting';
+    //font-family: 'Handwriting';
     padding-top: 12px;
   }
 }
@@ -673,7 +687,7 @@ div.user_page
   {
     h2
     {
-      margin-bottom: 10px;
+      //margin-bottom: 10px;
       text-align: center;
     }
     float: left;
@@ -681,8 +695,14 @@ div.user_page
   }
   div.recipe_list
   {
+    padding: 0;
     //float: left;
     width: 230px;
+
+    div.recipe_picture
+    {
+      margin-bottom: 0;
+    }
   }
 }
 

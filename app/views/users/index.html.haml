@@ -3,21 +3,24 @@
     %h2.welcome
       = "Welcome back, #{@firstName}!"
     - if current_user.is_activated?
+      = link_to 'New Recipe', new_recipe_path, :class => 'pretty_button add'
+    - else
       %p
-        = link_to 'New Recipe', new_recipe_path 
-    = form_tag("../search/recipes", :method => 'get') do
-      = text_field_tag :q, nil, {:placeholder => 'Search recipes!'}
-      = submit_tag 'Search'   
+        = "To create a new recipe #{link_to 'activate your profile.', edit_user_path(current_user)}"    
     %p      
-      = link_to 'Browse All Recipes', recipes_path
+      = link_to 'Browse Recipes', recipes_path, :class => 'pretty_button'
+    = form_tag("../search/recipes", :method => 'get', :class => 'home_page_search') do
+      = text_field_tag :q, nil, {:placeholder => 'Search recipes!'}
+      = submit_tag 'Search', :class => 'pretty_button inline small_font'
 
 %div.inner.right_page.index_page
   - if current_user
     - if @recentlyViewed
-      %h2 Recently Viewed Recipes
+      %h2 Your Recent History
       = render :partial => 'recipes/recipes', :locals => {:recipes => @recentlyViewed, :type => 'index'}
     - else
-      No recipes viewed in a while!
+      %h2
+        No recipes viewed in a while!
   - else
     %h1 Howdy, Stranger!
     %p You need to login or sign up start your recipe book!

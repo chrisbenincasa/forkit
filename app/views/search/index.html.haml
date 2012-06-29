@@ -3,5 +3,5 @@
     Search Recipes!
   %div.search_wrap
     = form_tag '../search/recipes', :method => 'get' do
-      = text_field_tag :q
-      = submit_tag 'Search'
+      = text_field_tag :q, '', :placeholder => 'Enter recipe or ingredient names'
+      = submit_tag 'Search', :class => 'pretty_button inline'

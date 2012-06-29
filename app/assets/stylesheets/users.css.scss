@@ -25,6 +25,23 @@ div.recipe_book_header
 
 div.left_page.user_page
 {
+  div.user_page_header
+  {
+    padding-right: 63px;
+
+    a
+    {
+      float: right;
+      position: relative;
+      top: 23px;
+    }
+  }
+
+  div.user_stats
+  {
+    margin-bottom: 26px;
+  }
+
   h1
   {
     display: inline-block;
@@ -58,8 +75,54 @@ div.friend_wrap
     cursor: pointer;
     border-color: #FBFAD5;
   }
-
 }
+
+form.home_page_search
+{
+  input[type='text']
+  {
+    vertical-align: middle;
+    outline: none;
+    border: none;
+    padding: 5px 0;
+    font-size: 14pt;
+    border: thin solid lightgray;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 1px 1px 1px 0px #ccc;
+    box-shadow: inset 1px 1px 1px 0px #ccc;
+  }
+}
+
+.counts
+{
+  text-align: right;
+  float: right;
+  padding-right: 65px;
+
+  a
+  {
+    text-transform: uppercase;
+    font-size: 10pt;
+    strong
+    {
+      font-size: 14pt;
+    }
+  }
+
+  p
+  {
+    padding-top: 9px;
+  }
+}
+
+.top_ingredients
+  {
+    float: left;
+    p
+    {
+      padding-top: 11px;
+    }
+  }
 
 path:hover
 {

@@ -1,4 +1,7 @@
-%h1 Friends:
+%h1{:style => 'display: inline-block;'} Friends:
+%div.right
+  %a.pretty_button.inline{:href => '#'}
+    Invite
 %div.friend_wrap
   - @friends.each do |friend|
     %div.friend-box

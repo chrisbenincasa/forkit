@@ -7,7 +7,10 @@
       %div.tape.left-tape.bottom-tape
       %div.tape.left-tape.top-tape
       %div.recipe_details
-    %h2 Details:
+    %div.recipe_header
+      %h2 Details:
+      - if current_user and @myRecipe
+        = link_to 'Edit', edit_recipe_path(@recipe), :class => 'pretty_button edit inline'
     %p
       Created by:
       = link_to @created_by_name, user_recipes_url(@created_by.id)
@@ -58,9 +61,6 @@
   %div.first_page
     %h1
       = @recipe.name.titleize
-    - if current_user
-      - if @myRecipe
-        = link_to 'Edit', edit_recipe_path(@recipe)
     %div.recipe_info.right_page_inner
       %h2 Ingredients:
       %div.ingredients

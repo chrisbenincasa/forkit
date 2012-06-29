@@ -12,7 +12,7 @@ class UsersController < ApplicationController
     if current_user
       @user = current_user
       @firstName = name_to_use(@user)[1]
-      logger.debug session[:recent_recipes]
+      puts session[:recent_recipes].inspect
       if session[:recent_recipes]
         r_view_recipes = Recipe.find(session[:recent_recipes])
         @recentlyViewed = session[:recent_recipes].map{|id| r_view_recipes.detect{|each| each.id == id}}.reverse[0..3]
@@ -48,9 +48,16 @@ class UsersController < ApplicationController
       return
     end
     @avatarUrl = get_avatar_url(@user)
-    names = name_to_use(@user)
-    @name = names[0]
-    @first = names[1]
+    if current_user && current_user == @user
+      @name = current_user.display_name
+      @first = 'You'
+      @possessive = 'Your'
+    else
+      names = name_to_use(@user)
+      @name = names[0]
+      @first = names[1]
+      @possessive = @first + "'s"
+    end
     @allIngredients = []
     @user.recipes.each{|r| r.ingredients.each{|i| @allIngredients.push(i)} }
     favorites = get_faves(@user)
@@ -101,10 +108,10 @@ class UsersController < ApplicationController
       if token.user.update_attributes(:is_activated => true)
         redirect_to root_url, :notice => 'Successfully activated your account!'
       else
-        redirect_to root_url, :notice => 'Something went wrong with activation'
+        redirect_to root_url, :notice => 'Something went wrong with activation. Try again later.'
       end
     else
-      redirect_to root_url, :notice => 'Activation ID could not be found'
+      redirect_to root_url, :notice => 'Invalid activation id.'
     end
   end
 
@@ -114,7 +121,7 @@ class UsersController < ApplicationController
       if @user.token
         @user.token.active_token = @user.generate_token
         if !@user.token.save
-          redirect_to root_url, :notice => 'Activation token could not be saved.'
+          redirect_to root_url, :notice => 'Something went wrong with activation. Try again later.'
         end
       else
         @user.create_token(:active_token => @user.generate_token)
@@ -122,7 +129,7 @@ class UsersController < ApplicationController
       @user.token.send_activation_email
       redirect_to root_url, :notice => "Activation e-mail sent to #{@user.email}"
     else
-      redirect_to current_user
+      redirect_to current_user, :notice => 'You don\'t have access to this page.'
     end
   end
 

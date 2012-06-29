@@ -5,6 +5,7 @@
   # GET /recipes.json
   def index
     @recipes = Recipe.includes(:ingredients).order(sort_type + " " + sort_direction).page(params[:page]).per(9)
+    @activeSort = sort_type
     respond_to do |format|
       format.html { render :layout => 'wall'}
       format.json { render json: @recipes }

@@ -29,6 +29,9 @@ $(document).ready (e) ->
   $('.forkit_link').on 'ajax:error', (xhr, status, error) ->
     console.log xhr, status, error
 
+  $('a.sorter').on 'click', (e) ->
+    $(this).addClass('active')
+
   $(document).on 'mouseenter', '.has_overlay', (e) ->
     $(this).find('.overlay').stop(true, true).fadeIn('fast')
 

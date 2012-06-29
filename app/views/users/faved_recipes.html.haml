@@ -3,4 +3,4 @@
 %div
   %h1
     = "#{@name}'s Forked Recipes"
-  = render :partial => 'recipes/recipes', :locals => {:recipes => @favedRecipes, :type => 'faved'}
+  = render :partial => 'recipes/recipes_overlay', :locals => {:recipes => @favedRecipes, :type => 'faved'}

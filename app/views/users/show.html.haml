@@ -1,41 +1,43 @@
 - content_for :add_javascripts do
-  = javascript_include_tag 'd3.v2'
+  = javascript_include_tag 'raphael-min'
   = javascript_include_tag 'graphs'
 %div.left_page.user_page
-  %h1
-    = image_tag @avatarUrl
-    = "#{@name}'s Profile"
-  - if @user == current_user
-    = link_to 'Edit Profile', edit_user_path(@user)
-  %div.user_info
-    %p
+  %div.user_page_header
+    %h1
+      = image_tag @avatarUrl
+      = "#{@name}"
+    - if @user == current_user
+      = link_to 'Edit Profile', edit_user_path(@user), :class => 'pretty_button inline small_font edit'
   %div.user_stats
     %div.counts
       %p
-        = "#{@first} has forked"
-        - if @totalFav > 0
-          = link_to (pluralize(@totalFav, 'recipe')), faved_recipes_user_url(@user)
-        - else
-          = pluralize(@totalFav, 'recipe')
+        = link_to (faved_recipes_user_url(@user)) do
+          %strong
+            = @totalFav
+          forked 
       %p
-        = "#{@first} has added"
-        - if @totalCreated > 0
-          = link_to pluralize(@totalCreated, 'recipe'), recipes_user_url(@user)
-        - else
-          = pluralize(@totalCreated, 'recipe')
-    - if @allIngredients
-      %div.top_ingredients
-        %p
-          = "#{@first}'s most used ingredients"
+        = link_to (recipes_user_url(@user)) do
+          %strong
+            = @totalCreated
+          created
+      %div.clearfix
+    %div.clearfix
+  %div.recents
+    - if @recentCreated
+      %div.recent
+        = render :partial => 'recipes/recipe', :locals => {:recipe => @recentCreated, :type => 'created'}
+        %h2 Recently Created
+    - if @recentFav
+      %div.recent
+        = render :partial => 'recipes/recipe', :locals => {:recipe => @recentFav, :type => 'rated'}
+        %h2 Recently Forked
+    %div.clearfix
 %div.right_page.user_page
-  - if @recentCreated
-    %div.recent
-      %h2 Recently Created
-      = render :partial => 'recipes/recipe', :locals => {:recipe => @recentCreated, :type => 'created'}
-  - if @recentFav
-    %div.recent
-      %h2 Recently Forked
-      = render :partial => 'recipes/recipe', :locals => {:recipe => @recentFav, :type => 'rated'}
+  - if @allIngredients
+    %div.top_ingredients
+      %h2
+        = "Most Used Ingredients"
+      %div#ingredients_graph
 %script
   - if @allIngredients
     != "generatePieGraph(#{@allIngredients.to_json})"
