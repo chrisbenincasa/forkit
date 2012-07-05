@@ -13,3 +13,9 @@
 # ActiveSupport::Inflector.inflections do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.plural /^(slice)$/i, '\1s'
+  inflect.singular /^(slice)s$/i, '\1'
+  inflect.singular(/ess$/i, 'ess')
+end

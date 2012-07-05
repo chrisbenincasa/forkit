@@ -1,6 +1,10 @@
 %div.ingredient_show_header.show_header
   %h1
     = @ingredient.name
+  %div.sorter
+    = sortable 'name'
+    = sortable 'created_at', 'Date'
+    = sortable 'favorites', 'Forks'
   %h3
     Featured in 
     = pluralize(@recipes.length, 'recipe')

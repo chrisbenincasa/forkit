@@ -11,9 +11,9 @@ $(document).ready (e) ->
   $('div.bookmark').hover ->
     $(this).toggleClass('hovered')
     if $(this).hasClass('forked')
-      tooltip = $ JST['tooltip']({forked: true})
+      tooltip = $ JST['bookmark_tooltip']({forked: true})
     else
-      tooltip = $ JST['tooltip']({forked: false})
+      tooltip = $ JST['bookmark_tooltip']({forked: false})
     $(this).append(tooltip)
   , ->
     if $(this).hasClass('hovered')
@@ -28,6 +28,22 @@ $(document).ready (e) ->
 
   $('.forkit_link').on 'ajax:error', (xhr, status, error) ->
     console.log xhr, status, error
+
+  if !!('placeholder' in document.createElement('input') && 
+        'placeholder' in document.createElement('textarea'))
+    $('input').each ->
+      $this = $(this)
+      if $this.val() == '' && $this.attr('placeholder') != ''
+        $this.val $this.attr('placeholder')
+        $this.css('color', '#a9a9a9')
+        $this.focus ->
+          if $this.val() == $this.attr('placeholder')
+            $this.val('')
+            $this.css('color', '#000')
+        $this.blur ->
+          if $this.val() == ''
+            $this.val($this.attr('placeholder'))
+            $this.css('color', '#a9a9a9')
 
   $('a.sorter').on 'click', (e) ->
     $(this).addClass('active')

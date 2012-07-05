@@ -43,15 +43,29 @@
     %h1 New Recipe
     %div.right_page_inner
       %div.new_ingredients
-        %a.add_new_ingredient{:href => '#'}Add another ingredient
-        %div.ingredient
-          =text_field_tag :name, nil, {:placeholder => 'Enter ingredient name', :name => 'ingredients[][name]', :class => 'ingredients-input'}
-          =text_field_tag :amount, nil, {:placeholder => 'Amount', :name => "ingredients[][amount]", :class => 'ingredients-amount'}
-          =text_field_tag :units, nil, {:placeholder => 'Units', :name => "ingredients[][units]", :class => 'ingredients-units'}
+        Ingredients:
+        %a.add_new_ingredient.right{:href => '#'}Add another ingredient
+        %div.ingredient_list
+          %div.ingredient.example
+            %label.name{:for => 'ingredients[][name]'}
+              Name
+            %label.amount
+              Amount
+            %label.units
+              Units
+            %label.details
+              Details 
+              %span{:style => 'font-size: 0.85em'}
+                (ex: chopped)
+          %div.ingredient
+            =text_field_tag :name, nil, {:placeholder => 'Name', :name => 'ingredients[][name]', :class => 'ingredients-input'}
+            =text_field_tag :amount, nil, {:placeholder => 'Amount', :name => "ingredients[][amount]", :class => 'ingredients-amount'}
+            =text_field_tag :units, nil, {:placeholder => 'Units', :name => "ingredients[][units]", :class => 'ingredients-units'}
+            =text_field_tag 'details', nil, {:placeholder => 'Details', :name => 'ingredients[][details]', :class => 'ingredients-details'}
       %div.prepartation
         = f.label :desc, "Preparation Instructions:"
         = f.text_area :desc, :rows => 10, :placeholder => 'How do you make it?'
 
       %div.actions
-        = f.submit
+        = f.submit 'Create recipe', {:class => 'pretty_button save'}
         /= f.button('Cancel', {:type => 'button'})

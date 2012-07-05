@@ -101,15 +101,18 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
                 color = Raphael.hsb(hues[start], .75, 1),
                 ms = 500,
                 delta = 30,
-                bcolor = Raphael.hsb(hues[start], 1, 1),
+                bcolor = Raphael.hsb(hues[start], 1, .9),
                 p = sector(cx, cy, r, angle, angle + angleplus, {fill: "90-" + bcolor + "-" + color, stroke: stroke, "stroke-width": 2}),
-                txt = paper.text(cx + (r + delta + 28) * Math.cos(-popangle * rad), cy + (r + delta + 10) * Math.sin(-popangle * rad), labels[j]).attr({fill: '#000', stroke: "none", opacity: 0, "font-size": 18});
+                txt = paper.text(cx + (r + delta + 10) * Math.cos(-popangle * rad), cy + (r + delta + 5) * Math.sin(-popangle * rad), labels[j]).attr({fill: '#000', stroke: "none", "font-size": 18});
             p.mouseover(function () {
                 p.stop().animate({transform: "s1.1 1.1 " + cx + " " + cy}, ms, "elastic");
-                txt.stop().animate({opacity: 1}, ms - 300, "linear");
+                //txt.stop().animate({opacity: 1}, ms - 300, "linear");
             }).mouseout(function () {
                 p.stop().animate({transform: ""}, ms, "bounce");
-                txt.stop().animate({opacity: 0}, ms);
+                //txt.stop().animate({opacity: 0}, ms);
+            }).click(function(e){
+                label = $(e.target.nextSibling.childNodes[0]).text().toLowerCase();
+                window.location = '/ingredients/'+label;
             });
             angle += angleplus;
             chart.push(p);
@@ -122,6 +125,11 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
     }
     for (i = 0; i < ii; i++) {
         process(i);
+    }
+    console.log(chart)
+    for(i = 0; i < chart.length; i++)
+    {
+      chart[i].attrs.class = 'test1';
     }
     return chart;
 };

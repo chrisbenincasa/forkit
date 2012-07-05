@@ -1,9 +1,11 @@
 class IngredientsController < ApplicationController
   layout 'recipes'
+  helper_method :sort_type, :sort_direction
   # GET /ingredients
   # GET /ingredients.json
   def index
-    @ingredients = Ingredient.order('name ASC')
+    @ingredients = Ingredient.order(sort_type + " " + sort_direction)
+    @activeSort = sort_type
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @ingredients }
@@ -86,4 +88,12 @@ class IngredientsController < ApplicationController
     @ingredient = Ingredient.find(params[:id])
     @recipes = @ingredient.recipes
   end
+end
+
+def sort_type
+  Recipe.column_names.include?(params[:sort]) ? params[:sort] : 'created_at'
+end
+
+def sort_direction
+  %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
 end

@@ -67,9 +67,7 @@
         %ul.ingredient_list
           - @ingredients.each do |ingredient|
             %p.ingredient
-              = link_to ingredient['ingredient'].name, ingredient['ingredient']
-              = ingredient['amount']
-              = ingredient['units'] unless ingredient['units'].nil?
+              != formatIngredient(ingredient)
     %p
       Turn the page for cooking instructions!
   %div.second_page

@@ -1,4 +1,10 @@
 = form_for(@recipe) do |f|
+  - if @recipe.errors.any?
+    %div#error_explaination
+      %h2= pluralize(@recipe.errors.count, 'error') 
+      %ul
+        - @recipe.errors.full_messages.each do |msg|
+          %li= msg
   %div.inner.left_page
     %div.pencil
     %div.image_field
@@ -39,8 +45,9 @@
         - @ingredients.each do |ingredient|
           %div.ingredient
             = text_field_tag :name, ingredient['name'], {:name => 'ingredients[][name]', :class => 'ingredients-input', :placeholder => 'Enter ingredient name'}
-            = text_field_tag :amount, (ingredient['amount'].nil? ? nil : ingredient['amount']), {:name => 'ingredients[][amount]', :class => 'ingredients-amount', :placeholder => 'Amount'}
+            = text_field_tag :amount, (ingredient['amount'].nil? ? nil : float_to_frac_string(ingredient['amount'])), {:name => 'ingredients[][amount]', :class => 'ingredients-amount', :placeholder => 'Amount'}
             = text_field_tag :units, (ingredient['units'].nil? ? nil : ingredient['units']), {:name => 'ingredients[][units]', :class => 'ingredients-units', :placeholder => 'Units' }
+            =text_field_tag :details, (ingredient['details'].nil? ? nil : ingredient['details']), {:placeholder => 'Details', :name => 'ingredients[][details]', :class => 'ingredients-details'}
       %div.prepartation
         = f.label :desc, "Preparation Instructions:"
         = f.text_area :desc, :rows => 10

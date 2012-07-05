@@ -1,26 +1,28 @@
-%div.left_page.user_page
-  %h1 Edit your profile:
+%div.left_page.user_edit_page
+  %h1 Edit your profile
   = form_for @user do |f|
+    = f.label :display_name, 'Display Name: '
     = f.text_field :display_name
     %br/
-    = f.submit
-%div.right_page.user_page
-  - if @passwordChange
-    %h1 Change your password:
+    = f.submit 'Update', :class => 'pretty_button inline'
+%div.right_page.user_edit_page
+  - if !@passwordChange
+    %h1 Change your password
     = form_for @user, :url => update_password_user_url, :method => :post do |f|
-      = f.label 'Old Password'
+      = label_tag 'old_password', 'Old Password: '
       = password_field_tag 'old_password'
       %br
-      = f.label :password
+      = f.label :password, 'New Password: '
       = f.password_field :password
       %br
-      = f.label :password_confirmation
+      = f.label :password_confirmation, 'Confirm New Password: '
       = f.password_field :password_confirmation
       %br
-      = f.submit
-  - if !current_user.is_activated?
+      = f.submit 'Update password', :class => 'pretty_button inline'
+  - if !!current_user.is_activated?
+    %h1 Activate your account
     = form_for @user, :url => generate_activate_user_url, :method => :post do |f|
       = f.label :email
       = f.text_field :email
       %br
-      = f.submit 'Send Activation E-mail'
+      = f.submit 'Send Activation E-mail', :class => 'pretty_button inline'

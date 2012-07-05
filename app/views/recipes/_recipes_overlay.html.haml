@@ -3,10 +3,18 @@
     %div.recipe_picture{:id => "#{recipe.name}", :class => "recipe_#{index % 4} has_overlay"}
       %div.overlay
         = link_to recipe.name, recipe
+        %h1
+          = recipe.name
         %ul
-          - recipe.ingredients[0..3].each do |ingredient|
-            %li.ingredient
-              = ingredient.name
+          - if recipe.ingredients.count < 4
+            - recipe.ingredients[0..(recipe.ingredients.length - 1)].each do |ingredient|
+              %li.ingredient
+                = ingredient.name
+          - else
+            = "Showing 4 of #{recipe.ingredients.count} ingredients"
+            - recipe.ingredients[0..3].each do |ingredient|
+              %li.ingredient
+                = ingredient.name
         = pluralize(recipe.favorites, 'fork')
         %br
         = "Difficulty: #{recipe.difficulty}"
@@ -19,7 +27,7 @@
           = link_to image_tag('default.png', :size => '200x200'), recipe
         %div.recipe_bottom
           %div.recipe_link
-            = link_to recipe.name, recipe
+            = recipe.name
           %div.right
             = pluralize(recipe.favorites, 'fork')
   %div.clearfix

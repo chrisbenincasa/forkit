@@ -1,3 +1,4 @@
+ require 'mathn'
  class RecipesController < ApplicationController
   layout 'recipes'
   helper_method :sort_type, :sort_direction
@@ -27,6 +28,7 @@
       temp['ingredient'] = @recipe.ingredients.select{|i| i.id == amount.ingredient_id}.first
       temp['amount'] = amount.amount
       temp['units'] = amount.units
+      temp['details'] = amount.details
       @ingredients << temp
     end
 
@@ -102,6 +104,7 @@
       temp['name'] = @recipe.ingredients.select{|i| i.id == amount.ingredient_id}.first.name
       temp['amount'] = amount.amount
       temp['units'] = amount.units
+      temp['details'] = amount.details
       @ingredients << temp
     end
     logger.debug @ingredients
@@ -264,8 +267,15 @@
   def add_amounts(recipe, amounts)
     recipe.ingredients.each_with_index do |ingredient, index|
       amount = recipe.amounts.find_by_ingredient_id(ingredient.id)
-      amount.amount = amounts[index]['amount'].to_i
-      amount.units = amounts[index]['units'] unless amounts[index]['units'].nil?
+      if amounts[index]['amount'].scan('.').length != 0
+        amount.amount = amounts[index]['amount'].to_f.round(3)
+      elsif amounts[index]['amount'].scan('/').length != 0
+        amount.amount = frac_to_float(amounts[index]['amount'])
+      else
+        amount.amount = amounts[index]['amount']
+      end
+      amount.units = (amounts[index]['units'].nil? or amounts[index]['units'].blank?) ? '' : amounts[index]['units']
+      amount.details = amounts[index]['details'] unless (amounts[index]['details'].nil? or amounts[index]['details'].blank?)
       amount.save
     end
   end
@@ -277,5 +287,22 @@
     times = cook_string.split(/\D/)
     return {'d' => times[0], 'h' => times[1], 'm' => times[2]}
     end
+  end
+
+  def frac_to_float(fraction)
+  number1, number2 = fraction.split(/\s/)
+  if number2.nil?
+    numerator, denominator = number1.split('/').map(&:to_f)
+    denominator ||= 1
+    return numerator/denominator
+  else
+    numerator, denominator = number2.split('/').map(&:to_f)
+    denominator ||= 1
+    return number1.to_f + (numerator/denominator)
+  end
+end
+
+  def float_to_frac(floatAmount)
+    return Rational(floatAmount, 1)
   end
 end

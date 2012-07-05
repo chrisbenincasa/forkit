@@ -1,18 +1,21 @@
-// Place all the styles related to the recipes controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'mixins';
+
 @font-face
 {
   font-family: 'Handwriting';
   //src: font-url('JustTheWayYouAre.ttf');
 }
+
 a
 {
-  color: red;
+  //padding: 3px 2px 0 0;
+  color: #e02a2d;
   text-decoration: none;
   &:hover
   {
-    color: steelblue;
+    @include transition(color, 20, ms);
+    @include transition(text-decoration, 20, ms);
+    color: #ff2b2b;
     text-decoration: underline;
   }
 }
@@ -24,7 +27,7 @@ p#notice
 
 div.wrap
 {
-  margin: 20px auto 10px;
+  margin: 0 auto 10px;
   width: 1200px;
   min-height: 800px;
   position: relative;
@@ -71,6 +74,11 @@ div.wrap
       &.user_page
       {
         padding-top: 113px;
+      }
+
+      &.user_edit_page
+      {
+        padding-top: 110px;
       }
     }
 
@@ -123,7 +131,7 @@ div.recipe_header
 
   h2
   {
-    display: inline-block;
+    @include inline-block;
   }
 
   a
@@ -152,6 +160,12 @@ div.recipe_list
       {
         display: block;
         margin-bottom: 5px;
+
+        &:hover
+        {
+          padding: 0;
+          background-color: white;
+        }
       }
       img
       {
@@ -170,18 +184,12 @@ div.recipe_list
 
       &.recipe_0, &.recipe_3
       {
-        -webkit-transform: rotate(2.5deg);
-        -moz-transform: rotate(2.5deg);
-        -ms-transform: rotate(2.5deg);
-        -o-transform: rotate(2.5deg);
+        @include rotate(2.5);
       }
 
       &.recipe_1, &.recipe_2
       {
-        -webkit-transform: rotate(-2.5deg);
-        -moz-transform: rotate(-2.5deg);
-        -ms-transform: rotate(-2.5deg);
-        -o-transform: rotate(-2.5deg);
+        @include rotate(-2.5);
       }
     }
   }
@@ -225,15 +233,17 @@ div.recipe_list
 
     div.overlay
     {
-      width: 300px;
-      height: 300px;
+      width: 290px;
+      height: 292px;
       background: image-url('overlay-bg.png');
       position: absolute;
       z-index: 2;
+      padding: 2px 5px 6px;
       display: none;
       color: white;
-      border-bottom-right-radius: 400px 30px;
-      -webkit-border-bottom-right-radius: 400px 30px;
+      @include single-border-radius(bottom-right, 400, 30);
+      //border-bottom-right-radius: 400px 30px;
+      //-webkit-border-bottom-right-radius: 400px 30px;
       a
       {
         display: block;
@@ -242,6 +252,11 @@ div.recipe_list
         height:100%;
         z-index: 2;
         text-indent: -9999px;
+      }
+
+      h1, h2
+      {
+        color: #fbfad5;
       }
     }
 
@@ -266,22 +281,22 @@ div.recipe_list
     &.recipe_0
     {
       background: image-url('postit_yellow.png') no-repeat;
-      -webkit-transform: rotate(-2deg);
+      @include rotate(-2);
     }
     &.recipe_1
     {
       background: image-url('postit_blue.png') no-repeat;
-      -webkit-transform: rotate(2deg);
+      @include rotate(2);
     }
     &.recipe_2
     {
       background: image-url('postit_green.png') no-repeat;
-      -webkit-transform: rotate(-2deg);
+      @include rotate(-2);
     }
     &.recipe_3
     {
       background: image-url('postit_orange.png') no-repeat;
-      -webkit-transform: rotate(2deg);
+      @include rotate(2);
     }
   }
 }
@@ -314,6 +329,11 @@ div.left_page
   &.recipe_show
   {
     padding-top: 90px;
+  }
+
+  &.user_edit_page
+  {
+    padding-top: 110px;
   }
 
   &.user_page
@@ -374,10 +394,7 @@ div.left_page
 
   img.detail_pic
   {
-    -webkit-transform: rotate(5deg);
-    -moz-transform: rotate(5deg);
-    -ms-transform: rotate(5deg);
-    -o-transform: rotate(5deg);
+    @include rotate(5);
     margin: 0 0 15px 175px;
   }
 
@@ -442,7 +459,7 @@ div.right_page
 
   h1
   {
-    display: inline-block;
+    @include inline-block;
   }
 
   div.right_page_inner
@@ -507,13 +524,10 @@ div.tape
   width: 117px;
   height: 37px;
   position: relative;
-  display: inline-block;
+  @include inline-block;
   &.left-tape
   {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(25deg);
-    -ms-transform: rotate(25deg);
-    -o-transform: rotate(25deg);
+    @include rotate(45);
   }
   &.bottom-tape
   {
@@ -534,7 +548,7 @@ form.edit_recipe, form.new_recipe
     float: left;
   }
 
-  input[type='text'], textarea
+  input[type='text'], input[type='password'], textarea
   {
     border: 0;
     outline: none;
@@ -545,20 +559,53 @@ form.edit_recipe, form.new_recipe
 
     &.ingredients-input
     {
-      width: 250px;
+      width: 150px;
     }
 
     &.ingredients-amount, &.ingredients-units
     {
       width: 75px;
-      //margin-right: 20px;
+      margin-right: 10px;
     }
-    //font-family: 'Handwriting';
+
+    &.ingredients-details
+    {
+      width: 150px;
+    }
   }
 
   div.new_ingredients, div.edit_ingredients
   {
     padding-top: 11px;
+    padding-right: 7px;
+
+    div.ingredient.example
+    {
+      //color: gray;
+      label
+      {
+        margin-bottom: 0;
+        @include inline-block;
+        &.name
+        {
+          width: 148px;
+        }
+        &.details
+        {
+          width: 150px;
+        }
+        &.amount
+        {
+          width: 75px;
+          margin-right: 5px;
+        }
+        &.units
+        {
+          width: 75px;
+          margin-right: 6px;
+        }
+      }
+    }
 
     label
     {
@@ -610,11 +657,18 @@ form.edit_recipe, form.new_recipe
   {
     padding-top: 11px;
 
+    label
+    {
+      display: block;
+    }
+
     textarea
     {
       padding-top: 9px;
       line-height: 27px;
       height: 300px;
+      width: 490px;
+      font-family: inherit;
     }
   }
 
@@ -629,10 +683,7 @@ form.edit_recipe, form.new_recipe
     width: 300px;
     border: thin dashed black;
     margin: 0 0 15px 175px;
-    -webkit-transform: rotate(5deg);
-    -moz-transform: rotate(5deg);
-    -ms-transform: rotate(5deg);
-    -o-transform: rotate(5deg);
+    @include rotate(5);
 
   }
 }
@@ -646,10 +697,7 @@ div.pencil
   z-index: 3;
   left: -300px;    
   top: 300px;
-  -webkit-transform: rotate(-75deg);
-  -moz-transform: rotate(-75deg);
-  -ms-transform: rotate(-75deg);
-  -o-transform: rotate(-75deg);
+  @include rotate(-75);
 }
 
 div.second_page
@@ -711,7 +759,7 @@ div.tooltip
   background: image-url('overlay-bg.png');
   width: 42px;
   height: 13px;
-  border-radius: 5px;
+  @include quick-border-radius(5);
   color: white;
   font-size: 10pt;
   padding: 5px;

@@ -1,6 +1,5 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'mixins';
+
 .user_recipes
 {
   li
@@ -18,7 +17,7 @@ div.recipe_book_header
   text-align: center;
   h1
   {
-    display: inline-block;
+    @include inline-block;
     vertical-align: text-bottom;
   }
 }
@@ -44,7 +43,7 @@ div.left_page.user_page
 
   h1
   {
-    display: inline-block;
+    @include inline-block;
   }
 }
 
@@ -84,7 +83,7 @@ form.home_page_search
     vertical-align: middle;
     outline: none;
     border: none;
-    padding: 5px 0;
+    padding: 5px 0 5px 5px;
     font-size: 14pt;
     border: thin solid lightgray;
     border-radius: 5px;
@@ -116,13 +115,29 @@ form.home_page_search
 }
 
 .top_ingredients
+{
+  float: left;
+  p
   {
-    float: left;
-    p
-    {
-      padding-top: 11px;
-    }
+    padding-top: 11px;
   }
+}
+
+form.edit_user
+{
+  input[type='text'], input[type='password']
+  {
+    border: thin lightgray solid;
+    margin: 0;
+    outline: none;
+    padding: 5px 0 5px 5px;
+    font-size: 12pt;
+    -webkit-box-shadow: inset 1px 1px 1px 0px #ccc;
+    box-shadow: inset 1px 1px 1px 0px #ccc;
+    width: 250px;
+    @include border-radius(10,10,10,10)
+  }
+}
 
 path:hover
 {
