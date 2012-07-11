@@ -180,7 +180,7 @@ class UsersController < ApplicationController
 
   def faved_recipes
     begin
-      @user = User.find(params[:id])
+      @user = User.includes(:personalRecipeInfo, :recipes => [:ingredients]).find(params[:id])
     rescue ActiveRecord::RecordNotFound
       redirect_to root_url
       return
@@ -189,7 +189,7 @@ class UsersController < ApplicationController
     @name = names[0]
     @first = names[1]
 
-    @favedRecipes = get_faves(@user).page(params[:page]).per(9)
+    @favedRecipes = get_faves(@user).page(params[:page]).per(9).order('created_at DESC')
     respond_to do |format|
       format.html {render :layout => 'wall'}
       format.json {render :json => @favedRecipes}

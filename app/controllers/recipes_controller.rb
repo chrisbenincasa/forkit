@@ -99,6 +99,7 @@
     @recipe = Recipe.includes(:ingredients).find_by_url_slug(params[:id])
     amounts = @recipe.amounts
     @ingredients = []
+    @cook_time = hash_from_cook_time_string(@recipe.cook_time)
     amounts.each do |amount|
       temp = {}
       temp['name'] = @recipe.ingredients.select{|i| i.id == amount.ingredient_id}.first.name
@@ -107,7 +108,6 @@
       temp['details'] = amount.details
       @ingredients << temp
     end
-    logger.debug @ingredients
     @availableIngredients = Ingredient.order('name ASC')
   end
 
@@ -160,6 +160,7 @@
   def update
     @recipe = Recipe.includes(:ingredients).find_by_url_slug(params[:id])
     @ingredients = params[:ingredients]
+    logger.debug @ingredients
     @ingredients.each do |i|
       if i['name'].empty?
         break
@@ -173,6 +174,7 @@
         @recipe.ingredients << ingredient
       end
     end
+    logger.debug params[:cook_time]
     params[:recipe]['url_slug'] = get_slug(params[:recipe]['name'])
     params[:recipe]['cook_time'] = "#{params[:cook_time][0]}d#{params[:cook_time][1]}h#{params[:cook_time][2]}m"
     respond_to do |format|
@@ -275,7 +277,7 @@
         amount.amount = amounts[index]['amount']
       end
       amount.units = (amounts[index]['units'].nil? or amounts[index]['units'].blank?) ? '' : amounts[index]['units']
-      amount.details = amounts[index]['details'] unless (amounts[index]['details'].nil? or amounts[index]['details'].blank?)
+      amount.details = (amounts[index]['details'].nil? or amounts[index]['details'].blank?) ? '' : amounts[index]['details']
       amount.save
     end
   end

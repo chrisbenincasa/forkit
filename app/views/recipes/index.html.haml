@@ -2,9 +2,15 @@
   = javascript_include_tag 'infinite_recipes'
 %div.recipe_index_header.show_header
   = link_to 'New Recipe', new_recipe_path, :class => 'pretty_button add' if current_user and current_user.is_activated?
-  %h1 All Recipes
-  %div.sorter
-    = sortable 'name'
-    = sortable 'created_at', 'Date'
-    = sortable 'favorites', 'Forks'
-= render :partial => 'recipes_overlay', :locals => {:recipes => @recipes, :type => 'recipe_index'}
+  %div.left
+    %h1 All Recipes
+    = form_tag '../search/recipes', :method => 'get' do
+      = text_field_tag :q, "", :placeholder => 'Search recipes'
+      = submit_tag 'Search', :class => 'pretty_button inline'
+  %div.right
+    %div.sorter
+      = sortable 'name'
+      = sortable 'created_at', 'Date'
+      = sortable 'favorites', 'Forks'
+  %div.clearfix
+= render :partial => 'recipes_new_overlay', :locals => {:recipes => @recipes, :type => 'recipe_new_index'}

@@ -1,5 +1,5 @@
 <% if @recipes.count > 0 %>
-$('.wall_wrap').append("<%= escape_javascript(render :partial => 'recipes_overlay', :locals => {:recipes => @recipes, :type => 'recipe_index'})%>")
+$('.wall_wrap').append("<%= escape_javascript(render :partial => 'recipes_new_overlay', :locals => {:recipes => @recipes, :type => 'recipe_new_index'})%>")
 <% else %>
 return null
 <% end %>

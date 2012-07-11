@@ -8,18 +8,13 @@
             = recipe.name
         %div.overlay_info
           %ul
-            - if recipe.ingredients.count < 4
-              %p
-                Ingredients:
-              - recipe.ingredients[0..(recipe.ingredients.length - 1)].each do |ingredient|
-                %li.ingredient
-                  = ingredient.name
-            - else
-              %p
-                = "Showing 4 of #{recipe.ingredients.count} ingredients"
-              - recipe.ingredients[0..3].each do |ingredient|
-                %li.ingredient
-                  = ingredient.name
+            %div.left
+              %li.ingredient= recipe.ingredients[0].name if !(recipe.ingredients[0].nil?)
+              %li.ingredient= recipe.ingredients[1].name if !(recipe.ingredients[1].nil?)
+            %div.left
+              %li.ingredient= recipe.ingredients[2].name if !(recipe.ingredients[2].nil?)
+              %li.ingredient= recipe.ingredients[3].name if !(recipe.ingredients[3].nil?)
+            %div.clearfix
         %div.overlay_info
           = pluralize(recipe.favorites, 'fork')
         %div.overlay_info
@@ -27,12 +22,12 @@
         %div.overlay_info
           = formatted_cook_time_string(recipe.cook_time)
       %div.recipe_picture_content
+        %div.tape{:class => "tape_#{index % 2}"}
         - if recipe.image?
-          = link_to image_tag(recipe.image_url(:thumb)), recipe
+          = link_to image_tag(recipe.image_url, :size => '275x200'), recipe
         - else
           = link_to image_tag('default.png', :size => '200x200'), recipe
-        %div.recipe_bottom
-          %div.recipe_link
-            = recipe.name
+        %div.name_footer
+          %span=recipe.name
           
   %div.clearfix

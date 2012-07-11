@@ -27,15 +27,19 @@
         to
         = f.select(:serving_to, ["",2,3,4,5,6,7,8,9,"10+"])
     %div.field
-      %div.input_wrap
-        = f.label :cook_time, "Cook Time: "
-        %p
-          = select_tag 'cook_time[]', '<option selected="selected">0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option>'.html_safe
-          = f.label :cook_time, "Days"
-          = select_tag 'cook_time[]', '<option selected="selected">0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option><option>21</option><option>22</option><option>23</option>'.html_safe
-          = f.label :cook_time, "Hours"
-          = select_tag 'cook_time[]', '<option selected="selected">0</option><option>5</option><option>10</option><option>15</option><option>20</option><option>25</option><option>30</option><option>35</option><option>40</option><option>45</option><option>50</option><option>55</option>'.html_safe
-          = f.label :cook_time, "Minutes"
+      %div.input_wrap.cook_time_value 
+        Cook Time:
+        %span.days 0
+        %span.day_label days,
+        = hidden_field_tag 'cook_time[]', @cook_time['d'], :class => 'hidden_days'
+        %span.hours 0
+        %span.hour_label hours,
+        = hidden_field_tag 'cook_time[]', @cook_time['h'], :class => 'hidden_hours'
+        %span.minutes 0
+        %span.minute_label minutes
+        = hidden_field_tag 'cook_time[]', @cook_time['m'], :class => 'hidden_minutes'
+      %div.slider_wrap
+        %div.slider{:data => {:cook_time => @recipe.cook_time}}
   %div.inner.right_page.edit_page
     %h1
       = "Editing #{@recipe.name}"
@@ -45,7 +49,7 @@
         - @ingredients.each do |ingredient|
           %div.ingredient
             = text_field_tag :name, ingredient['name'], {:name => 'ingredients[][name]', :class => 'ingredients-input', :placeholder => 'Enter ingredient name'}
-            = text_field_tag :amount, (ingredient['amount'].nil? ? nil : float_to_frac_string(ingredient['amount'])), {:name => 'ingredients[][amount]', :class => 'ingredients-amount', :placeholder => 'Amount'}
+            = text_field_tag :amount, (ingredient['amount'].nil? ? nil : float_to_frac(ingredient['amount'])), {:name => 'ingredients[][amount]', :class => 'ingredients-amount', :placeholder => 'Amount'}
             = text_field_tag :units, (ingredient['units'].nil? ? nil : ingredient['units']), {:name => 'ingredients[][units]', :class => 'ingredients-units', :placeholder => 'Units' }
             =text_field_tag :details, (ingredient['details'].nil? ? nil : ingredient['details']), {:placeholder => 'Details', :name => 'ingredients[][details]', :class => 'ingredients-details'}
       %div.prepartation

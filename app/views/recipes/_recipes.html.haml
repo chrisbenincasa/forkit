@@ -6,8 +6,9 @@
       - else
         = link_to image_tag('default.png', :size => '200x200'), recipe
       %div.recipe_bottom
-        %div.recipe_link
+        %div.recipe_link.left
           = link_to recipe.name, recipe
         %div.right
           = pluralize(recipe.favorites, 'fork')
+        %div.clearfix
   %div.clearfix

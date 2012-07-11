@@ -160,6 +160,10 @@ div.recipe_list
       {
         display: block;
         margin-bottom: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
 
         &:hover
         {
@@ -180,6 +184,10 @@ div.recipe_list
       {
         float: left;
         width: 150px;
+        a 
+        {
+          height: 20px;
+        }
       }
 
       &.recipe_0, &.recipe_3
@@ -194,20 +202,149 @@ div.recipe_list
     }
   }
 
+  &.recipe_new_index_list
+  {
+
+    div.recipe_picture:nth-child(3n-2)
+    {
+      margin-right: 58px;
+    }
+
+    div.recipe_picture:nth-child(3n)
+    {
+      margin-left: 58px;
+    }
+
+    div.name_footer
+    {
+      position: absolute;
+      z-index: 1;
+      bottom: 0;
+      width: 100%;
+      background-color: #f9f9e3;
+      padding: 5px 0;
+    }
+
+    div.recipe_picture
+    {
+      width: 275px;
+      height: 200px;
+      float: left;
+      border: #f9f9e3 3px solid;
+      margin-bottom: 40px;
+    }
+
+    div.recipe_picture_content
+    {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    div.tape
+    {
+      position: absolute;
+      top: -20px;
+      left: 25%;
+      @include inline-block;
+      z-index: 0;
+      &.tape_1
+      {
+        @include rotate(-1.5);
+      }
+      &.tape_2
+      {
+        @include rotate(1.5);
+      }
+    }
+
+    div.overlay
+    {
+      width: 265px;
+      height: 192px;
+      background: image-url('overlay-bg.png');
+      position: absolute;
+      z-index: 2;
+      padding: 2px 5px 6px;
+      display: none;
+      color: white;
+      a
+      {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height:100%;
+        z-index: 2;
+        text-indent: -9999px;
+      }
+
+      div.overlay_info
+      {
+        margin-bottom: 6px;
+
+        div.left:first-child
+        {
+          margin-right: 10px;
+        }
+
+        li.ingredient
+        {
+          margin: 0 0 3px 0;
+        }
+      }
+
+      h1, h2
+      {
+        color: #fbfad5;
+        white-space: normal;
+      }
+
+      p
+      {
+        margin-bottom: 10px;
+      }
+
+      li 
+      {
+        margin: 0 0 10px 15px;
+      }
+    }
+
+    div.has_overlay
+    {
+      padding: 0 !important;
+      &:hover
+      {
+        cursor: pointer;
+      }
+    }
+  }
+
   &.faved_list, &.recipe_index_list, &.ingredient_list
   {
+    div.recipe_picture:nth-child(3n-2)
+    {
+      margin-right: 30px;
+    }
+
+    div.recipe_picture:nth-child(3n)
+    {
+      margin-left: 30px;
+    }
+
     div.recipe_picture
     {
       width: 200px;
       height: 281px;
-      margin-right: 20px;
       margin-bottom: 25px;
       padding: 15px 50px 0 50px;
       float: left;
       border: none;
+      white-space: nowrap;
       a
       {
         display: block;
+        margin-bottom: 7px;
       }
       img
       {
@@ -229,6 +366,11 @@ div.recipe_list
       {
         background: image-url('postit_orange.png') no-repeat;
       }
+    }
+
+    div.recipe_link a
+    {
+      color: black;
     }
 
     div.overlay
@@ -254,9 +396,25 @@ div.recipe_list
         text-indent: -9999px;
       }
 
+      div.overlay_info
+      {
+        margin-bottom: 10px;
+      }
+
       h1, h2
       {
         color: #fbfad5;
+        white-space: normal;
+      }
+
+      p
+      {
+        margin-bottom: 10px;
+      }
+
+      li 
+      {
+        margin: 0 0 10px 15px;
       }
     }
 
@@ -265,6 +423,10 @@ div.recipe_list
       padding: 0 !important;
       width: 300px;
       height: 300px;
+      &:hover
+      {
+        cursor: pointer;
+      }
     }
 
     div.recipe_picture_content
@@ -315,6 +477,37 @@ div.inner
   {
     //font-family: 'Handwriting';
     padding-top: 12px;
+  }
+}
+
+div.recipe_index_header, div.ingredient_show_header
+{
+  margin-bottom: 30px;
+  
+  h1, h3
+  {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    color: #F9F9E3;
+  }
+
+  form
+  {
+    display: inline-block;
+
+    input[type='text']
+    {
+      @include quick-border-radius(5);
+      @include single-box-shadow(1, 1, 1, 0, #ccc, px, true);
+      border: thin solid lightgray;
+      font-size: 12pt;
+      outline: none;
+      border: 0;
+      margin: 0;
+      padding: 6px 0 5px 5px;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -640,6 +833,7 @@ form.edit_recipe, form.new_recipe
   div.field
   {
     height: 56px;
+    width: 504px;
 
     div.input_wrap
     {

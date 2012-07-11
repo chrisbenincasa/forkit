@@ -1,11 +1,14 @@
 %div.ingredient_show_header.show_header
-  %h1
-    = @ingredient.name
-  %div.sorter
-    = sortable 'name'
-    = sortable 'created_at', 'Date'
-    = sortable 'favorites', 'Forks'
+  %div.left
+    %h1
+      = @ingredient.name
+  %div.right
+    %div.sorter
+      = sortable 'name'
+      = sortable 'created_at', 'Date'
+      = sortable 'favorites', 'Forks'
+  %div.clearfix
   %h3
     Featured in 
     = pluralize(@recipes.length, 'recipe')
-= render :partial => 'recipes/recipes', :locals => {:recipes => @recipes, :type => 'ingredient'}
+= render :partial => 'recipes/recipes_overlay', :locals => {:recipes => @recipes, :type => 'ingredient'}

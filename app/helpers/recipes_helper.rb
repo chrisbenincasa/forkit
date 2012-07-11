@@ -18,7 +18,7 @@ module RecipesHelper
     formattedIngredient = ''
     name = ingredient['ingredient'].name
     amount = ingredient['amount']
-    fraction = (amount.remainder(1) != 0) ? float_to_frac(amount, true) : amount.to_i.to_s
+    fraction = ((amount.remainder(1) != 0) ? float_to_frac(amount, 'hash') : amount.to_i.to_s) unless amount.nil?
     units = (is_plural?(ingredient['units']) ? ingredient['units'].singularize : ingredient['units']) unless (ingredient['units'].nil? or ingredient['units'].blank?)
     details = ingredient['details']
     noOf = ['whole']
@@ -33,8 +33,11 @@ module RecipesHelper
       elsif noOf.include?(units)
         formattedIngredient = "#{pluralize(fraction, units)} #{link_to(name, ingredient['ingredient'])}"
       else
-        if amount < 1 and amount > 0
-          formattedIngredient = "<sup>#{fraction[0]}</sup>&frasl;<sub>#{fraction[1]}</sub> #{units} of #{link_to(name, ingredient['ingredient'])}"
+        if (amount.remainder(1) != 0)
+          formattedIngredient = "<sup>#{fraction['numerator']}</sup>&frasl;<sub>#{fraction['denominator']}</sub> #{units} of #{link_to(name, ingredient['ingredient'])}"
+          if fraction['whole']
+            formattedIngredient = "#{fraction['whole']}#{formattedIngredient}"
+          end
         else
           formattedIngredient = "#{pluralize(fraction, units)} of #{link_to(name, ingredient['ingredient'])}"
         end
@@ -61,11 +64,33 @@ module RecipesHelper
     end
   end
 
-  def float_to_frac(floatAmount, array = false)
-    if array
+  def float_to_frac(floatAmount, type = 'string')
+    if type == 'array'
       return Rational(floatAmount, 1).to_s.split('/')
     else
-      return Rational(floatAmount, 1)
+      floatArray = Rational(floatAmount, 1).to_s.split('/').map(&:to_i)
+      if floatArray[1].nil?
+        returnHash = Hash['whole' => floatArray[0]]
+      elsif (floatArray[0]/floatArray[1]).to_i > 0
+        wholePart = (floatArray[0]/floatArray[1]).to_i
+        returnHash = Hash["whole" => wholePart, "numerator" => floatArray[0] - (floatArray[1] * wholePart), "denominator" => floatArray[1]]
+      else
+        returnHash = Hash["numerator" => floatArray[0], "denominator" => floatArray[1]]
+      end
+      if type == 'hash'
+        return returnHash.each{|k,v| returnHash[k] = v.to_s}
+      else
+        returnHash.each{|k,v| v.to_s}
+        if returnHash.include?('numerator') && returnHash.include?('denominator')
+          returnString = "#{returnHash['numerator']}/#{returnHash['denominator']}"
+          if returnHash['whole']
+            returnString = "#{returnHash['whole']} #{returnString}"
+          end
+        else
+          returnString = "#{returnHash['whole']}"
+        end
+        return returnString
+      end
     end
   end
 
