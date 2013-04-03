@@ -33,13 +33,13 @@
         Cook Time:
         %span.days 0
         %span.day_label days,
-        = hidden_field_tag 'cook_time[]', @cook_time['d'], :class => 'hidden_days'
+        = hidden_field_tag 'cook_time[]', "0", :class => 'hidden_days'
         %span.hours 0
         %span.hour_label hours,
-        = hidden_field_tag 'cook_time[]', @cook_time['h'], :class => 'hidden_hours'
+        = hidden_field_tag 'cook_time[]', "0", :class => 'hidden_hours'
         %span.minutes 0
         %span.minute_label minutes
-        = hidden_field_tag 'cook_time[]', @cook_time['m'], :class => 'hidden_minutes'
+        = hidden_field_tag 'cook_time[]', "0", :class => 'hidden_minutes'
       %div.slider_wrap
         %div.slider{:data => {:cook_time => @recipe.cook_time}}
   %div.inner.right_page.edit_page
